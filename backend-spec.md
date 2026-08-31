@@ -119,11 +119,15 @@ El diseño completo de tablas está en **`database-spec.md`**. Resumen:
 > requieren `prisma.config.ts` + driver adapter + ESM, añadiendo complejidad
 > innecesaria para este proyecto. Prisma 6 es estable y compatible con Supabase.
 
-### Fase 3 — Autenticación y panel admin
-- [ ] Definir método de auth (Supabase Auth recomendado)
-- [ ] Crear login para el rol administrador
-- [ ] Proteger las rutas del panel admin
-- [ ] Layout base del panel de administración
+### Fase 3 — Autenticación y panel admin (COMPLETADO)
+- [x] Método de auth definido: **autenticación propia** con la tabla `usuarios` (JWT + cookie con `jose`)
+- [x] Login para el rol administrador (`/admin/login`, verifica contra `usuarios`)
+- [x] Proteger las rutas del panel admin (middleware en `/admin/:path*` + `requireAdmin`)
+- [x] Layout base del panel de administración (sidebar, header con logout, dashboard con conteos)
+
+> Credenciales del admin sembrado: `admin@resplandecer.co` / `cambiar-esta-clave`
+> (cambiar esta contraseña antes de producción).
+> Verificado: `/admin` sin sesión redirige a login; login valida contra la BD.
 
 ### Fase 4 — CRUD de tablas paramétricas (panel admin)
 - [ ] Categorías (crear, listar, editar, activar/inactivar)
