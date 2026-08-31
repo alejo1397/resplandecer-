@@ -219,11 +219,15 @@ usuarios (rol admin) ──► administra ──► [categorias, catalogo, testi
       escritura solo para el rol administrador
 - [ ] Asegurar que la `service_role key` solo se use en el servidor
 
-### Fase D4 — Capa de acceso a datos (PENDIENTE)
-- [ ] Crear funciones/consultas reutilizables por tabla (queries de lectura para la
-      web pública filtrando por `estado = true` y `orden`)
-- [ ] Crear consultas de administración (CRUD) para el panel
-- [ ] Tipar los resultados con los tipos generados por Prisma
+### Fase D4 — Capa de acceso a datos (COMPLETADO)
+- [x] Queries públicas por tabla (filtran `estado = true` y respetan `orden`) → `src/lib/queries/`
+- [x] Consultas de administración (CRUD) para el panel → `src/lib/queries/admin/`
+- [x] Serialización de BigInt/Decimal/Date para la UI → `src/lib/serializers.ts`
+- [x] Verificado: build OK y lectura real contra la BD OK
+
+> Estructura: `queries/catalogo.ts`, `queries/contenido.ts`, `queries/clientes.ts`
+> (públicas) + `queries/admin/{categorias,catalogo,contenido}.ts` (CRUD admin).
+> `serializers.ts` incluye `formatCOP()` para mostrar precios en pesos colombianos.
 
 ### Fase D5 — Mantenimiento y evolución (FUTURO)
 - [ ] Estrategia de migraciones para producción (`prisma migrate deploy`)
