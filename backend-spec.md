@@ -129,13 +129,18 @@ El diseño completo de tablas está en **`database-spec.md`**. Resumen:
 > (cambiar esta contraseña antes de producción).
 > Verificado: `/admin` sin sesión redirige a login; login valida contra la BD.
 
-### Fase 4 — CRUD de tablas paramétricas (panel admin)
-- [ ] Categorías (crear, listar, editar, activar/inactivar)
-- [ ] Catálogo de productos + asociación de imágenes
-- [ ] Testimonios + imágenes de testimonios
-- [ ] Redes sociales
-- [ ] Configuración del sitio (textos del hero, contacto, etc.)
-- [ ] Gestión de clientes (lectura de contactos recibidos)
+### Fase 4 — CRUD de tablas paramétricas (panel admin) (COMPLETADO)
+- [x] Categorías (crear, listar, editar, activar/inactivar)
+- [x] Catálogo de productos + asociación de imágenes (por URL; subida de archivos en Fase 6)
+- [x] Testimonios + imágenes de testimonios (por URL)
+- [x] Redes sociales
+- [x] Configuración del sitio (editor clave-valor + agregar parámetros)
+- [x] Gestión de clientes (lectura de contactos recibidos)
+
+> Patrón por sección: `actions.ts` (server actions con `revalidatePath`), `page.tsx`
+> (listado con activar/inactivar), `*-form.tsx` (formulario cliente), `nueva|nuevo` y
+> `[id]` para crear/editar. Componentes UI compartidos en `admin/_components/ui.tsx`.
+> Verificado: build OK (16 rutas) y CRUD real contra la BD.
 
 ### Fase 5 — Web pública
 - [ ] Header con navegación por categorías (leídas de la BD)

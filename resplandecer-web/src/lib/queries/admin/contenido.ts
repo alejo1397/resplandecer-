@@ -29,6 +29,14 @@ export async function listarTestimonios() {
   return serialize(testimonios);
 }
 
+export async function obtenerTestimonio(id: number) {
+  const testimonio = await prisma.testimonio.findUnique({
+    where: { id },
+    include: { imagen: true },
+  });
+  return testimonio ? serialize(testimonio) : null;
+}
+
 export async function crearTestimonio(input: TestimonioInput) {
   const testimonio = await prisma.testimonio.create({
     data: {
@@ -91,6 +99,11 @@ export type RedSocialInput = {
 export async function listarRedesSociales() {
   const redes = await prisma.redSocial.findMany({ orderBy: { orden: "asc" } });
   return serialize(redes);
+}
+
+export async function obtenerRedSocial(id: number) {
+  const red = await prisma.redSocial.findUnique({ where: { id } });
+  return red ? serialize(red) : null;
 }
 
 export async function crearRedSocial(input: RedSocialInput) {
