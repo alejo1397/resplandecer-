@@ -12,6 +12,9 @@ resplandecer-web/build/
 .env*.local
 resplandecer-web/.env
 resplandecer-web/.env*.local
+# ...pero SI versionar las plantillas de ejemplo (sin secretos)
+!.env.example
+!resplandecer-web/.env.example
 
 # Logs
 *.log

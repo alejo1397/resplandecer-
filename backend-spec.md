@@ -94,22 +94,30 @@ El diseño completo de tablas está en **`database-spec.md`**. Resumen:
 ## 5. Plan de desarrollo paso a paso
 
 ### Fase 0 — Preparación del entorno
-- [ ] Crear el proyecto Next.js dentro del workspace `Resplandecer`
-- [ ] Inicializar repositorio Git
-- [ ] Crear cuenta y proyecto en Supabase (gratis)
-- [ ] Crear cuenta en Vercel y conectarla al repositorio
+- [x] Crear el proyecto Next.js dentro del workspace `Resplandecer` → carpeta `resplandecer-web/` (Next.js 16, TypeScript, Tailwind 4, App Router, ESLint)
+- [x] Inicializar repositorio Git (repo único en la raíz, rama `main`, primer commit hecho)
+- [ ] Crear cuenta y proyecto en Supabase (gratis) — **acción del usuario**
+- [ ] Crear cuenta en Vercel y conectarla al repositorio — **acción del usuario**
 - [ ] Configurar variables de entorno (`.env`) para la conexión a Supabase
 
+> Nota: el proyecto vive en la subcarpeta `resplandecer-web/`. En Vercel, configurar
+> el "Root Directory" como `resplandecer-web`. El repositorio Git está en la raíz e
+> incluye las specs y el código.
+
 ### Fase 1 — Base de datos
-- [ ] Definir tipo de clave primaria (bigint vs uuid) — ver pendientes
-- [ ] Crear el esquema Prisma (`schema.prisma`) según `database-spec.md`
-- [ ] Ejecutar la primera migración y crear las tablas en Supabase
-- [ ] Cargar datos de ejemplo (seed) para pruebas
+- [x] Definir tipo de clave primaria → **uuid** para `usuarios`/`clientes`, **bigint autoincremental** para el contenido administrable
+- [x] Crear el esquema Prisma (`schema.prisma`) según `database-spec.md` (9 modelos + 2 enums)
+- [x] Crear script de seed con datos de ejemplo (`prisma/seed.ts`)
+- [ ] Ejecutar la primera migración y crear las tablas en Supabase — **pendiente: requiere llaves de Supabase en `.env`**
 
 ### Fase 2 — Conexión y ORM
-- [ ] Instalar y configurar Prisma
-- [ ] Configurar el cliente de Prisma para entorno serverless (Vercel)
-- [ ] Verificar lectura/escritura contra la base de datos
+- [x] Instalar y configurar Prisma (v6.19.3 estable)
+- [x] Configurar el cliente de Prisma singleton para entorno serverless (`src/lib/prisma.ts`)
+- [ ] Verificar lectura/escritura contra la base de datos — **pendiente: requiere conexión a Supabase**
+
+> Nota técnica: se usa **Prisma 6** (no 7) porque Prisma 7 introdujo cambios que
+> requieren `prisma.config.ts` + driver adapter + ESM, añadiendo complejidad
+> innecesaria para este proyecto. Prisma 6 es estable y compatible con Supabase.
 
 ### Fase 3 — Autenticación y panel admin
 - [ ] Definir método de auth (Supabase Auth recomendado)
