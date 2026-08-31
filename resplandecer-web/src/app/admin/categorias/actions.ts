@@ -1,8 +1,9 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireAdmin } from "@/lib/auth/guard";
+import { CACHE_TAGS } from "@/lib/cache";
 import {
   crearCategoria,
   actualizarCategoria,
@@ -49,6 +50,7 @@ export async function guardarCategoriaAction(
   }
 
   revalidatePath("/admin/categorias");
+  updateTag(CACHE_TAGS.categorias);
   redirect("/admin/categorias");
 }
 
@@ -58,4 +60,5 @@ export async function alternarEstadoCategoriaAction(formData: FormData): Promise
   const estado = formData.get("estado") === "true";
   await cambiarEstadoCategoria(id, !estado);
   revalidatePath("/admin/categorias");
+  updateTag(CACHE_TAGS.categorias);
 }

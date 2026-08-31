@@ -1,10 +1,10 @@
-import { getConfiguracionSitio } from "@/lib/queries";
+import { getConfiguracionSitioCached } from "@/lib/cache";
 import { ContactoForm } from "./contacto-form";
 
 export const metadata = { title: "Contacto | Resplandecer" };
 
 export default async function ContactoPage() {
-  const config = await getConfiguracionSitio();
+  const config = await getConfiguracionSitioCached();
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">

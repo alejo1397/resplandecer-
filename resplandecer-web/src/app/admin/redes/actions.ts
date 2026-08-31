@@ -1,8 +1,9 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireAdmin } from "@/lib/auth/guard";
+import { CACHE_TAGS } from "@/lib/cache";
 import {
   crearRedSocial,
   actualizarRedSocial,
@@ -38,6 +39,7 @@ export async function guardarRedAction(
   }
 
   revalidatePath("/admin/redes");
+  updateTag(CACHE_TAGS.redes);
   redirect("/admin/redes");
 }
 
@@ -47,4 +49,5 @@ export async function alternarEstadoRedAction(formData: FormData): Promise<void>
   const estado = formData.get("estado") === "true";
   await cambiarEstadoRedSocial(id, !estado);
   revalidatePath("/admin/redes");
+  updateTag(CACHE_TAGS.redes);
 }

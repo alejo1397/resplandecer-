@@ -1,8 +1,9 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireAdmin } from "@/lib/auth/guard";
+import { CACHE_TAGS } from "@/lib/cache";
 import {
   crearProducto,
   actualizarProducto,
@@ -61,6 +62,7 @@ export async function guardarProductoAction(
   }
 
   revalidatePath("/admin/catalogo");
+  updateTag(CACHE_TAGS.catalogo);
   redirect("/admin/catalogo");
 }
 
@@ -70,6 +72,7 @@ export async function alternarEstadoProductoAction(formData: FormData): Promise<
   const estado = formData.get("estado") === "true";
   await cambiarEstadoProducto(id, !estado);
   revalidatePath("/admin/catalogo");
+  updateTag(CACHE_TAGS.catalogo);
 }
 
 export async function agregarImagenAction(formData: FormData): Promise<void> {
@@ -80,6 +83,7 @@ export async function agregarImagenAction(formData: FormData): Promise<void> {
   if (!url) return;
   await agregarImagenProducto(catalogoId, { url, esPrincipal });
   revalidatePath(`/admin/catalogo/${catalogoId}`);
+  updateTag(CACHE_TAGS.catalogo);
 }
 
 export async function eliminarImagenAction(formData: FormData): Promise<void> {
@@ -88,4 +92,5 @@ export async function eliminarImagenAction(formData: FormData): Promise<void> {
   const catalogoId = Number(formData.get("catalogoId"));
   await eliminarImagenProducto(id);
   revalidatePath(`/admin/catalogo/${catalogoId}`);
+  updateTag(CACHE_TAGS.catalogo);
 }

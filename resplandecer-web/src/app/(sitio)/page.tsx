@@ -1,17 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
-  getConfiguracionSitio,
-  getProductosDestacados,
-  getTestimoniosActivos,
-} from "@/lib/queries";
+  getConfiguracionSitioCached,
+  getProductosDestacadosCached,
+  getTestimoniosCached,
+} from "@/lib/cache";
 import { ProductoCard } from "./_components/producto-card";
 
 export default async function InicioPage() {
   const [config, destacados, testimonios] = await Promise.all([
-    getConfiguracionSitio(),
-    getProductosDestacados(),
-    getTestimoniosActivos(),
+    getConfiguracionSitioCached(),
+    getProductosDestacadosCached(),
+    getTestimoniosCached(),
   ]);
 
   const heroImagen = config["hero_imagen"];

@@ -1,10 +1,10 @@
-import { getProductosActivos } from "@/lib/queries";
+import { getProductosCached } from "@/lib/cache";
 import { ProductoCard } from "../_components/producto-card";
 
 export const metadata = { title: "Mobiliario | Resplandecer" };
 
 export default async function MobiliarioPage() {
-  const productos = await getProductosActivos();
+  const productos = await getProductosCached();
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">

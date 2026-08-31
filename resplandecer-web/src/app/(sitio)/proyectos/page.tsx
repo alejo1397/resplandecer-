@@ -1,11 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getProyectosActivos } from "@/lib/queries";
+import { getProyectosCached } from "@/lib/cache";
 
 export const metadata = { title: "Proyectos | Resplandecer" };
 
 export default async function ProyectosPage() {
-  const proyectos = await getProyectosActivos();
+  const proyectos = await getProyectosCached();
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">

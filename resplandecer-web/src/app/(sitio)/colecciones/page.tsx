@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { getCategoriasActivas } from "@/lib/queries";
+import { getCategoriasCached } from "@/lib/cache";
 
 export const metadata = { title: "Colecciones | Resplandecer" };
 
 export default async function ColeccionesPage() {
-  const categorias = await getCategoriasActivas();
+  const categorias = await getCategoriasCached();
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">

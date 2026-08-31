@@ -1,11 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getConfiguracionSitio } from "@/lib/queries";
+import { getConfiguracionSitioCached } from "@/lib/cache";
 
 export const metadata = { title: "Disena tu espacio | Resplandecer" };
 
 export default async function DisenaTuEspacioPage() {
-  const config = await getConfiguracionSitio();
+  const config = await getConfiguracionSitioCached();
 
   const titulo = config["diseno_titulo"] || "Disena tu espacio";
   const descripcion =

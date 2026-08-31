@@ -1,8 +1,9 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireAdmin } from "@/lib/auth/guard";
+import { CACHE_TAGS } from "@/lib/cache";
 import {
   crearProyecto,
   actualizarProyecto,
@@ -53,6 +54,7 @@ export async function guardarProyectoAction(
   }
 
   revalidatePath("/admin/proyectos");
+  updateTag(CACHE_TAGS.proyectos);
   redirect("/admin/proyectos");
 }
 
@@ -62,6 +64,7 @@ export async function alternarEstadoProyectoAction(formData: FormData): Promise<
   const estado = formData.get("estado") === "true";
   await cambiarEstadoProyecto(id, !estado);
   revalidatePath("/admin/proyectos");
+  updateTag(CACHE_TAGS.proyectos);
 }
 
 export async function agregarImagenProyectoAction(formData: FormData): Promise<void> {
@@ -72,6 +75,7 @@ export async function agregarImagenProyectoAction(formData: FormData): Promise<v
   if (!url) return;
   await agregarImagenProyecto(proyectoId, { url, esPrincipal });
   revalidatePath(`/admin/proyectos/${proyectoId}`);
+  updateTag(CACHE_TAGS.proyectos);
 }
 
 export async function eliminarImagenProyectoAction(formData: FormData): Promise<void> {
@@ -80,4 +84,5 @@ export async function eliminarImagenProyectoAction(formData: FormData): Promise<
   const proyectoId = Number(formData.get("proyectoId"));
   await eliminarImagenProyecto(id);
   revalidatePath(`/admin/proyectos/${proyectoId}`);
+  updateTag(CACHE_TAGS.proyectos);
 }

@@ -1,8 +1,9 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireAdmin } from "@/lib/auth/guard";
+import { CACHE_TAGS } from "@/lib/cache";
 import {
   crearTestimonio,
   actualizarTestimonio,
@@ -68,6 +69,7 @@ export async function guardarTestimonioAction(
   }
 
   revalidatePath("/admin/testimonios");
+  updateTag(CACHE_TAGS.testimonios);
   redirect("/admin/testimonios");
 }
 
@@ -77,4 +79,5 @@ export async function alternarEstadoTestimonioAction(formData: FormData): Promis
   const estado = formData.get("estado") === "true";
   await cambiarEstadoTestimonio(id, !estado);
   revalidatePath("/admin/testimonios");
+  updateTag(CACHE_TAGS.testimonios);
 }

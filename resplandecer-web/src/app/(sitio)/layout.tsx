@@ -1,4 +1,4 @@
-import { getConfiguracionSitio, getRedesSocialesActivas } from "@/lib/queries";
+import { getConfiguracionSitioCached, getRedesSocialesCached } from "@/lib/cache";
 import { Header } from "./_components/header";
 import { Footer } from "./_components/footer";
 import { WhatsAppButton } from "./_components/whatsapp-button";
@@ -9,8 +9,8 @@ export default async function SitioLayout({
   children: React.ReactNode;
 }) {
   const [config, redes] = await Promise.all([
-    getConfiguracionSitio(),
-    getRedesSocialesActivas(),
+    getConfiguracionSitioCached(),
+    getRedesSocialesCached(),
   ]);
 
   const nombreSitio = config["nombre_sitio"] || "Resplandecer";
