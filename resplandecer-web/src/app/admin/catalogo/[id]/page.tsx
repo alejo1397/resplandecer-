@@ -3,8 +3,9 @@ import { notFound } from "next/navigation";
 import { requireAdmin } from "@/lib/auth/guard";
 import { obtenerProducto } from "@/lib/queries/admin/catalogo";
 import { listarCategorias } from "@/lib/queries/admin/categorias";
-import { PageHeader, Field, TextInput, Checkbox, SubmitButton } from "../../_components/ui";
+import { PageHeader, Checkbox, SubmitButton } from "../../_components/ui";
 import { ProductoForm } from "../producto-form";
+import { ImageUploader } from "../../_components/image-uploader";
 import { agregarImagenAction, eliminarImagenAction } from "../actions";
 
 export default async function EditarProductoPage({
@@ -63,9 +64,7 @@ export default async function EditarProductoPage({
 
         <form action={agregarImagenAction} className="mt-6 flex max-w-lg flex-col gap-3">
           <input type="hidden" name="catalogoId" value={producto.id} />
-          <Field label="URL de la nueva imagen">
-            <TextInput name="url" type="url" placeholder="https://..." required />
-          </Field>
+          <ImageUploader fieldName="url" carpeta="catalogo" label="Nueva imagen (sube un archivo)" />
           <Checkbox name="esPrincipal" label="Marcar como imagen principal" />
           <div>
             <SubmitButton variant="secondary">Agregar imagen</SubmitButton>

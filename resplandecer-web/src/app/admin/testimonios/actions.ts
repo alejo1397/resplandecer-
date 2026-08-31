@@ -26,6 +26,7 @@ export async function guardarTestimonioAction(
   const calificacionRaw = String(formData.get("calificacion") ?? "").trim();
   const calificacion = calificacionRaw ? Number(calificacionRaw) : null;
   const imagenUrl = String(formData.get("imagenUrl") ?? "").trim();
+  const imagenUrlActual = String(formData.get("imagenUrlActual") ?? "").trim();
   const orden = Number(formData.get("orden") ?? 0);
   const estado = formData.get("estado") === "on";
 
@@ -36,9 +37,9 @@ export async function guardarTestimonioAction(
   }
 
   try {
-    // Si se indico una URL de imagen, crear la imagen y asociarla.
+    // Crear una imagen nueva solo si la URL cambio respecto a la actual.
     let imagenId: number | null | undefined = undefined;
-    if (imagenUrl) {
+    if (imagenUrl && imagenUrl !== imagenUrlActual) {
       const img = await crearImagenTestimonio(imagenUrl, nombreCliente);
       imagenId = img.id;
     }

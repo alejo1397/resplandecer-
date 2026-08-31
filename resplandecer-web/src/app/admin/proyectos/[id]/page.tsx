@@ -2,8 +2,9 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { requireAdmin } from "@/lib/auth/guard";
 import { obtenerProyecto } from "@/lib/queries/admin/proyectos";
-import { PageHeader, Field, TextInput, Checkbox, SubmitButton } from "../../_components/ui";
+import { PageHeader, Checkbox, SubmitButton } from "../../_components/ui";
 import { ProyectoForm } from "../proyecto-form";
+import { ImageUploader } from "../../_components/image-uploader";
 import { agregarImagenProyectoAction, eliminarImagenProyectoAction } from "../actions";
 
 export default async function EditarProyectoPage({
@@ -55,9 +56,7 @@ export default async function EditarProyectoPage({
 
         <form action={agregarImagenProyectoAction} className="mt-6 flex max-w-lg flex-col gap-3">
           <input type="hidden" name="proyectoId" value={proyecto.id} />
-          <Field label="URL de la nueva imagen">
-            <TextInput name="url" type="url" placeholder="https://..." required />
-          </Field>
+          <ImageUploader fieldName="url" carpeta="proyectos" label="Nueva imagen (sube un archivo)" />
           <Checkbox name="esPrincipal" label="Marcar como imagen principal" />
           <div>
             <SubmitButton variant="secondary">Agregar imagen</SubmitButton>

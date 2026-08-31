@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { guardarTestimonioAction, type FormState } from "./actions";
 import { Field, TextInput, TextArea, Checkbox, SubmitButton, LinkButton } from "../_components/ui";
+import { ImageUploader } from "../_components/image-uploader";
 
 type Testimonio = {
   id: number;
@@ -23,6 +24,7 @@ export function TestimonioForm({ testimonio }: { testimonio?: Testimonio }) {
   return (
     <form action={action} className="flex max-w-lg flex-col gap-4">
       {testimonio ? <input type="hidden" name="id" value={testimonio.id} /> : null}
+      <input type="hidden" name="imagenUrlActual" value={testimonio?.imagen?.url ?? ""} />
 
       <Field label="Nombre del cliente">
         <TextInput name="nombreCliente" defaultValue={testimonio?.nombreCliente} required />
@@ -40,12 +42,12 @@ export function TestimonioForm({ testimonio }: { testimonio?: Testimonio }) {
         <TextInput name="calificacion" type="number" min={1} max={5} defaultValue={testimonio?.calificacion ?? ""} />
       </Field>
 
-      <Field
-        label="URL de la imagen"
-        hint={testimonio?.imagen ? "Deja vacio para conservar la imagen actual." : "Opcional (foto del cliente)."}
-      >
-        <TextInput name="imagenUrl" type="url" placeholder="https://..." />
-      </Field>
+      <ImageUploader
+        fieldName="imagenUrl"
+        carpeta="testimonios"
+        defaultUrl={testimonio?.imagen?.url}
+        label={testimonio?.imagen ? "Foto (sube una nueva para reemplazar)" : "Foto del cliente (opcional)"}
+      />
 
       <Field label="Orden">
         <TextInput name="orden" type="number" defaultValue={testimonio?.orden ?? 0} />

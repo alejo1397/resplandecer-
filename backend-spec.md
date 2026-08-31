@@ -157,10 +157,14 @@ El diseño completo de tablas está en **`database-spec.md`**. Resumen:
 > `proyectos` e `imagenes_proyecto`, con su CRUD en el panel admin (`/admin/proyectos`).
 > Verificado: build OK (23 rutas) y todas las páginas cargan datos reales de la BD.
 
-### Fase 6 — Imágenes
-- [ ] Configurar buckets en Supabase Storage
-- [ ] Subida de imágenes desde el panel admin
-- [ ] Optimización de imágenes con el componente de Next.js
+### Fase 6 — Imágenes (COMPLETADO)
+- [x] Bucket público `imagenes` en Supabase Storage (script `prisma/setup-storage.ts`)
+- [x] Subida de imágenes desde el panel admin (componente `ImageUploader` con vista previa)
+- [x] Integrado en catálogo, proyectos y testimonios (valida formato y tamaño máx. 5 MB)
+- [x] Optimización con el componente `Image` de Next.js (dominios de Supabase permitidos)
+
+> Cliente de servidor en `src/lib/supabase.ts` (service_role, solo servidor).
+> Helper de subida en `src/lib/storage.ts`. Verificado: subida real al bucket OK.
 
 ### Fase 7 — Deploy y CI/CD
 - [ ] Configurar variables de entorno en Vercel
