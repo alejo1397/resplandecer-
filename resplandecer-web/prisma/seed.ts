@@ -31,108 +31,26 @@ async function main() {
   });
 
   // -------------------------------------------------------------------------
-  // Categorias
+  // Categorias reales del negocio
   // -------------------------------------------------------------------------
-  const comedores = await prisma.categoria.upsert({
-    where: { slug: "comedores" },
-    update: {},
-    create: { nombre: "Comedores", slug: "comedores", descripcion: "Mesas y comedores", orden: 1 },
-  });
-
-  const sillas = await prisma.categoria.upsert({
-    where: { slug: "sillas" },
-    update: {},
-    create: { nombre: "Sillas", slug: "sillas", descripcion: "Sillas de diseno", orden: 2 },
-  });
-
-  const barras = await prisma.categoria.upsert({
-    where: { slug: "barras" },
-    update: {},
-    create: { nombre: "Barras", slug: "barras", descripcion: "Sillas de barra", orden: 3 },
-  });
-
-  // -------------------------------------------------------------------------
-  // Productos del catalogo (con una imagen principal cada uno)
-  // -------------------------------------------------------------------------
-  const productos = [
-    {
-      nombre: "Silla Jenga",
-      slug: "silla-jenga",
-      descripcion: "Silla de madera con diseno minimalista.",
-      precio: "1430000",
-      categoriaId: sillas.id,
-      destacado: true,
-      orden: 1,
-    },
-    {
-      nombre: "Silla Jenga Tapizada",
-      slug: "silla-jenga-tapizada",
-      descripcion: "Version tapizada de la Silla Jenga.",
-      precio: "1400000",
-      categoriaId: sillas.id,
-      destacado: true,
-      orden: 2,
-    },
-    {
-      nombre: "Silla Rummy",
-      slug: "silla-rummy",
-      descripcion: "Silla ergonomica de lineas suaves.",
-      precio: "1420000",
-      categoriaId: sillas.id,
-      destacado: false,
-      orden: 3,
-    },
-    {
-      nombre: "Silla de Barra Jenga",
-      slug: "silla-de-barra-jenga",
-      descripcion: "Silla alta para barra o isla de cocina.",
-      precio: "1600000",
-      categoriaId: barras.id,
-      destacado: true,
-      orden: 4,
-    },
-    {
-      nombre: "Parques",
-      slug: "parques",
-      descripcion: "Mesa de juego artesanal.",
-      precio: "690000",
-      categoriaId: comedores.id,
-      destacado: false,
-      orden: 5,
-    },
-  ];
-
-  for (const p of productos) {
-    const producto = await prisma.catalogo.upsert({
-      where: { slug: p.slug },
-      update: {},
-      create: {
-        nombre: p.nombre,
-        slug: p.slug,
-        descripcion: p.descripcion,
-        precio: p.precio,
-        categoriaId: p.categoriaId,
-        destacado: p.destacado,
-        orden: p.orden,
-      },
+  const categorias = ["Comedor", "Sala", "Alcoba", "Escritorios", "Entrada", "TV", "Baby", "Juvenil"];
+  let ordenCat = 1;
+  for (const nombre of categorias) {
+    const slug = nombre
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "");
+    await prisma.categoria.upsert({
+      where: { slug },
+      update: { nombre, orden: ordenCat },
+      create: { nombre, slug, orden: ordenCat, estado: true },
     });
-
-    // Imagen principal placeholder para cada producto
-    const yaTieneImagen = await prisma.imagenCatalogo.findFirst({
-      where: { catalogoId: producto.id },
-    });
-    if (!yaTieneImagen) {
-      await prisma.imagenCatalogo.create({
-        data: {
-          catalogoId: producto.id,
-          url: `https://placehold.co/600x600?text=${encodeURIComponent(p.nombre)}`,
-          textoAlternativo: p.nombre,
-          esPrincipal: true,
-          orden: 1,
-        },
-      });
-    }
+    ordenCat++;
   }
+
+  // Nota: los productos se cargan desde el panel admin (no hay productos de ejemplo).
 
   // -------------------------------------------------------------------------
   // Testimonios (con imagen)
