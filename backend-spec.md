@@ -142,15 +142,20 @@ El diseño completo de tablas está en **`database-spec.md`**. Resumen:
 > `[id]` para crear/editar. Componentes UI compartidos en `admin/_components/ui.tsx`.
 > Verificado: build OK (16 rutas) y CRUD real contra la BD.
 
-### Fase 5 — Web pública
-- [ ] Header con navegación por categorías (leídas de la BD)
-- [ ] Hero / banner (textos desde `configuracion_sitio`)
-- [ ] Grid de productos destacados y por categoría (solo `estado = true`)
-- [ ] Página de detalle de producto con galería de imágenes
-- [ ] Sección de testimonios
-- [ ] Footer con redes sociales
-- [ ] Botón flotante de WhatsApp
-- [ ] Formulario de contacto que guarda en la tabla `clientes`
+### Fase 5 — Web pública (COMPLETADO)
+- [x] Header con navegación (Inicio, Mobiliario, Colecciones, Diseña tu espacio, Proyectos, Contacto)
+- [x] Hero / banner (textos e imagen desde `configuracion_sitio`)
+- [x] Grid de productos destacados y por categoría (solo `estado = true`)
+- [x] Página de detalle de producto con galería y botón "Consultar por WhatsApp"
+- [x] Sección de testimonios
+- [x] Footer con redes sociales
+- [x] Botón flotante de WhatsApp
+- [x] Formulario de contacto que guarda en la tabla `clientes`
+- [x] **Extra (Opción B):** Proyectos (galería + detalle) y página "Diseña tu espacio"
+
+> Web pública en el grupo de rutas `src/app/(sitio)/`. Se agregaron las tablas
+> `proyectos` e `imagenes_proyecto`, con su CRUD en el panel admin (`/admin/proyectos`).
+> Verificado: build OK (23 rutas) y todas las páginas cargan datos reales de la BD.
 
 ### Fase 6 — Imágenes
 - [ ] Configurar buckets en Supabase Storage

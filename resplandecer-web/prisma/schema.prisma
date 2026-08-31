@@ -191,3 +191,40 @@ model ConfiguracionSitio {
 
   @@map("configuracion_sitio")
 }
+
+/// Proyectos realizados (galeria de trabajos). Contenido administrable.
+model Proyecto {
+  id            BigInt    @id @default(autoincrement())
+  titulo        String
+  slug          String    @unique
+  descripcion   String?
+  ubicacion     String?
+  fecha         DateTime? @db.Date
+  destacado     Boolean   @default(false)
+  orden         Int       @default(0)
+  estado        Boolean   @default(true)
+  creadoEn      DateTime  @default(now()) @map("creado_en") @db.Timestamptz(6)
+  actualizadoEn DateTime  @updatedAt @map("actualizado_en") @db.Timestamptz(6)
+
+  imagenes ImagenProyecto[]
+
+  @@map("proyectos")
+}
+
+/// Imagenes asociadas a un proyecto (galeria).
+model ImagenProyecto {
+  id               BigInt   @id @default(autoincrement())
+  proyectoId       BigInt   @map("proyecto_id")
+  url              String
+  textoAlternativo String?  @map("texto_alternativo")
+  esPrincipal      Boolean  @default(false) @map("es_principal")
+  orden            Int      @default(0)
+  estado           Boolean  @default(true)
+  creadoEn         DateTime @default(now()) @map("creado_en") @db.Timestamptz(6)
+  actualizadoEn    DateTime @updatedAt @map("actualizado_en") @db.Timestamptz(6)
+
+  proyecto Proyecto @relation(fields: [proyectoId], references: [id], onDelete: Cascade)
+
+  @@index([proyectoId])
+  @@map("imagenes_proyecto")
+}

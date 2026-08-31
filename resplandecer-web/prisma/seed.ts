@@ -176,12 +176,48 @@ async function main() {
     { clave: "telefono_contacto", valor: "+57 300 000 0000", tipo: TipoParametro.texto, descripcion: "Telefono de contacto" },
     { clave: "whatsapp_numero", valor: "573000000000", tipo: TipoParametro.texto, descripcion: "Numero de WhatsApp (formato internacional sin +)" },
     { clave: "email_contacto", valor: "contacto@resplandecer.co", tipo: TipoParametro.texto, descripcion: "Correo de contacto" },
+    { clave: "hero_imagen", valor: "https://placehold.co/1600x900?text=Resplandecer", tipo: TipoParametro.imagen, descripcion: "Imagen de fondo del hero" },
+    // Pagina "Disena tu espacio"
+    { clave: "diseno_titulo", valor: "Disena tu espacio", tipo: TipoParametro.texto, descripcion: "Titulo de la pagina de diseno personalizado" },
+    { clave: "diseno_descripcion", valor: "Creamos mobiliario a la medida de tus espacios y tu estilo. Cuentanos tu idea y la hacemos realidad.", tipo: TipoParametro.texto, descripcion: "Descripcion del servicio de diseno personalizado" },
+    { clave: "diseno_imagen", valor: "https://placehold.co/1200x800?text=Disena+tu+espacio", tipo: TipoParametro.imagen, descripcion: "Imagen de la pagina de diseno personalizado" },
   ];
   for (const param of parametros) {
     await prisma.configuracionSitio.upsert({
       where: { clave: param.clave },
       update: {},
       create: param,
+    });
+  }
+
+  // -------------------------------------------------------------------------
+  // Proyecto de ejemplo (con imagen)
+  // -------------------------------------------------------------------------
+  const proyecto = await prisma.proyecto.upsert({
+    where: { slug: "apartamento-modelo" },
+    update: {},
+    create: {
+      titulo: "Apartamento Modelo",
+      slug: "apartamento-modelo",
+      descripcion: "Amoblamiento integral de un apartamento: comedor, sala y habitaciones.",
+      ubicacion: "Bogota",
+      destacado: true,
+      orden: 1,
+    },
+  });
+
+  const yaTieneImagenProyecto = await prisma.imagenProyecto.findFirst({
+    where: { proyectoId: proyecto.id },
+  });
+  if (!yaTieneImagenProyecto) {
+    await prisma.imagenProyecto.create({
+      data: {
+        proyectoId: proyecto.id,
+        url: "https://placehold.co/1200x800?text=Apartamento+Modelo",
+        textoAlternativo: "Apartamento Modelo",
+        esPrincipal: true,
+        orden: 1,
+      },
     });
   }
 

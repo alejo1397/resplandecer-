@@ -15,6 +15,14 @@ export async function getCategoriasActivas() {
   return serialize(categorias);
 }
 
+/** Obtiene una categoria activa por su slug. */
+export async function getCategoriaPorSlug(slug: string) {
+  const categoria = await prisma.categoria.findFirst({
+    where: { slug, estado: true },
+  });
+  return categoria ? serialize(categoria) : null;
+}
+
 /** Lista los productos activos, con su categoria e imagenes activas. */
 export async function getProductosActivos() {
   const productos = await prisma.catalogo.findMany({
