@@ -108,12 +108,12 @@ El diseño completo de tablas está en **`database-spec.md`**. Resumen:
 - [x] Definir tipo de clave primaria → **uuid** para `usuarios`/`clientes`, **bigint autoincremental** para el contenido administrable
 - [x] Crear el esquema Prisma (`schema.prisma`) según `database-spec.md` (9 modelos + 2 enums)
 - [x] Crear script de seed con datos de ejemplo (`prisma/seed.ts`)
-- [ ] Ejecutar la primera migración y crear las tablas en Supabase — **pendiente: requiere llaves de Supabase en `.env`**
+- [x] Ejecutar la primera migración y crear las tablas en Supabase (9 tablas creadas y datos de ejemplo cargados)
 
 ### Fase 2 — Conexión y ORM
 - [x] Instalar y configurar Prisma (v6.19.3 estable)
 - [x] Configurar el cliente de Prisma singleton para entorno serverless (`src/lib/prisma.ts`)
-- [ ] Verificar lectura/escritura contra la base de datos — **pendiente: requiere conexión a Supabase**
+- [x] Verificar lectura/escritura contra la base de datos (verificado con lectura de productos + relaciones)
 
 > Nota técnica: se usa **Prisma 6** (no 7) porque Prisma 7 introdujo cambios que
 > requieren `prisma.config.ts` + driver adapter + ESM, añadiendo complejidad
