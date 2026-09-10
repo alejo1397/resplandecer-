@@ -31,50 +31,65 @@ export function Header({ nombreSitio }: { nombreSitio: string }) {
   }, [abierto]);
 
   return (
-    <header className="sticky top-0 z-50 border-b hairline-light bg-paper/80 backdrop-blur-md">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
-        <Link href="/" className="display text-xl leading-none text-ink">
-          {nombreSitio}
-        </Link>
+    <>
+      <header className="sticky top-0 z-50 border-b hairline-light bg-paper/85 backdrop-blur-md">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
+          <Link href="/" className="display text-xl leading-none text-ink">
+            {nombreSitio}
+          </Link>
 
-        {/* Navegacion escritorio */}
-        <nav className="hidden md:block">
-          <ul className="flex items-center gap-7">
-            {navItems.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className="label-mono text-ink/70 transition-colors hover:text-ink"
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
+          {/* Navegacion escritorio */}
+          <nav className="hidden md:block">
+            <ul className="flex items-center gap-7">
+              {navItems.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="label-mono text-ink/70 transition-colors hover:text-ink"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
-        {/* Boton menu movil */}
-        <button
-          type="button"
-          onClick={() => setAbierto((v) => !v)}
-          aria-expanded={abierto}
-          aria-controls="menu-movil"
-          className="pill pill-dark text-ink md:hidden"
-        >
-          <span className="pill-text">{abierto ? "Cerrar" : "Menu"}</span>
-        </button>
-      </div>
+          {/* Boton menu (solo movil) */}
+          <button
+            type="button"
+            onClick={() => setAbierto((v) => !v)}
+            aria-expanded={abierto}
+            aria-controls="menu-movil"
+            className="pill pill-dark text-ink md:hidden"
+          >
+            <span className="pill-text">{abierto ? "Cerrar" : "Menu"}</span>
+          </button>
+        </div>
+      </header>
 
-      {/* Panel de menu movil a pantalla completa */}
+      {/* Overlay de menu movil: pantalla completa, opaco, por encima de todo */}
       {abierto ? (
         <div
           id="menu-movil"
-          className="fixed inset-0 top-[65px] z-40 bg-ink md:hidden"
+          className="fixed inset-0 z-[100] flex flex-col bg-ink md:hidden"
         >
-          <nav className="flex h-full flex-col justify-center px-6">
-            <ul className="flex flex-col gap-2">
+          {/* Barra superior del overlay con boton cerrar */}
+          <div className="flex items-center justify-between border-b hairline-dark px-5 py-4">
+            <span className="display text-xl text-paper">{nombreSitio}</span>
+            <button
+              type="button"
+              onClick={() => setAbierto(false)}
+              className="pill pill-light text-paper"
+            >
+              <span className="pill-text">Cerrar</span>
+            </button>
+          </div>
+
+          {/* Opciones */}
+          <nav className="flex flex-1 flex-col justify-center px-6">
+            <ul className="flex flex-col gap-1">
               {navItems.map((item, i) => (
-                <li key={item.href} className="border-b hairline-dark py-2">
+                <li key={item.href} className="border-b hairline-dark py-3">
                   <Link
                     href={item.href}
                     onClick={() => setAbierto(false)}
@@ -83,7 +98,7 @@ export function Header({ nombreSitio }: { nombreSitio: string }) {
                     <span className="label-mono text-paper/40">
                       {String(i + 1).padStart(2, "0")}
                     </span>
-                    <span className="display text-3xl text-paper">{item.label}</span>
+                    <span className="display text-2xl text-paper">{item.label}</span>
                   </Link>
                 </li>
               ))}
@@ -91,6 +106,6 @@ export function Header({ nombreSitio }: { nombreSitio: string }) {
           </nav>
         </div>
       ) : null}
-    </header>
+    </>
   );
 }
