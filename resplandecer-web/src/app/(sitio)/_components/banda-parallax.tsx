@@ -50,7 +50,15 @@ export function BandaParallax({
   return (
     <div ref={wrapRef} className="relative my-8 h-[45vh] overflow-hidden md:h-[65vh]">
       <div ref={innerRef} className="absolute inset-0 will-change-transform" style={{ transform: "scale(1.08)" }}>
-        <Image src={src} alt={alt} fill priority={false} sizes="100vw" className="object-cover" unoptimized />
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          priority={false}
+          quality={90}
+          sizes="100vw"
+          className="object-cover"
+        />
       </div>
       {/* Degradado solo en la parte inferior, para que la imagen se vea clara
           y el texto siga siendo legible abajo */}
