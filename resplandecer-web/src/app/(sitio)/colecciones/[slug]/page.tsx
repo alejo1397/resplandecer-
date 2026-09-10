@@ -15,21 +15,25 @@ export default async function CategoriaPage({
   const productos = await getProductosPorCategoria(slug);
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12">
-      <Link href="/colecciones" className="text-sm text-gray-500 hover:text-gray-900">
-        &larr; Colecciones
+    <div className="mx-auto max-w-7xl px-5 py-16">
+      <Link href="/colecciones" className="label-mono text-ink/50 hover:text-ink">
+        ← Colecciones
       </Link>
-      <h1 className="mt-2 text-3xl font-semibold">{categoria.nombre}</h1>
+      <h1 className="display mt-4 text-[clamp(2.2rem,6vw,4.5rem)] text-ink">
+        {categoria.nombre}
+      </h1>
       {categoria.descripcion ? (
-        <p className="mt-1 text-sm text-gray-500">{categoria.descripcion}</p>
+        <p className="mt-2 max-w-md text-sm text-ink/60">{categoria.descripcion}</p>
       ) : null}
 
       {productos.length === 0 ? (
-        <p className="mt-10 text-sm text-gray-400">Aun no hay productos en esta coleccion.</p>
+        <p className="mt-12 text-sm text-ink/50">Aun no hay productos en esta coleccion.</p>
       ) : (
-        <div className="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="mt-12 grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-4">
           {productos.map((p) => (
-            <ProductoCard key={p.id} producto={p} />
+            <div key={p.id} className="reveal">
+              <ProductoCard producto={p} />
+            </div>
           ))}
         </div>
       )}

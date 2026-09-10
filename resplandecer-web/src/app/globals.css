@@ -1,26 +1,136 @@
 @import "tailwindcss";
 
+/* ═══════════════════════════════════════════════════════════════════
+   ██ PANEL DE CONTROL ██
+   Los 5 colores + fuentes + easing controlan TODO el sitio (incluidos
+   los canvas del hero). Cambiar un HEX aqui repinta la web entera.
+   Presets alternativos mas abajo (descomenta el que quieras).
+   ═══════════════════════════════════════════════════════════════════ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* ── Paleta activa: ESTUDIO_CALIDO (madera / carbon calido) ── */
+  --ink: #1a1613;      /* superficie oscura + texto sobre claro */
+  --paper: #f7f3ec;    /* superficie clara + texto sobre oscuro */
+  --electric: #4a6b52; /* acento frio: halos, planos, cotas     */
+  --ember: #c8763c;    /* acento calido: estados activos, dots  */
+  --signal: #b3423a;   /* resalte puntual: ubicacion, alertas   */
+
+  /* Hairlines (lineas de 1px) */
+  --line-on-dark: #ffffff29;
+  --line-on-light: #11111126;
+
+  /* Ritmo de animacion (1 = normal, <1 mas suave, >1 mas rapido) */
+  --motion: 1;
+
+  --background: var(--paper);
+  --foreground: var(--ink);
 }
+
+/* ── PRESETS ALTERNATIVOS (descomenta uno para cambiar toda la web) ──
+:root {  // EDITORIAL — corporativo, industrial
+  --ink: #0c0c0c; --paper: #fafafa; --electric: #0016cb; --ember: #ff5500; --signal: #ff1f2e;
+}
+:root {  // LUJO_SOBRIO — joyeria, inmobiliaria prime
+  --ink: #0f0f10; --paper: #f5f3ee; --electric: #2e4a7d; --ember: #c2a24c; --signal: #9e2b2b;
+}
+:root {  // MODA_PASTEL — moda, belleza, lifestyle
+  --ink: #2b2430; --paper: #faf4f0; --electric: #8fa9d6; --ember: #e8a598; --signal: #d4787f;
+}
+─────────────────────────────────────────────────────────────────── */
 
 @theme inline {
+  --color-ink: var(--ink);
+  --color-paper: var(--paper);
+  --color-electric: var(--electric);
+  --color-ember: var(--ember);
+  --color-signal: var(--signal);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--font-body);
+  --font-headings: var(--font-headings);
+  --font-mono: var(--font-mono);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body), system-ui, sans-serif;
+}
+
+/* ── Utilidades del sistema de diseno ── */
+
+/* Titulos protagonistas: grotesk, tracking negativo */
+.display {
+  font-family: var(--font-headings), system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+/* Label mono (etiquetas pequenas) */
+.label-mono {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Hairline */
+.hairline-dark { border-color: var(--line-on-dark); }
+.hairline-light { border-color: var(--line-on-light); }
+
+/* Boton pill con relleno que sube en hover */
+.pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  padding: 0.75rem 1.75rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  overflow: hidden;
+  border: 1px solid currentColor;
+  transition: color 0.4s ease;
+  z-index: 0;
+}
+.pill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: currentColor;
+  transform: translateY(101%);
+  transition: transform 0.45s cubic-bezier(0.7, 0, 0.2, 1);
+  z-index: -1;
+}
+.pill:hover::after { transform: translateY(0); }
+.pill-dark:hover { color: var(--paper); }
+.pill-dark:hover .pill-text { color: var(--ink); }
+.pill-light:hover { color: var(--ink); }
+
+/* Reveal de entrada (se activa al anadir .is-visible) */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity calc(0.7s / var(--motion)) cubic-bezier(0.16, 1, 0.3, 1),
+    transform calc(0.7s / var(--motion)) cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Accesibilidad: si el usuario prefiere menos movimiento, todo aparece fijo */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  html { scroll-behavior: auto; }
 }

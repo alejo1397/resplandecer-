@@ -17,7 +17,7 @@ export function ProductoCard({ producto }: { producto: Producto }) {
 
   return (
     <Link href={`/producto/${producto.slug}`} className="group flex flex-col">
-      <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-gray-100">
+      <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-ink/5">
         {imagen ? (
           <Image
             src={imagen.url}
@@ -32,11 +32,11 @@ export function ProductoCard({ producto }: { producto: Producto }) {
           </div>
         )}
       </div>
-      <h3 className="mt-3 text-sm font-medium text-gray-900">{producto.nombre}</h3>
-      <div className="mt-1 flex items-center gap-2 text-sm">
-        <span className="font-semibold text-gray-900">{formatCOP(precioFinal)}</span>
+      <h3 className="mt-3 text-sm font-medium text-ink">{producto.nombre}</h3>
+      <div className="mt-1 flex items-center gap-2">
+        <span className="label-mono text-ink">{formatCOP(precioFinal)}</span>
         {tieneDescuento ? (
-          <span className="text-gray-400 line-through">{formatCOP(producto.precio)}</span>
+          <span className="label-mono text-ink/40 line-through">{formatCOP(producto.precio)}</span>
         ) : null}
       </div>
     </Link>

@@ -11,22 +11,33 @@ const navItems = [
 
 export function Header({ nombreSitio }: { nombreSitio: string }) {
   return (
-    <header className="sticky top-0 z-40 border-b border-gray-200 bg-white/90 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
-        <Link href="/" className="text-lg font-semibold tracking-tight text-gray-900">
+    <header className="sticky top-0 z-40 border-b hairline-light bg-paper/80 backdrop-blur-md">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
+        <Link
+          href="/"
+          className="display text-xl leading-none text-ink"
+        >
           {nombreSitio}
         </Link>
-        <nav>
-          <ul className="flex flex-wrap items-center gap-5 text-sm text-gray-600">
+
+        <nav className="hidden md:block">
+          <ul className="flex items-center gap-7">
             {navItems.map((item) => (
               <li key={item.href}>
-                <Link href={item.href} className="transition hover:text-gray-900">
+                <Link
+                  href={item.href}
+                  className="label-mono text-ink/70 transition-colors hover:text-ink"
+                >
                   {item.label}
                 </Link>
               </li>
             ))}
           </ul>
         </nav>
+
+        <Link href="/contacto" className="pill pill-dark text-ink md:hidden">
+          <span className="pill-text">Menu</span>
+        </Link>
       </div>
     </header>
   );

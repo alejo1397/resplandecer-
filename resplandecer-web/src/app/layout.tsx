@@ -1,15 +1,26 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Archivo, Inter, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Tipografia protagonista (titulos): grotesk, pesos fuertes.
+const archivo = Archivo({
+  variable: "--font-headings",
   subsets: ["latin"],
+  weight: ["400", "600", "700", "800"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+// Cuerpo de texto.
+const inter = Inter({
+  variable: "--font-body",
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
+});
+
+// Monoespaciada para labels, numeros y precios.
+const plexMono = IBM_Plex_Mono({
+  variable: "--font-mono",
+  subsets: ["latin"],
+  weight: ["400", "500"],
 });
 
 export const metadata: Metadata = {
@@ -22,7 +33,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="es"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${archivo.variable} ${inter.variable} ${plexMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

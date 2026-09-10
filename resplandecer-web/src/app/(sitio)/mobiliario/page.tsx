@@ -7,16 +7,18 @@ export default async function MobiliarioPage() {
   const productos = await getProductosCached();
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12">
-      <h1 className="text-3xl font-semibold">Mobiliario</h1>
-      <p className="mt-1 text-sm text-gray-500">Todo nuestro catalogo.</p>
+    <div className="mx-auto max-w-7xl px-5 py-16">
+      <p className="label-mono text-ink/50">Catalogo</p>
+      <h1 className="display mt-3 text-[clamp(2.2rem,6vw,4.5rem)] text-ink">Mobiliario</h1>
 
       {productos.length === 0 ? (
-        <p className="mt-10 text-sm text-gray-400">Aun no hay productos disponibles.</p>
+        <p className="mt-12 text-sm text-ink/50">Aun no hay productos disponibles.</p>
       ) : (
-        <div className="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="mt-12 grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-4">
           {productos.map((p) => (
-            <ProductoCard key={p.id} producto={p} />
+            <div key={p.id} className="reveal">
+              <ProductoCard producto={p} />
+            </div>
           ))}
         </div>
       )}

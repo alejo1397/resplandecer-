@@ -24,23 +24,23 @@ export default async function ProductoPage({
   const whatsappHref = whatsapp ? `https://wa.me/${whatsapp}?text=${mensaje}` : null;
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12">
-      <Link href="/mobiliario" className="text-sm text-gray-500 hover:text-gray-900">
-        &larr; Mobiliario
+    <div className="mx-auto max-w-7xl px-5 py-16">
+      <Link href="/mobiliario" className="label-mono text-ink/50 hover:text-ink">
+        ← Mobiliario
       </Link>
 
-      <div className="mt-4 grid gap-10 lg:grid-cols-2">
+      <div className="mt-6 grid gap-12 lg:grid-cols-2">
         {/* Galeria */}
         <div className="grid grid-cols-2 gap-3">
           {producto.imagenes.length === 0 ? (
-            <div className="col-span-2 flex aspect-square items-center justify-center rounded-lg bg-gray-100 text-sm text-gray-400">
+            <div className="col-span-2 flex aspect-square items-center justify-center rounded-xl bg-ink/5 text-sm text-ink/40">
               Sin imagen
             </div>
           ) : (
             producto.imagenes.map((img, i) => (
               <div
                 key={img.id}
-                className={`relative aspect-square overflow-hidden rounded-lg bg-gray-100 ${
+                className={`relative aspect-square overflow-hidden rounded-xl bg-ink/5 ${
                   i === 0 ? "col-span-2" : ""
                 }`}
               >
@@ -57,21 +57,23 @@ export default async function ProductoPage({
         </div>
 
         {/* Info */}
-        <div>
+        <div className="lg:pt-6">
           {producto.categoria ? (
-            <p className="text-sm text-gray-500">{producto.categoria.nombre}</p>
+            <p className="label-mono text-ink/50">{producto.categoria.nombre}</p>
           ) : null}
-          <h1 className="mt-1 text-3xl font-semibold">{producto.nombre}</h1>
+          <h1 className="display mt-3 text-[clamp(2rem,5vw,3.5rem)] text-ink">
+            {producto.nombre}
+          </h1>
 
-          <div className="mt-3 flex items-center gap-3">
-            <span className="text-2xl font-semibold text-gray-900">{formatCOP(precioFinal)}</span>
+          <div className="mt-4 flex items-center gap-3">
+            <span className="label-mono text-lg text-ink">{formatCOP(precioFinal)}</span>
             {tieneDescuento ? (
-              <span className="text-gray-400 line-through">{formatCOP(producto.precio)}</span>
+              <span className="label-mono text-ink/40 line-through">{formatCOP(producto.precio)}</span>
             ) : null}
           </div>
 
           {producto.descripcion ? (
-            <p className="mt-6 whitespace-pre-line text-sm leading-relaxed text-gray-600">
+            <p className="mt-8 whitespace-pre-line text-base leading-relaxed text-ink/70">
               {producto.descripcion}
             </p>
           ) : null}
@@ -81,9 +83,9 @@ export default async function ProductoPage({
               href={whatsappHref}
               target="_blank"
               rel="noreferrer"
-              className="mt-8 inline-flex items-center rounded-md bg-green-500 px-6 py-3 text-sm font-medium text-white transition hover:bg-green-600"
+              className="pill pill-dark mt-10 text-ink"
             >
-              Consultar por WhatsApp
+              <span className="pill-text">Consultar por WhatsApp</span>
             </a>
           ) : null}
         </div>
