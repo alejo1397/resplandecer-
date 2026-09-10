@@ -142,6 +142,24 @@ body {
   animation: none;
 }
 
+/* Split-text: palabras que suben con mascara al revelarse */
+.split-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+}
+.split-word > span {
+  display: inline-block;
+  transform: translateY(110%);
+  transition: transform calc(0.7s / var(--motion)) cubic-bezier(0.16, 1, 0.3, 1);
+}
+.split.is-visible .split-word > span {
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .split-word > span { transform: none; }
+}
+
 /* Marquee infinito (cinta de texto en bucle, CSS puro) */
 .marquee {
   overflow: hidden;

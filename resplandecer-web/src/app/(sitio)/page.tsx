@@ -8,6 +8,7 @@ import { ProductoCard } from "./_components/producto-card";
 import { HeroFigura } from "./_components/hero-figura";
 import { Marquee } from "./_components/marquee";
 import { Stats } from "./_components/stats";
+import { SplitText } from "./_components/split-text";
 
 export default async function InicioPage() {
   const [config, destacados, testimonios] = await Promise.all([
@@ -56,10 +57,11 @@ export default async function InicioPage() {
       {/* ── INTRO EDITORIAL (tema claro) ── */}
       <section className="mx-auto max-w-7xl px-5 py-24">
         <div className="grid gap-10 md:grid-cols-12">
-          <div className="reveal md:col-span-7">
-            <h2 className="display text-[clamp(1.8rem,4vw,3.2rem)] text-ink">
-              Del bosque al salon
-            </h2>
+          <div className="md:col-span-7">
+            <SplitText
+              text="Del bosque al salon"
+              className="display text-[clamp(1.8rem,4vw,3.2rem)] text-ink"
+            />
           </div>
           <div className="reveal md:col-span-5">
             <p className="text-base leading-relaxed text-ink/70">
