@@ -7,6 +7,7 @@ import {
 import { ProductoCard } from "./_components/producto-card";
 import { HeroFigura } from "./_components/hero-figura";
 import { Marquee } from "./_components/marquee";
+import { Stats } from "./_components/stats";
 
 export default async function InicioPage() {
   const [config, destacados, testimonios] = await Promise.all([
@@ -68,6 +69,16 @@ export default async function InicioPage() {
           </div>
         </div>
       </section>
+
+      {/* ── STATS (contadores animados) ── */}
+      <Stats
+        items={[
+          { valor: 8, sufijo: "+", etiqueta: "Anos de experiencia" },
+          { valor: 120, etiqueta: "Artesanos" },
+          { valor: 2500, sufijo: "+", etiqueta: "Piezas al ano" },
+          { valor: 98, sufijo: "%", etiqueta: "Entregas a tiempo" },
+        ]}
+      />
 
       {/* ── DESTACADOS ── */}
       {destacados.length > 0 ? (
