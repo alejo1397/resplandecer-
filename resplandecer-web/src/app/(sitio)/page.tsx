@@ -12,6 +12,7 @@ import { SplitText } from "./_components/split-text";
 import { Servicios } from "./_components/servicios";
 import { Preloader } from "./_components/preloader";
 import { ProgresoLectura } from "./_components/progreso-lectura";
+import { CursorPersonalizado } from "./_components/cursor-personalizado";
 
 export default async function InicioPage() {
   const [config, destacados, testimonios] = await Promise.all([
@@ -26,6 +27,7 @@ export default async function InicioPage() {
     <div>
       <Preloader />
       <ProgresoLectura />
+      <CursorPersonalizado />
 
       {/* ── HERO (tema oscuro) ── */}
       <section className="relative flex min-h-[88vh] items-center overflow-hidden bg-ink text-paper">
