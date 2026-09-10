@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import {
   getConfiguracionSitioCached,
@@ -26,8 +27,9 @@ export default async function InicioPage() {
   ]);
 
   const titulo = config["titulo_hero"] || "Diseno & Produccion de Mobiliario";
-  const bandaImagen = config["banda_imagen"] || config["hero_imagen"] || "https://placehold.co/1600x900?text=Resplandecer";
-  const procesoImagen = config["proceso_imagen"] || config["hero_imagen"] || "https://placehold.co/1600x900?text=Proceso";
+  const heroImagen = config["hero_imagen"] || "/hero.jpg";
+  const bandaImagen = config["banda_imagen"] || "/banda.jpg";
+  const procesoImagen = config["proceso_imagen"] || "/proceso.jpg";
 
   return (
     <div>
@@ -37,6 +39,15 @@ export default async function InicioPage() {
 
       {/* ── HERO (tema oscuro) ── */}
       <section data-theme="dark" className="relative flex min-h-[88vh] items-center overflow-hidden bg-ink text-paper">
+        {/* Imagen de fondo real */}
+        <Image
+          src={heroImagen}
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover opacity-40"
+        />
         <HeroFigura />
 
         <div className="relative z-10 mx-auto w-full max-w-7xl px-5">
