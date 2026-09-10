@@ -11,6 +11,8 @@ import { Stats } from "./_components/stats";
 import { SplitText } from "./_components/split-text";
 import { Servicios } from "./_components/servicios";
 import { Preloader } from "./_components/preloader";
+import { BandaParallax } from "./_components/banda-parallax";
+import { ContadorScroll } from "./_components/contador-scroll";
 import { ProgresoLectura } from "./_components/progreso-lectura";
 import { CursorPersonalizado } from "./_components/cursor-personalizado";
 
@@ -22,6 +24,7 @@ export default async function InicioPage() {
   ]);
 
   const titulo = config["titulo_hero"] || "Diseno & Produccion de Mobiliario";
+  const bandaImagen = config["banda_imagen"] || config["hero_imagen"] || "https://placehold.co/1600x900?text=Resplandecer";
 
   return (
     <div>
@@ -80,6 +83,9 @@ export default async function InicioPage() {
         </div>
       </section>
 
+      {/* ── BANDA CON PARALLAX ── */}
+      <BandaParallax src={bandaImagen} alt="Mobiliario Resplandecer" titulo="Hecho a mano, pensado para durar" />
+
       {/* ── STATS (contadores animados) ── */}
       <Stats
         items={[
@@ -101,6 +107,9 @@ export default async function InicioPage() {
           { nombre: "Contract", descripcion: "Proyectos para empresas y hoteleria.", imagen: "https://placehold.co/400x500?text=Contract" },
         ]}
       />
+
+      {/* ── CONTADOR SCRUBBED ── */}
+      <ContadorScroll valor={2500} sufijo="+" etiqueta="Piezas fabricadas a la medida" />
 
       {/* ── DESTACADOS ── */}
       {destacados.length > 0 ? (
