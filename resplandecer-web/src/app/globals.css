@@ -142,6 +142,27 @@ body {
   animation: none;
 }
 
+/* Marquee infinito (cinta de texto en bucle, CSS puro) */
+.marquee {
+  overflow: hidden;
+  white-space: nowrap;
+}
+.marquee__track {
+  display: inline-flex;
+  will-change: transform;
+  animation: marquee-scroll calc(24s / var(--motion)) linear infinite;
+}
+.marquee:hover .marquee__track {
+  animation-play-state: paused;
+}
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee__track { animation: none; }
+}
+
 /* Accesibilidad: si el usuario prefiere menos movimiento, todo aparece fijo */
 @media (prefers-reduced-motion: reduce) {
   .reveal {

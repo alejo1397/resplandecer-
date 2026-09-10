@@ -6,6 +6,7 @@ import {
 } from "@/lib/cache";
 import { ProductoCard } from "./_components/producto-card";
 import { HeroFigura } from "./_components/hero-figura";
+import { Marquee } from "./_components/marquee";
 
 export default async function InicioPage() {
   const [config, destacados, testimonios] = await Promise.all([
@@ -45,6 +46,11 @@ export default async function InicioPage() {
           <span className="label-mono text-paper/40">Arrastra el plano ↔</span>
         </div>
       </section>
+
+      {/* ── MARQUEE ── */}
+      <Marquee
+        items={["Diseno", "Fabricacion", "Instalacion", "A la medida", "Interiorismo"]}
+      />
 
       {/* ── INTRO EDITORIAL (tema claro) ── */}
       <section className="mx-auto max-w-7xl px-5 py-24">
