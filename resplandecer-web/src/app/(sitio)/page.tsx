@@ -9,6 +9,7 @@ import { HeroFigura } from "./_components/hero-figura";
 import { Marquee } from "./_components/marquee";
 import { Stats } from "./_components/stats";
 import { SplitText } from "./_components/split-text";
+import { Servicios } from "./_components/servicios";
 
 export default async function InicioPage() {
   const [config, destacados, testimonios] = await Promise.all([
@@ -79,6 +80,18 @@ export default async function InicioPage() {
           { valor: 120, etiqueta: "Artesanos" },
           { valor: 2500, sufijo: "+", etiqueta: "Piezas al ano" },
           { valor: 98, sufijo: "%", etiqueta: "Entregas a tiempo" },
+        ]}
+      />
+
+      {/* ── SERVICIOS ── */}
+      <Servicios
+        items={[
+          { nombre: "Carpinteria a medida", descripcion: "Piezas unicas disenadas para tu espacio.", imagen: "https://placehold.co/400x500?text=Carpinteria" },
+          { nombre: "Cocinas de autor", descripcion: "Cocinas integrales con acabados premium.", imagen: "https://placehold.co/400x500?text=Cocinas" },
+          { nombre: "Remodelaciones", descripcion: "Transformamos espacios por completo.", imagen: "https://placehold.co/400x500?text=Remodelaciones" },
+          { nombre: "Sofas y tapiceria", descripcion: "Comodidad y diseno en cada detalle.", imagen: "https://placehold.co/400x500?text=Tapiceria" },
+          { nombre: "Interiorismo", descripcion: "Asesoria integral de diseno interior.", imagen: "https://placehold.co/400x500?text=Interiorismo" },
+          { nombre: "Contract", descripcion: "Proyectos para empresas y hoteleria.", imagen: "https://placehold.co/400x500?text=Contract" },
         ]}
       />
 
