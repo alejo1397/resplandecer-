@@ -13,6 +13,7 @@ import { Servicios } from "./_components/servicios";
 import { Preloader } from "./_components/preloader";
 import { BandaParallax } from "./_components/banda-parallax";
 import { ContadorScroll } from "./_components/contador-scroll";
+import { Faq } from "./_components/faq";
 import { ProgresoLectura } from "./_components/progreso-lectura";
 import { CursorPersonalizado } from "./_components/cursor-personalizado";
 
@@ -158,6 +159,37 @@ export default async function InicioPage() {
           </div>
         </section>
       ) : null}
+
+      {/* ── FAQ ── */}
+      <Faq
+        items={[
+          {
+            pregunta: "Hacen muebles a la medida?",
+            respuesta:
+              "Si. Disenamos y fabricamos cada pieza segun tu espacio, estilo y necesidades. Cuentanos tu idea y la hacemos realidad.",
+          },
+          {
+            pregunta: "Cuanto tarda un pedido a la medida?",
+            respuesta:
+              "El tiempo depende del proyecto y su complejidad. Al cotizar te damos un plazo estimado de fabricacion y entrega.",
+          },
+          {
+            pregunta: "Tienen garantia?",
+            respuesta:
+              "Si, nuestros muebles cuentan con garantia. Te informamos las condiciones especificas al momento de la compra.",
+          },
+          {
+            pregunta: "Hacen envios e instalacion?",
+            respuesta:
+              "Si, realizamos entrega e instalacion. Escribenos para confirmar cobertura en tu ciudad o zona.",
+          },
+          {
+            pregunta: "Como pido una cotizacion?",
+            respuesta:
+              "Escribenos por WhatsApp con tu idea o referencia y te asesoramos sin compromiso.",
+          },
+        ]}
+      />
     </div>
   );
 }
