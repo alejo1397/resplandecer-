@@ -1,6 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Las server actions limitan el cuerpo a 1 MB por defecto. Subimos el limite
+  // para permitir la subida de imagenes (el helper valida max 5 MB por archivo).
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "10mb",
+    },
+  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "placehold.co" },
