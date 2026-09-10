@@ -14,6 +14,7 @@ import { Preloader } from "./_components/preloader";
 import { BandaParallax } from "./_components/banda-parallax";
 import { ContadorScroll } from "./_components/contador-scroll";
 import { Faq } from "./_components/faq";
+import { SecuenciaProcesoLazy } from "./_components/secuencia-proceso-lazy";
 import { ProgresoLectura } from "./_components/progreso-lectura";
 import { CursorPersonalizado } from "./_components/cursor-personalizado";
 
@@ -26,6 +27,7 @@ export default async function InicioPage() {
 
   const titulo = config["titulo_hero"] || "Diseno & Produccion de Mobiliario";
   const bandaImagen = config["banda_imagen"] || config["hero_imagen"] || "https://placehold.co/1600x900?text=Resplandecer";
+  const procesoImagen = config["proceso_imagen"] || config["hero_imagen"] || "https://placehold.co/1600x900?text=Proceso";
 
   return (
     <div>
@@ -111,6 +113,9 @@ export default async function InicioPage() {
 
       {/* ── CONTADOR SCRUBBED ── */}
       <ContadorScroll valor={2500} sufijo="+" etiqueta="Piezas fabricadas a la medida" />
+
+      {/* ── SECUENCIA CINEMATOGRAFICA (proceso) ── */}
+      <SecuenciaProcesoLazy imagen={procesoImagen} />
 
       {/* ── DESTACADOS ── */}
       {destacados.length > 0 ? (
