@@ -54,16 +54,19 @@ export function Header({ nombreSitio }: { nombreSitio: string }) {
             </ul>
           </nav>
 
-          {/* Boton menu (solo movil) */}
-          <button
-            type="button"
-            onClick={() => setAbierto((v) => !v)}
-            aria-expanded={abierto}
-            aria-controls="menu-movil"
-            className="pill pill-dark text-ink md:hidden"
-          >
-            <span className="pill-text">{abierto ? "Cerrar" : "Menu"}</span>
-          </button>
+          {/* Boton menu (solo movil). El contenedor controla la visibilidad
+              para evitar conflicto con el display:inline-flex de .pill */}
+          <div className="md:hidden">
+            <button
+              type="button"
+              onClick={() => setAbierto((v) => !v)}
+              aria-expanded={abierto}
+              aria-controls="menu-movil"
+              className="pill pill-dark text-ink"
+            >
+              <span className="pill-text">{abierto ? "Cerrar" : "Menu"}</span>
+            </button>
+          </div>
         </div>
       </header>
 
