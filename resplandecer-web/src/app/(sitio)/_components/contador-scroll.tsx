@@ -50,7 +50,7 @@ export function ContadorScroll({
   }, [valor]);
 
   return (
-    <section ref={ref} className="bg-ink py-24 text-paper">
+    <section ref={ref} data-theme="dark" className="bg-ink py-24 text-paper">
       <div className="mx-auto max-w-7xl px-5 text-center">
         <p className="display text-[clamp(4rem,20vw,16rem)] leading-none text-paper">
           {display.toLocaleString("es-CO")}

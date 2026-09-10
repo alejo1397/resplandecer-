@@ -34,7 +34,7 @@ export default async function InicioPage() {
       <CursorPersonalizado />
 
       {/* ── HERO (tema oscuro) ── */}
-      <section className="relative flex min-h-[88vh] items-center overflow-hidden bg-ink text-paper">
+      <section data-theme="dark" className="relative flex min-h-[88vh] items-center overflow-hidden bg-ink text-paper">
         <HeroFigura />
 
         <div className="relative z-10 mx-auto w-full max-w-7xl px-5">
@@ -135,7 +135,7 @@ export default async function InicioPage() {
 
       {/* ── TESTIMONIOS (tema oscuro) ── */}
       {testimonios.length > 0 ? (
-        <section className="bg-ink py-24 text-paper">
+        <section data-theme="dark" className="bg-ink py-24 text-paper">
           <div className="mx-auto max-w-5xl px-5">
             <h2 className="reveal display mb-12 text-center text-[clamp(1.6rem,3.5vw,2.6rem)] text-paper">
               Lo que dicen nuestros clientes

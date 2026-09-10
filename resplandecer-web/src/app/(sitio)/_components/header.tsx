@@ -15,6 +15,7 @@ const navItems = [
 
 export function Header({ nombreSitio }: { nombreSitio: string }) {
   const [abierto, setAbierto] = useState(false);
+  const [oscuro, setOscuro] = useState(false);
   const pathname = usePathname();
 
   // Cerrar el menu al cambiar de ruta.
@@ -30,11 +31,51 @@ export function Header({ nombreSitio }: { nombreSitio: string }) {
     };
   }, [abierto]);
 
+  // Nav que cambia de tema segun la seccion detras: si una seccion marcada con
+  // data-theme="dark" esta bajo el header, el header pasa a modo oscuro.
+  // Fallback seguro: si no hay secciones marcadas, queda en claro.
+  useEffect(() => {
+    setOscuro(false); // reset al navegar
+    const secciones = Array.from(
+      document.querySelectorAll<HTMLElement>('[data-theme="dark"]'),
+    );
+    if (secciones.length === 0) return;
+
+    let rafId = 0;
+    const check = () => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        // punto de referencia: justo debajo del header (~40px)
+        const y = 40;
+        const hayOscura = secciones.some((s) => {
+          const r = s.getBoundingClientRect();
+          return r.top <= y && r.bottom >= y;
+        });
+        setOscuro(hayOscura);
+      });
+    };
+    window.addEventListener("scroll", check, { passive: true });
+    check();
+    return () => {
+      window.removeEventListener("scroll", check);
+      cancelAnimationFrame(rafId);
+    };
+  }, [pathname]);
+
   return (
     <>
-      <header className="sticky top-0 z-50 border-b hairline-light bg-paper/85 backdrop-blur-md">
+      <header
+        className={`sticky top-0 z-50 border-b backdrop-blur-md transition-colors duration-300 ${
+          oscuro ? "border-white/10 bg-ink/85" : "hairline-light bg-paper/85"
+        }`}
+      >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
-          <Link href="/" className="display text-xl leading-none text-ink">
+          <Link
+            href="/"
+            className={`display text-xl leading-none transition-colors ${
+              oscuro ? "text-paper" : "text-ink"
+            }`}
+          >
             {nombreSitio}
           </Link>
 
@@ -45,7 +86,9 @@ export function Header({ nombreSitio }: { nombreSitio: string }) {
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="label-mono text-ink/70 transition-colors hover:text-ink"
+                    className={`label-mono transition-colors ${
+                      oscuro ? "text-paper/70 hover:text-paper" : "text-ink/70 hover:text-ink"
+                    }`}
                   >
                     {item.label}
                   </Link>
@@ -62,7 +105,7 @@ export function Header({ nombreSitio }: { nombreSitio: string }) {
               onClick={() => setAbierto((v) => !v)}
               aria-expanded={abierto}
               aria-controls="menu-movil"
-              className="pill pill-dark text-ink"
+              className={`pill ${oscuro ? "pill-light text-paper" : "pill-dark text-ink"}`}
             >
               <span className="pill-text">{abierto ? "Cerrar" : "Menu"}</span>
             </button>
