@@ -35,8 +35,8 @@ export function BandaParallax({
         const vh = window.innerHeight;
         // progreso de -1 a 1 mientras la banda cruza la pantalla
         const progreso = (rect.top + rect.height / 2 - vh / 2) / (vh / 2 + rect.height / 2);
-        const desplazamiento = progreso * -24; // px (parallax mas sutil)
-        inner.style.transform = `translateY(${desplazamiento}px) scale(1.08)`;
+        const desplazamiento = progreso * -16; // px (parallax muy sutil)
+        inner.style.transform = `translateY(${desplazamiento}px)`;
       });
     };
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -48,8 +48,8 @@ export function BandaParallax({
   }, []);
 
   return (
-    <div ref={wrapRef} className="relative my-8 h-[45vh] overflow-hidden md:h-[65vh]">
-      <div ref={innerRef} className="absolute inset-0 will-change-transform" style={{ transform: "scale(1.08)" }}>
+    <div ref={wrapRef} className="relative my-8 h-[45vh] overflow-hidden bg-[#d9d6cf] md:h-[70vh]">
+      <div ref={innerRef} className="absolute inset-0 will-change-transform">
         <Image
           src={src}
           alt={alt}
@@ -57,7 +57,7 @@ export function BandaParallax({
           priority={false}
           quality={90}
           sizes="100vw"
-          className="object-cover"
+          className="object-contain"
         />
       </div>
       {/* Degradado solo en la parte inferior, para que la imagen se vea clara
