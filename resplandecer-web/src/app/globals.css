@@ -111,7 +111,9 @@ body {
 .pill-dark:hover .pill-text { color: var(--ink); }
 .pill-light:hover { color: var(--ink); }
 
-/* Reveal de entrada (se activa al anadir .is-visible) */
+/* Reveal de entrada (se activa al anadir .is-visible).
+   Salvaguarda CSS: aunque el JS no corra, un fallback lo revela a los 1.5s
+   para que el contenido NUNCA quede invisible. */
 .reveal {
   opacity: 0;
   transform: translateY(24px);
@@ -119,10 +121,25 @@ body {
     opacity calc(0.7s / var(--motion)) cubic-bezier(0.16, 1, 0.3, 1),
     transform calc(0.7s / var(--motion)) cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
+  animation: reveal-fallback 0.01s linear 1.5s forwards;
 }
 .reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
+  animation: none;
+}
+@keyframes reveal-fallback {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Sin JavaScript: mostrar todo de inmediato */
+.no-js .reveal {
+  opacity: 1;
+  transform: none;
+  animation: none;
 }
 
 /* Accesibilidad: si el usuario prefiere menos movimiento, todo aparece fijo */

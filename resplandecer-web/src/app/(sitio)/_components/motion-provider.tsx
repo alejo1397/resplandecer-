@@ -1,86 +1,96 @@
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 /**
- * Provider de animaciones. Arranca el smooth scroll (Lenis) sincronizado con
- * GSAP ScrollTrigger, SOLO en el cliente y de forma diferida.
+ * Provider de animaciones.
  *
- * Performance:
- *  - Las librerias (gsap, lenis) se importan dinamicamente (no entran en el
- *    bundle inicial ni bloquean la primera pintura).
- *  - Se desactiva si el usuario prefiere menos movimiento.
- *  - Se inicia cuando el navegador esta libre (requestIdleCallback).
+ * DISENO ROBUSTO (el contenido NUNCA queda invisible):
+ *  1. Los reveals usan IntersectionObserver NATIVO (no depende de GSAP) y se
+ *     re-escanean en CADA cambio de ruta (por eso no hay que recargar la pagina).
+ *  2. Lenis (smooth scroll) se carga una sola vez, diferido y opcional.
+ *  3. Respeta prefers-reduced-motion.
  */
 export function MotionProvider() {
+  const pathname = usePathname();
+
+  // ── Reveals: se re-ejecutan en cada navegacion ──
   useEffect(() => {
-    const prefiereMenosMovimiento = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    if (prefiereMenosMovimiento) return;
+    const prefiereMenos = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reveals = Array.from(document.querySelectorAll<HTMLElement>(".reveal:not(.is-visible)"));
+
+    if (reveals.length === 0) return;
+
+    if (prefiereMenos || !("IntersectionObserver" in window)) {
+      reveals.forEach((el) => el.classList.add("is-visible"));
+      return;
+    }
+
+    const io = new IntersectionObserver(
+      (entries, obs) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            obs.unobserve(entry.target);
+          }
+        }
+      },
+      { rootMargin: "0px 0px -10% 0px", threshold: 0.05 },
+    );
+    reveals.forEach((el) => io.observe(el));
+
+    // Lo que ya este visible al cargar/navegar, se muestra de inmediato.
+    requestAnimationFrame(() => {
+      const vh = window.innerHeight;
+      reveals.forEach((el) => {
+        const r = el.getBoundingClientRect();
+        if (r.top < vh) el.classList.add("is-visible");
+      });
+    });
+
+    // Salvaguarda: pase lo que pase, tras 1.2s todo visible.
+    const safety = window.setTimeout(() => {
+      reveals.forEach((el) => el.classList.add("is-visible"));
+    }, 1200);
+
+    return () => {
+      io.disconnect();
+      clearTimeout(safety);
+    };
+  }, [pathname]);
+
+  // ── Smooth scroll (Lenis): una sola vez, diferido y opcional ──
+  useEffect(() => {
+    const prefiereMenos = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefiereMenos) return;
 
     let lenis: import("lenis").default | null = null;
-    let rafId: number = 0;
     let cancelled = false;
 
-    async function init() {
-      const [{ default: Lenis }, gsapMod, stMod] = await Promise.all([
-        import("lenis"),
-        import("gsap"),
-        import("gsap/ScrollTrigger"),
-      ]);
-      if (cancelled) return;
-
-      const gsap = gsapMod.default ?? gsapMod.gsap;
-      const ScrollTrigger = stMod.ScrollTrigger;
-      gsap.registerPlugin(ScrollTrigger);
-
-      lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
-
-      lenis.on("scroll", ScrollTrigger.update);
-      gsap.ticker.add((time: number) => {
-        lenis?.raf(time * 1000);
-      });
-      gsap.ticker.lagSmoothing(0);
-
-      // Reveals: cualquier elemento con la clase .reveal aparece al entrar.
-      const els = gsap.utils.toArray<HTMLElement>(".reveal");
-      els.forEach((el) => {
-        ScrollTrigger.create({
-          trigger: el,
-          start: "top 85%",
-          once: true,
-          onEnter: () => el.classList.add("is-visible"),
-        });
-      });
-
-      ScrollTrigger.refresh();
+    async function initLenis() {
+      try {
+        const { default: Lenis } = await import("lenis");
+        if (cancelled) return;
+        lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+        function raf(time: number) {
+          lenis?.raf(time);
+          if (!cancelled) requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+      } catch {
+        // Si falla, se usa el scroll normal. La pagina funciona igual.
+      }
     }
 
     const idle = (
-      window as typeof window & {
-        requestIdleCallback?: (cb: () => void) => number;
-      }
+      window as typeof window & { requestIdleCallback?: (cb: () => void) => number }
     ).requestIdleCallback;
-
-    if (typeof idle === "function") {
-      idle(init);
-    } else {
-      rafId = window.setTimeout(init, 200);
-    }
-
-    // Salvaguarda: si algo falla al cargar las animaciones, revela todo el
-    // contenido para que nunca quede invisible.
-    const safety: number = window.setTimeout(() => {
-      document.querySelectorAll(".reveal:not(.is-visible)").forEach((el) => {
-        el.classList.add("is-visible");
-      });
-    }, 3000);
+    if (typeof idle === "function") idle(initLenis);
+    else window.setTimeout(initLenis, 300);
 
     return () => {
       cancelled = true;
-      if (rafId) clearTimeout(rafId);
-      clearTimeout(safety);
       lenis?.destroy();
     };
   }, []);
