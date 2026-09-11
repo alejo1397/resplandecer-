@@ -48,16 +48,17 @@ export function BandaParallax({
   }, []);
 
   return (
-    <div ref={wrapRef} className="relative my-8 h-[45vh] overflow-hidden bg-[#d9d6cf] md:h-[70vh]">
-      <div ref={innerRef} className="absolute inset-0 will-change-transform">
+    <div ref={wrapRef} className="relative my-8 overflow-hidden">
+      <div ref={innerRef} className="will-change-transform">
         <Image
           src={src}
           alt={alt}
-          fill
+          width={1920}
+          height={900}
           priority={false}
           quality={90}
           sizes="100vw"
-          className="object-contain"
+          className="h-auto w-full"
         />
       </div>
       {/* Degradado solo en la parte inferior, para que la imagen se vea clara
