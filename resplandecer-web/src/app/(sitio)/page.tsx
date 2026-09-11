@@ -26,7 +26,7 @@ export default async function InicioPage() {
   ]);
 
   const titulo = config["titulo_hero"] || "Diseno & Produccion de Mobiliario";
-  const bandaImagen = config["banda_imagen"] || "/banda.png";
+  const bandaImagen = config["banda_imagen"] || "/proceso.png";
   const procesoImagen = config["proceso_imagen"] || "/proceso.png";
 
   return (
