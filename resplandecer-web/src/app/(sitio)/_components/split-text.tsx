@@ -52,8 +52,8 @@ export function SplitText({
         <span key={i} className="split-word">
           <span style={{ transitionDelay: `${i * 0.08}s` }}>
             {palabra}
+            {i < palabras.length - 1 ? "\u00A0" : null}
           </span>
-          {i < palabras.length - 1 ? " " : null}
         </span>
       ))}
     </h2>
