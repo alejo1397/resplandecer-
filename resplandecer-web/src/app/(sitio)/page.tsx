@@ -102,12 +102,12 @@ export default async function InicioPage() {
       {/* ── SERVICIOS ── */}
       <Servicios
         items={[
-          { nombre: "Carpinteria a medida", descripcion: "Piezas unicas disenadas para tu espacio.", imagen: "https://placehold.co/400x500?text=Carpinteria" },
-          { nombre: "Cocinas de autor", descripcion: "Cocinas integrales con acabados premium.", imagen: "https://placehold.co/400x500?text=Cocinas" },
-          { nombre: "Remodelaciones", descripcion: "Transformamos espacios por completo.", imagen: "https://placehold.co/400x500?text=Remodelaciones" },
-          { nombre: "Sofas y tapiceria", descripcion: "Comodidad y diseno en cada detalle.", imagen: "https://placehold.co/400x500?text=Tapiceria" },
-          { nombre: "Interiorismo", descripcion: "Asesoria integral de diseno interior.", imagen: "https://placehold.co/400x500?text=Interiorismo" },
-          { nombre: "Contract", descripcion: "Proyectos para empresas y hoteleria.", imagen: "https://placehold.co/400x500?text=Contract" },
+          { nombre: "Carpinteria a medida", descripcion: "Piezas unicas disenadas para tu espacio.", imagen: "/serv-carpinteria.jpg" },
+          { nombre: "Cocinas de autor", descripcion: "Cocinas integrales con acabados premium.", imagen: "/serv-cocina.jpg" },
+          { nombre: "Remodelaciones", descripcion: "Transformamos espacios por completo.", imagen: "/serv-remodelaciones.jpg" },
+          { nombre: "Sofas y tapiceria", descripcion: "Comodidad y diseno en cada detalle.", imagen: "/serv-sofas.jpg" },
+          { nombre: "Interiorismo", descripcion: "Asesoria integral de diseno interior.", imagen: "/serv-interiorismo.jpg" },
+          { nombre: "Contract", descripcion: "Proyectos para empresas y hoteleria.", imagen: "/serv-contract.jpg" },
         ]}
       />
 
