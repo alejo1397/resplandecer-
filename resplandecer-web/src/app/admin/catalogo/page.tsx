@@ -11,15 +11,15 @@ export default async function CatalogoPage() {
   return (
     <div>
       <PageHeader
-        titulo="Catalogo"
-        descripcion="Gestiona los productos y sus imagenes."
+        titulo="Catálogo"
+        descripcion="Gestiona los productos y sus imágenes."
         accion={<LinkButton href="/admin/catalogo/nuevo">Nuevo producto</LinkButton>}
       />
 
       {productos.length === 0 ? (
-        <EmptyState mensaje="Aun no hay productos." />
+        <EmptyState mensaje="Aún no hay productos." />
       ) : (
-        <TableShell headers={["Producto", "Categoria", "Precio", "Imgs", "Estado", "Acciones"]}>
+        <TableShell headers={["Producto", "Categoría", "Precio", "Imgs", "Estado", "Acciones"]}>
           {productos.map((p) => (
             <tr key={p.id}>
               <td className="px-4 py-3 font-medium">

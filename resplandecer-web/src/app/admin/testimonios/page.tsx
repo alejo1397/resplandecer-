@@ -16,7 +16,7 @@ export default async function TestimoniosPage() {
       />
 
       {testimonios.length === 0 ? (
-        <EmptyState mensaje="Aun no hay testimonios." />
+        <EmptyState mensaje="Aún no hay testimonios." />
       ) : (
         <TableShell headers={["Cliente", "Mensaje", "Calif.", "Orden", "Estado", "Acciones"]}>
           {testimonios.map((t) => (

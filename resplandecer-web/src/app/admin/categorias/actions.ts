@@ -8,6 +8,8 @@ import {
   crearCategoria,
   actualizarCategoria,
   cambiarEstadoCategoria,
+  agregarImagenCategoria,
+  eliminarImagenCategoria,
 } from "@/lib/queries/admin/categorias";
 
 /** Genera un slug simple a partir de un texto. */
@@ -32,6 +34,9 @@ export async function guardarCategoriaAction(
   const nombre = String(formData.get("nombre") ?? "").trim();
   const slugRaw = String(formData.get("slug") ?? "").trim();
   const descripcion = String(formData.get("descripcion") ?? "").trim() || null;
+  const imagenUrl = String(formData.get("imagenUrl") ?? "").trim() || null;
+  const whatsappTexto = String(formData.get("whatsappTexto") ?? "").trim() || null;
+  const whatsappMensaje = String(formData.get("whatsappMensaje") ?? "").trim() || null;
   const orden = Number(formData.get("orden") ?? 0);
   const estado = formData.get("estado") === "on";
 
@@ -41,9 +46,9 @@ export async function guardarCategoriaAction(
 
   try {
     if (idRaw) {
-      await actualizarCategoria(Number(idRaw), { nombre, slug, descripcion, orden, estado });
+      await actualizarCategoria(Number(idRaw), { nombre, slug, descripcion, imagenUrl, whatsappTexto, whatsappMensaje, orden, estado });
     } else {
-      await crearCategoria({ nombre, slug, descripcion, orden, estado });
+      await crearCategoria({ nombre, slug, descripcion, imagenUrl, whatsappTexto, whatsappMensaje, orden, estado });
     }
   } catch {
     return { error: "No se pudo guardar. Revisa que el slug no este repetido." };
@@ -58,7 +63,31 @@ export async function alternarEstadoCategoriaAction(formData: FormData): Promise
   await requireAdmin();
   const id = Number(formData.get("id"));
   const estado = formData.get("estado") === "true";
+  // Si se va a inactivar y tiene productos asociados, se oculta la categoria
+  // pero sus productos siguen existiendo (no se borran). El aviso se muestra
+  // en la UI de la tabla (columna Productos).
   await cambiarEstadoCategoria(id, !estado);
   revalidatePath("/admin/categorias");
+  updateTag(CACHE_TAGS.categorias);
+  updateTag(CACHE_TAGS.catalogo);
+}
+
+export async function agregarImagenCategoriaAction(formData: FormData): Promise<void> {
+  await requireAdmin();
+  const categoriaId = Number(formData.get("categoriaId"));
+  const url = String(formData.get("url") ?? "").trim();
+  const orden = Number(formData.get("orden") ?? 0);
+  if (!url) return;
+  await agregarImagenCategoria(categoriaId, { url, orden });
+  revalidatePath(`/admin/categorias/${categoriaId}`);
+  updateTag(CACHE_TAGS.categorias);
+}
+
+export async function eliminarImagenCategoriaAction(formData: FormData): Promise<void> {
+  await requireAdmin();
+  const id = Number(formData.get("id"));
+  const categoriaId = Number(formData.get("categoriaId"));
+  await eliminarImagenCategoria(id);
+  revalidatePath(`/admin/categorias/${categoriaId}`);
   updateTag(CACHE_TAGS.categorias);
 }

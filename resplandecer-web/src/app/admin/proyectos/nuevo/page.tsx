@@ -8,7 +8,7 @@ export default async function NuevoProyectoPage() {
     <div>
       <PageHeader
         titulo="Nuevo proyecto"
-        descripcion="Crea un proyecto. Podras agregarle imagenes despues de guardarlo."
+        descripcion="Crea un proyecto. Podrás agregarle imágenes después de guardarlo."
       />
       <ProyectoForm />
     </div>

@@ -14,7 +14,7 @@ export default async function ClientesPage() {
       />
 
       {clientes.length === 0 ? (
-        <EmptyState mensaje="Aun no hay contactos recibidos." />
+        <EmptyState mensaje="Aún no hay contactos recibidos." />
       ) : (
         <TableShell headers={["Nombre", "Contacto", "Ciudad", "Mensaje", "Fecha"]}>
           {clientes.map((c) => (

@@ -13,7 +13,7 @@ export default async function ProyectosPage() {
       <h1 className="display mt-3 text-[clamp(2.2rem,6vw,4.5rem)] text-ink">Proyectos</h1>
 
       {proyectos.length === 0 ? (
-        <p className="mt-12 text-sm text-ink/50">Aun no hay proyectos publicados.</p>
+        <p className="mt-12 text-sm text-ink/50">Aún no hay proyectos publicados.</p>
       ) : (
         <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2">
           {proyectos.map((p) => {

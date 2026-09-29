@@ -16,7 +16,7 @@ export default async function RedesPage() {
       />
 
       {redes.length === 0 ? (
-        <EmptyState mensaje="Aun no hay redes sociales." />
+        <EmptyState mensaje="Aún no hay redes sociales." />
       ) : (
         <TableShell headers={["Nombre", "URL", "Orden", "Estado", "Acciones"]}>
           {redes.map((r) => (

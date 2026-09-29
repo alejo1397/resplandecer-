@@ -25,14 +25,14 @@ export default async function EditarProyectoPage({
       </div>
 
       <section>
-        <h2 className="text-lg font-semibold">Imagenes</h2>
+        <h2 className="text-lg font-semibold">Imágenes</h2>
         <p className="mt-1 text-sm text-gray-500">
-          Agrega imagenes por URL. (La subida de archivos llegara con Supabase Storage.)
+          Sube las imágenes del proyecto para la galería.
         </p>
 
         <div className="mt-4 flex flex-wrap gap-4">
           {proyecto.imagenes.length === 0 ? (
-            <p className="text-sm text-gray-400">Sin imagenes aun.</p>
+            <p className="text-sm text-gray-400">Sin imágenes aún.</p>
           ) : (
             proyecto.imagenes.map((img) => (
               <div key={img.id} className="w-40 rounded-lg border border-gray-200 bg-white p-2">

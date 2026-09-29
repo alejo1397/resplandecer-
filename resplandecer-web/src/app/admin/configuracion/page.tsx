@@ -10,8 +10,8 @@ export default async function ConfiguracionPage() {
   return (
     <div className="max-w-2xl">
       <PageHeader
-        titulo="Configuracion del sitio"
-        descripcion="Edita los textos y parametros de la web. Los cambios se reflejan en la pagina."
+        titulo="Configuración del sitio"
+        descripcion="Edita los textos y parámetros de la web. Los cambios se reflejan en la página."
       />
 
       <div className="flex flex-col gap-3">
@@ -35,7 +35,7 @@ export default async function ConfiguracionPage() {
       </div>
 
       <section className="mt-8">
-        <h2 className="text-lg font-semibold">Agregar parametro</h2>
+        <h2 className="text-lg font-semibold">Agregar parámetro</h2>
         <form action={crearParametroAction} className="mt-3 flex flex-col gap-3 rounded-lg border border-gray-200 bg-white p-4">
           <Field label="Clave" hint="Sin espacios, ej. titulo_hero">
             <TextInput name="clave" required />
@@ -43,7 +43,7 @@ export default async function ConfiguracionPage() {
           <Field label="Valor">
             <TextInput name="valor" />
           </Field>
-          <Field label="Descripcion">
+          <Field label="Descripción">
             <TextInput name="descripcion" />
           </Field>
           <div>

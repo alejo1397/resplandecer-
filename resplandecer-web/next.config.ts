@@ -5,10 +5,13 @@ const nextConfig: NextConfig = {
   // para permitir la subida de imagenes (el helper valida max 5 MB por archivo).
   experimental: {
     serverActions: {
-      bodySizeLimit: "10mb",
+      // Se sube el limite para permitir la subida de imagenes (max 5 MB) y
+      // videos del hero (max 50 MB) via server actions.
+      bodySizeLimit: "60mb",
     },
   },
   images: {
+    qualities: [75, 90],
     remotePatterns: [
       { protocol: "https", hostname: "placehold.co" },
       // Supabase Storage (para imagenes reales en la Fase 6).

@@ -15,7 +15,7 @@ import { useEffect, useRef, useState } from "react";
  *  - Scroll pasivo + rAF.
  */
 
-const FASES = ["Replanteo", "Corte y armado", "Acabados", "Instalacion"];
+const FASES = ["Corte y armado", "Acabados", "Instalación"];
 
 export function SecuenciaProceso({ imagen }: { imagen: string }) {
   const wrapRef = useRef<HTMLDivElement | null>(null);
@@ -28,6 +28,7 @@ export function SecuenciaProceso({ imagen }: { imagen: string }) {
     const prefiereMenos = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (!esDesktop || prefiereMenos) return;
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setActiva(true);
 
     const wrap = wrapRef.current;
@@ -135,7 +136,7 @@ export function SecuenciaProceso({ imagen }: { imagen: string }) {
           <div className="relative text-center">
             <p className="label-mono text-paper/60">Nuestro proceso</p>
             <p className="display mt-3 text-[clamp(1.8rem,6vw,3rem)] text-paper">
-              Del diseno a tu espacio
+              Del diseño a tu espacio
             </p>
           </div>
         </div>
@@ -158,7 +159,7 @@ export function SecuenciaProceso({ imagen }: { imagen: string }) {
               </p>
             </div>
             <div className="text-right">
-              <p className="label-mono text-paper/60">Fase {faseActual + 1}/4</p>
+              <p className="label-mono text-paper/60">Fase {faseActual + 1}/{FASES.length}</p>
               <p className="label-mono text-paper/40">Frame {String(frame).padStart(2, "0")}/60</p>
             </div>
           </div>

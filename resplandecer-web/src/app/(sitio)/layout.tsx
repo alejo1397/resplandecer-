@@ -25,7 +25,7 @@ export default async function SitioLayout({
         nombreSitio={nombreSitio}
         email={config["email_contacto"]}
         telefono={config["telefono_contacto"]}
-        redes={redes.map((r) => ({ id: r.id, nombre: r.nombre, url: r.url }))}
+        redes={redes.map((r) => ({ id: r.id, nombre: r.nombre, url: r.url, icono: r.icono }))}
       />
       <WhatsAppButton numero={config["whatsapp_numero"]} />
     </div>

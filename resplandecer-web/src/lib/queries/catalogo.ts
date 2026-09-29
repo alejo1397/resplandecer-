@@ -15,10 +15,16 @@ export async function getCategoriasActivas() {
   return serialize(categorias);
 }
 
-/** Obtiene una categoria activa por su slug. */
+/** Obtiene una categoria activa por su slug, con su galeria de imagenes. */
 export async function getCategoriaPorSlug(slug: string) {
   const categoria = await prisma.categoria.findFirst({
     where: { slug, estado: true },
+    include: {
+      imagenes: {
+        where: { estado: true },
+        orderBy: { orden: "asc" },
+      },
+    },
   });
   return categoria ? serialize(categoria) : null;
 }

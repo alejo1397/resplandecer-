@@ -11,7 +11,7 @@ export default async function NuevoProductoPage() {
     <div>
       <PageHeader
         titulo="Nuevo producto"
-        descripcion="Crea un producto. Podras agregarle imagenes despues de guardarlo."
+        descripcion="Crea un producto. Podrás agregarle imágenes después de guardarlo."
       />
       <ProductoForm categorias={categorias.map((c) => ({ id: c.id, nombre: c.nombre }))} />
     </div>

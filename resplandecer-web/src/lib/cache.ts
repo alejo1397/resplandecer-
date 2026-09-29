@@ -7,6 +7,12 @@ import {
   getProductosDestacados,
   getTestimoniosActivos,
   getProyectosActivos,
+  getFaqsActivas,
+  getServiciosActivos,
+  getMetricasActivas,
+  getPasosDisenoActivos,
+  getMarqueeItemsActivos,
+  getHomeBannersActivos,
 } from "@/lib/queries";
 
 /**
@@ -33,6 +39,12 @@ export const CACHE_TAGS = {
   catalogo: "catalogo",
   testimonios: "testimonios",
   proyectos: "proyectos",
+  faqs: "faqs",
+  servicios: "servicios",
+  metricas: "metricas",
+  pasosDiseno: "pasos-diseno",
+  marquee: "marquee",
+  banners: "banners",
 } as const;
 
 // Revalidacion de seguridad: aunque no se invalide por tag, se refresca cada 5 min.
@@ -78,4 +90,46 @@ export const getProyectosCached = unstable_cache(
   () => getProyectosActivos(),
   ["proyectos-activos"],
   { tags: [CACHE_TAGS.proyectos], revalidate: REVALIDATE_SECONDS },
+);
+
+export const getFaqsCached = unstable_cache(
+  () => getFaqsActivas(),
+  ["faqs-activas"],
+  { tags: [CACHE_TAGS.faqs], revalidate: REVALIDATE_SECONDS },
+);
+
+export const getServiciosCached = unstable_cache(
+  () => getServiciosActivos(),
+  ["servicios-activos"],
+  { tags: [CACHE_TAGS.servicios], revalidate: REVALIDATE_SECONDS },
+);
+
+export const getMetricasCached = unstable_cache(
+  () => getMetricasActivas(),
+  ["metricas-activas"],
+  { tags: [CACHE_TAGS.metricas], revalidate: REVALIDATE_SECONDS },
+);
+
+export const getPasosDisenoCached = unstable_cache(
+  () => getPasosDisenoActivos(),
+  ["pasos-diseno-activos"],
+  { tags: [CACHE_TAGS.pasosDiseno], revalidate: REVALIDATE_SECONDS },
+);
+
+export const getMarqueeItemsCached = unstable_cache(
+  () => getMarqueeItemsActivos(),
+  ["marquee-items-activos"],
+  { tags: [CACHE_TAGS.marquee], revalidate: REVALIDATE_SECONDS },
+);
+
+export const getBannersMobiliarioCached = unstable_cache(
+  () => getHomeBannersActivos("mobiliario"),
+  ["home-banners-mobiliario"],
+  { tags: [CACHE_TAGS.banners], revalidate: REVALIDATE_SECONDS },
+);
+
+export const getBannersColeccionesCached = unstable_cache(
+  () => getHomeBannersActivos("colecciones"),
+  ["home-banners-colecciones"],
+  { tags: [CACHE_TAGS.banners], revalidate: REVALIDATE_SECONDS },
 );

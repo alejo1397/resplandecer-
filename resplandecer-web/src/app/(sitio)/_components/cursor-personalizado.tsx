@@ -20,6 +20,7 @@ export function CursorPersonalizado() {
     const prefiereMenos = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (!finePointer || prefiereMenos) return;
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setActivo(true);
 
     let x = window.innerWidth / 2;

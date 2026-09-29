@@ -3,10 +3,17 @@ import {
   getConfiguracionSitioCached,
   getProductosDestacadosCached,
   getTestimoniosCached,
+  getFaqsCached,
+  getServiciosCached,
+  getMetricasCached,
+  getMarqueeItemsCached,
+  getBannersMobiliarioCached,
+  getBannersColeccionesCached,
 } from "@/lib/cache";
 import { ProductoCard } from "./_components/producto-card";
-import { HeroFigura } from "./_components/hero-figura";
+import { HeroMedia } from "./_components/hero-media";
 import { Marquee } from "./_components/marquee";
+import { BannerHome } from "./_components/banner-home";
 import { Stats } from "./_components/stats";
 import { SplitText } from "./_components/split-text";
 import { Servicios } from "./_components/servicios";
@@ -15,19 +22,109 @@ import { BandaParallax } from "./_components/banda-parallax";
 import { ContadorScroll } from "./_components/contador-scroll";
 import { Faq } from "./_components/faq";
 import { SecuenciaProcesoLazy } from "./_components/secuencia-proceso-lazy";
+import { CtaDisena } from "./_components/cta-disena";
 import { ProgresoLectura } from "./_components/progreso-lectura";
 import { CursorPersonalizado } from "./_components/cursor-personalizado";
 
 export default async function InicioPage() {
-  const [config, destacados, testimonios] = await Promise.all([
+  const [
+    config,
+    destacados,
+    testimonios,
+    faqs,
+    servicios,
+    metricas,
+    marqueeItems,
+    bannersMobiliario,
+    bannersColecciones,
+  ] = await Promise.all([
     getConfiguracionSitioCached(),
     getProductosDestacadosCached(),
     getTestimoniosCached(),
+    getFaqsCached(),
+    getServiciosCached(),
+    getMetricasCached(),
+    getMarqueeItemsCached(),
+    getBannersMobiliarioCached(),
+    getBannersColeccionesCached(),
   ]);
+
+  // Marquee: fallback a textos base si el panel no tiene ninguno.
+  const marquee =
+    marqueeItems.length > 0
+      ? marqueeItems.map((m) => m.texto)
+      : ["Diseño", "Fabricación", "Instalación", "A la medida", "Interiorismo"];
+
+  // "Piezas fabricadas": administrable por configuración; se puede ocultar.
+  const piezasVisible = (config["piezas_visible"] ?? "true") !== "false";
+  const piezasValor = Number(config["piezas_valor"] ?? 2500) || 2500;
+  const piezasSufijo = config["piezas_sufijo"] ?? "+";
+  const piezasEtiqueta = config["piezas_etiqueta"] || "Piezas fabricadas a la medida";
 
   const titulo = config["titulo_hero"] || "Diseño & Producción de Mobiliario";
   const bandaImagen = config["banda_imagen"] || "/proceso.png";
   const procesoImagen = config["proceso_imagen"] || "/proceso.png";
+
+  // Métricas: si el admin no ha cargado ninguna, se usan valores por defecto.
+  const metricasItems =
+    metricas.length > 0
+      ? metricas.map((m) => ({
+          valor: m.valor,
+          prefijo: m.prefijo ?? undefined,
+          sufijo: m.sufijo ?? undefined,
+          etiqueta: m.etiqueta,
+        }))
+      : [
+          { valor: 8, sufijo: "+", etiqueta: "Años de experiencia" },
+          { valor: 120, etiqueta: "Artesanos" },
+          { valor: 2500, sufijo: "+", etiqueta: "Piezas al año" },
+          { valor: 98, sufijo: "%", etiqueta: "Entregas a tiempo" },
+        ];
+
+  // Servicios: fallback a los servicios base si no hay ninguno en el panel.
+  const serviciosItems =
+    servicios.length > 0
+      ? servicios.map((s) => ({ titulo: s.titulo, descripcion: s.descripcion }))
+      : [
+          { titulo: "Carpintería a medida", descripcion: "Piezas únicas diseñadas para tu espacio." },
+          { titulo: "Cocinas de autor", descripcion: "Cocinas integrales con acabados premium." },
+          { titulo: "Remodelaciones", descripcion: "Transformamos espacios por completo." },
+          { titulo: "Sofás y tapicería", descripcion: "Comodidad y diseño en cada detalle." },
+          { titulo: "Interiorismo", descripcion: "Asesoría integral de diseño interior." },
+          { titulo: "Contract", descripcion: "Proyectos para empresas y hotelería." },
+        ];
+
+  // FAQ: fallback a preguntas base si no hay ninguna en el panel.
+  const faqItems =
+    faqs.length > 0
+      ? faqs.map((f) => ({ pregunta: f.pregunta, respuesta: f.respuesta }))
+      : [
+          {
+            pregunta: "¿Hacen muebles a la medida?",
+            respuesta:
+              "Sí. Diseñamos y fabricamos cada pieza según tu espacio, estilo y necesidades. Cuéntanos tu idea y la hacemos realidad.",
+          },
+          {
+            pregunta: "¿Cuánto tarda un pedido a la medida?",
+            respuesta:
+              "El tiempo depende del proyecto y su complejidad. Al cotizar te damos un plazo estimado de fabricación y entrega.",
+          },
+          {
+            pregunta: "¿Tienen garantía?",
+            respuesta:
+              "Sí, nuestros muebles cuentan con garantía. Te informamos las condiciones específicas al momento de la compra.",
+          },
+          {
+            pregunta: "¿Hacen envíos e instalación?",
+            respuesta:
+              "Sí, realizamos entrega e instalación. Escríbenos para confirmar cobertura en tu ciudad o zona.",
+          },
+          {
+            pregunta: "¿Cómo pido una cotización?",
+            respuesta:
+              "Escríbenos por WhatsApp con tu idea o referencia y te asesoramos sin compromiso.",
+          },
+        ];
 
   return (
     <div>
@@ -37,7 +134,11 @@ export default async function InicioPage() {
 
       {/* ── HERO (tema oscuro, fondo negro) ── */}
       <section data-theme="dark" className="relative flex min-h-[88vh] items-center overflow-hidden bg-ink text-paper">
-        <HeroFigura />
+        <HeroMedia
+          mediaUrl={config["hero_media_url"]}
+          mediaTipo={config["hero_media_tipo"]}
+          posterUrl={config["hero_poster_url"]}
+        />
 
         <div className="relative z-10 mx-auto w-full max-w-7xl px-5">
           <p className="label-mono text-paper/60">Resplandecer — Mobiliario</p>
@@ -57,15 +158,29 @@ export default async function InicioPage() {
           </div>
         </div>
 
-        {/* hairline inferior con label mono */}
-        <div className="absolute bottom-5 right-5 z-10 hidden md:block">
-          <span className="label-mono text-paper/40">Arrastra el plano ↔</span>
-        </div>
+        {/* Sugerencia solo cuando se usa el plano interactivo (sin media). */}
+        {!config["hero_media_url"] ? (
+          <div className="absolute bottom-5 right-5 z-10 hidden md:block">
+            <span className="label-mono text-paper/40">Arrastra el plano ↔</span>
+          </div>
+        ) : null}
       </section>
 
       {/* ── MARQUEE ── */}
-      <Marquee
-        items={["Diseño", "Fabricación", "Instalación", "A la medida", "Interiorismo"]}
+      <Marquee items={marquee} />
+
+      {/* ── BANNERS: MOBILIARIO Y COLECCIONES ── */}
+      <BannerHome
+        titulo="Mobiliario"
+        subtitulo={config["banner_mobiliario_subtitulo"] || "Piezas hechas a la medida"}
+        items={bannersMobiliario}
+        variante="mobiliario"
+      />
+      <BannerHome
+        titulo="Colecciones"
+        subtitulo={config["banner_colecciones_subtitulo"] || "Explora nuestras colecciones"}
+        items={bannersColecciones}
+        variante="colecciones"
       />
 
       {/* ── INTRO EDITORIAL (tema claro) ── */}
@@ -89,30 +204,27 @@ export default async function InicioPage() {
       {/* ── BANDA CON PARALLAX ── */}
       <BandaParallax src={bandaImagen} alt="Mobiliario Resplandecer" titulo="Hecho a mano, pensado para durar" />
 
-      {/* ── STATS (contadores animados) ── */}
-      <Stats
-        items={[
-          { valor: 8, sufijo: "+", etiqueta: "Años de experiencia" },
-          { valor: 120, etiqueta: "Artesanos" },
-          { valor: 2500, sufijo: "+", etiqueta: "Piezas al año" },
-          { valor: 98, sufijo: "%", etiqueta: "Entregas a tiempo" },
-        ]}
+      {/* ── CTA DISEÑA TU ESPACIO ── */}
+      <CtaDisena
+        imagen={config["diseno_imagen"] || bandaImagen}
+        titulo={config["diseno_cta_titulo"] || "Diseña tu espacio"}
+        descripcion={
+          config["diseno_cta_descripcion"] ||
+          "Cuéntanos tu idea y la transformamos en un espacio funcional, bello y duradero."
+        }
+        cta={config["diseno_cta_boton"] || "Empieza tu proyecto"}
       />
+
+      {/* ── STATS (contadores animados) ── */}
+      <Stats items={metricasItems} />
 
       {/* ── SERVICIOS ── */}
-      <Servicios
-        items={[
-          { nombre: "Carpintería a medida", descripcion: "Piezas únicas diseñadas para tu espacio.", imagen: "/serv-carpinteria.jpg" },
-          { nombre: "Cocinas de autor", descripcion: "Cocinas integrales con acabados premium.", imagen: "/serv-cocina.jpg" },
-          { nombre: "Remodelaciones", descripcion: "Transformamos espacios por completo.", imagen: "/serv-remodelaciones.jpg" },
-          { nombre: "Sofás y tapicería", descripcion: "Comodidad y diseño en cada detalle.", imagen: "/serv-sofas.jpg" },
-          { nombre: "Interiorismo", descripcion: "Asesoría integral de diseño interior.", imagen: "/serv-interiorismo.jpg" },
-          { nombre: "Contract", descripcion: "Proyectos para empresas y hotelería.", imagen: "/serv-contract.jpg" },
-        ]}
-      />
+      <Servicios items={serviciosItems} />
 
-      {/* ── CONTADOR SCRUBBED ── */}
-      <ContadorScroll valor={2500} sufijo="+" etiqueta="Piezas fabricadas a la medida" />
+      {/* ── CONTADOR SCRUBBED (Piezas fabricadas) ── */}
+      {piezasVisible ? (
+        <ContadorScroll valor={piezasValor} sufijo={piezasSufijo} etiqueta={piezasEtiqueta} />
+      ) : null}
 
       {/* ── SECUENCIA CINEMATOGRAFICA (proceso) ── */}
       <SecuenciaProcesoLazy imagen={procesoImagen} />
@@ -166,35 +278,7 @@ export default async function InicioPage() {
       ) : null}
 
       {/* ── FAQ ── */}
-      <Faq
-        items={[
-          {
-            pregunta: "¿Hacen muebles a la medida?",
-            respuesta:
-              "Sí. Diseñamos y fabricamos cada pieza según tu espacio, estilo y necesidades. Cuéntanos tu idea y la hacemos realidad.",
-          },
-          {
-            pregunta: "¿Cuánto tarda un pedido a la medida?",
-            respuesta:
-              "El tiempo depende del proyecto y su complejidad. Al cotizar te damos un plazo estimado de fabricación y entrega.",
-          },
-          {
-            pregunta: "¿Tienen garantía?",
-            respuesta:
-              "Sí, nuestros muebles cuentan con garantía. Te informamos las condiciones específicas al momento de la compra.",
-          },
-          {
-            pregunta: "¿Hacen envíos e instalación?",
-            respuesta:
-              "Sí, realizamos entrega e instalación. Escríbenos para confirmar cobertura en tu ciudad o zona.",
-          },
-          {
-            pregunta: "¿Cómo pido una cotización?",
-            respuesta:
-              "Escríbenos por WhatsApp con tu idea o referencia y te asesoramos sin compromiso.",
-          },
-        ]}
-      />
+      <Faq items={faqItems} />
     </div>
   );
 }

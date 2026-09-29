@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { Logo } from "./logo";
+import { IconoSocial } from "./icono-social";
 
-type Red = { id: number; nombre: string; url: string };
+type Red = { id: number; nombre: string; url: string; icono?: string | null };
 
 export function Footer({
   nombreSitio,
@@ -16,16 +18,21 @@ export function Footer({
   return (
     <footer className="mt-24 bg-ink text-paper">
       <div className="mx-auto max-w-7xl px-5 py-16">
-        <p className="display text-[clamp(2rem,6vw,4.5rem)] text-paper">
-          {nombreSitio}
-        </p>
+        <Logo alto={44} oscuro />
+        <span className="sr-only">{nombreSitio}</span>
 
         <div className="mt-12 grid gap-10 border-t hairline-dark pt-10 sm:grid-cols-3">
           <div>
             <p className="label-mono text-paper/50">Estudio</p>
             <p className="mt-3 text-sm text-paper/80">
-              Diseno y produccion de mobiliario a la medida.
+              Diseño y producción de mobiliario a la medida.
             </p>
+            <Link
+              href="/terminos-y-condiciones"
+              className="mt-3 inline-block text-sm text-paper/60 underline-offset-4 transition-colors hover:text-paper hover:underline"
+            >
+              Términos y condiciones
+            </Link>
           </div>
 
           <div>
@@ -38,17 +45,19 @@ export function Footer({
 
           {redes.length > 0 ? (
             <div>
-              <p className="label-mono text-paper/50">Siguenos</p>
-              <ul className="mt-3 space-y-1 text-sm text-paper/80">
+              <p className="label-mono text-paper/50">Síguenos</p>
+              <ul className="mt-4 flex flex-wrap items-center gap-4">
                 {redes.map((r) => (
                   <li key={r.id}>
                     <a
                       href={r.url}
                       target="_blank"
-                      rel="noreferrer"
-                      className="transition-colors hover:text-paper"
+                      rel="noopener noreferrer"
+                      aria-label={r.nombre}
+                      title={r.nombre}
+                      className="inline-flex text-paper/80 transition-colors hover:text-paper"
                     >
-                      {r.nombre}
+                      <IconoSocial nombre={r.nombre} icono={r.icono} className="h-6 w-6" />
                     </a>
                   </li>
                 ))}
@@ -62,8 +71,22 @@ export function Footer({
         <p className="label-mono text-paper/40">
           © {new Date().getFullYear()} {nombreSitio} — Todos los derechos reservados
         </p>
-        <Link href="/admin" className="label-mono mt-1 inline-block text-paper/30 hover:text-paper/60">
-          Administracion
+        <p className="label-mono mt-1 text-paper/40">
+          Diseñado por{" "}
+          <a
+            href="https://page-her-labs.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-paper/60 transition-colors hover:text-paper"
+          >
+            HER Labs
+          </a>
+        </p>
+        <Link
+          href="/admin"
+          className="label-mono mt-1 inline-block text-paper/25 hover:text-paper/50"
+        >
+          Administración
         </Link>
       </div>
     </footer>

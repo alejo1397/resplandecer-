@@ -8,12 +8,20 @@ export const metadata = {
 
 const navItems = [
   { href: "/admin", label: "Inicio" },
-  { href: "/admin/categorias", label: "Categorias" },
-  { href: "/admin/catalogo", label: "Catalogo" },
+  { href: "/admin/hero", label: "Hero (inicio)" },
+  { href: "/admin/banners", label: "Banners (inicio)" },
+  { href: "/admin/categorias", label: "Categorías" },
+  { href: "/admin/catalogo", label: "Catálogo" },
   { href: "/admin/proyectos", label: "Proyectos" },
+  { href: "/admin/servicios", label: "Servicios" },
+  { href: "/admin/marquee", label: "Marquee" },
+  { href: "/admin/disena", label: "Diseña tu espacio" },
+  { href: "/admin/faqs", label: "Preguntas frecuentes" },
+  { href: "/admin/metricas", label: "Métricas" },
+  { href: "/admin/paginas", label: "Páginas de contenido" },
   { href: "/admin/testimonios", label: "Testimonios" },
   { href: "/admin/redes", label: "Redes sociales" },
-  { href: "/admin/configuracion", label: "Configuracion" },
+  { href: "/admin/configuracion", label: "Configuración" },
   { href: "/admin/clientes", label: "Clientes" },
 ];
 
@@ -35,7 +43,7 @@ export default async function AdminLayout({
       <aside className="flex w-60 flex-col border-r border-gray-200 bg-white">
         <div className="border-b border-gray-200 px-5 py-4">
           <p className="text-base font-semibold">Resplandecer</p>
-          <p className="text-xs text-gray-500">Panel de administracion</p>
+          <p className="text-xs text-gray-500">Panel de administración</p>
         </div>
         <nav className="flex-1 px-2 py-3">
           <ul className="flex flex-col gap-0.5">

@@ -3,13 +3,15 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Logo } from "./logo";
 
 const navItems = [
   { href: "/", label: "Inicio" },
   { href: "/mobiliario", label: "Mobiliario" },
   { href: "/colecciones", label: "Colecciones" },
-  { href: "/disena-tu-espacio", label: "Disena tu espacio" },
+  { href: "/disena-tu-espacio", label: "Diseña tu espacio" },
   { href: "/proyectos", label: "Proyectos" },
+  { href: "/nosotros/nuestra-historia", label: "Nosotros" },
   { href: "/contacto", label: "Contacto" },
 ];
 
@@ -20,6 +22,7 @@ export function Header({ nombreSitio }: { nombreSitio: string }) {
 
   // Cerrar el menu al cambiar de ruta.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setAbierto(false);
   }, [pathname]);
 
@@ -35,6 +38,7 @@ export function Header({ nombreSitio }: { nombreSitio: string }) {
   // data-theme="dark" esta bajo el header, el header pasa a modo oscuro.
   // Fallback seguro: si no hay secciones marcadas, queda en claro.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setOscuro(false); // reset al navegar
     const secciones = Array.from(
       document.querySelectorAll<HTMLElement>('[data-theme="dark"]'),
@@ -70,13 +74,8 @@ export function Header({ nombreSitio }: { nombreSitio: string }) {
         }`}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
-          <Link
-            href="/"
-            className={`display text-xl leading-none transition-colors ${
-              oscuro ? "text-paper" : "text-ink"
-            }`}
-          >
-            {nombreSitio}
+          <Link href="/" aria-label={nombreSitio} className="flex items-center leading-none">
+            <Logo alto={26} oscuro={oscuro} />
           </Link>
 
           {/* Navegacion escritorio */}
@@ -121,7 +120,8 @@ export function Header({ nombreSitio }: { nombreSitio: string }) {
         >
           {/* Barra superior del overlay con boton cerrar */}
           <div className="flex items-center justify-between border-b hairline-dark px-5 py-4">
-            <span className="display text-xl text-paper">{nombreSitio}</span>
+            <Logo alto={26} oscuro />
+            <span className="sr-only">{nombreSitio}</span>
             <button
               type="button"
               onClick={() => setAbierto(false)}

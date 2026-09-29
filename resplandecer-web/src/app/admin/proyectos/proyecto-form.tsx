@@ -26,7 +26,7 @@ export function ProyectoForm({ proyecto }: { proyecto?: Proyecto }) {
     <form action={action} className="flex max-w-lg flex-col gap-4">
       {proyecto ? <input type="hidden" name="id" value={proyecto.id} /> : null}
 
-      <Field label="Titulo">
+      <Field label="Título">
         <TextInput name="titulo" defaultValue={proyecto?.titulo} required />
       </Field>
 
@@ -34,13 +34,13 @@ export function ProyectoForm({ proyecto }: { proyecto?: Proyecto }) {
         <TextInput name="slug" defaultValue={proyecto?.slug} />
       </Field>
 
-      <Field label="Descripcion">
+      <Field label="Descripción">
         <TextArea name="descripcion" defaultValue={proyecto?.descripcion ?? ""} />
       </Field>
 
       <div className="grid grid-cols-2 gap-4">
-        <Field label="Ubicacion">
-          <TextInput name="ubicacion" defaultValue={proyecto?.ubicacion ?? ""} placeholder="ej. Bogota" />
+        <Field label="Ubicación">
+          <TextInput name="ubicacion" defaultValue={proyecto?.ubicacion ?? ""} placeholder="ej. Bogotá" />
         </Field>
         <Field label="Fecha">
           <TextInput name="fecha" type="date" defaultValue={fechaValue} />

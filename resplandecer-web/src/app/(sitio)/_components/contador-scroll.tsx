@@ -25,6 +25,7 @@ export function ContadorScroll({
 
     const prefiereMenos = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefiereMenos) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setDisplay(valor);
       return;
     }

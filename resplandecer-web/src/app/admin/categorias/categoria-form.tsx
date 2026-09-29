@@ -3,12 +3,16 @@
 import { useActionState } from "react";
 import { guardarCategoriaAction, type FormState } from "./actions";
 import { Field, TextInput, TextArea, Checkbox, SubmitButton, LinkButton } from "../_components/ui";
+import { ImageUploader } from "../_components/image-uploader";
 
 type Categoria = {
   id: number;
   nombre: string;
   slug: string;
   descripcion: string | null;
+  imagenUrl: string | null;
+  whatsappTexto: string | null;
+  whatsappMensaje: string | null;
   orden: number;
   estado: boolean;
 };
@@ -26,15 +30,38 @@ export function CategoriaForm({ categoria }: { categoria?: Categoria }) {
         <TextInput name="nombre" defaultValue={categoria?.nombre} required />
       </Field>
 
-      <Field label="Slug" hint="Se genera del nombre si lo dejas vacio.">
+      <Field label="Slug" hint="Se genera del nombre si lo dejas vacío.">
         <TextInput name="slug" defaultValue={categoria?.slug} placeholder="ej. comedores" />
       </Field>
 
-      <Field label="Descripcion">
+      <Field label="Descripción">
         <TextArea name="descripcion" defaultValue={categoria?.descripcion ?? ""} />
       </Field>
 
-      <Field label="Orden" hint="Menor numero aparece primero.">
+      <ImageUploader
+        fieldName="imagenUrl"
+        carpeta="categorias"
+        defaultUrl={categoria?.imagenUrl ?? ""}
+        label="Imagen de portada (se usa como fondo en Colecciones)"
+      />
+
+      <Field label="Texto del botón de WhatsApp" hint="Ej. Pregunta por la colección.">
+        <TextInput
+          name="whatsappTexto"
+          defaultValue={categoria?.whatsappTexto ?? ""}
+          placeholder="Pregunta por la colección"
+        />
+      </Field>
+
+      <Field label="Mensaje de WhatsApp" hint="Texto con el que se abre el chat.">
+        <TextArea
+          name="whatsappMensaje"
+          defaultValue={categoria?.whatsappMensaje ?? ""}
+          placeholder="Hola, quiero información sobre la colección..."
+        />
+      </Field>
+
+      <Field label="Orden" hint="Menor número aparece primero.">
         <TextInput name="orden" type="number" defaultValue={categoria?.orden ?? 0} />
       </Field>
 

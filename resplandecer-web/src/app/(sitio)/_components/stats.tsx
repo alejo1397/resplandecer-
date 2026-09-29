@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 type Stat = {
   valor: number;
+  prefijo?: string;
   sufijo?: string;
   etiqueta: string;
 };
@@ -11,11 +12,16 @@ type Stat = {
 /**
  * Fila de estadisticas con contadores que suben al entrar en pantalla.
  * Ligero: IntersectionObserver nativo, sin librerias. Respeta reduced-motion.
+ * Si no hay métricas activas, la sección no se renderiza (sin dejar hueco).
  */
 export function Stats({ items }: { items: Stat[] }) {
+  if (items.length === 0) return null;
+
+  const cols = items.length >= 4 ? "md:grid-cols-4" : items.length === 3 ? "md:grid-cols-3" : "md:grid-cols-2";
+
   return (
     <section className="border-y hairline-light bg-paper">
-      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-y-10 px-5 py-16 md:grid-cols-4">
+      <div className={`mx-auto grid max-w-7xl grid-cols-2 gap-y-10 px-5 py-16 ${cols}`}>
         {items.map((s, i) => (
           <Contador key={i} {...s} />
         ))}
@@ -24,7 +30,7 @@ export function Stats({ items }: { items: Stat[] }) {
   );
 }
 
-function Contador({ valor, sufijo = "", etiqueta }: Stat) {
+function Contador({ valor, prefijo = "", sufijo = "", etiqueta }: Stat) {
   const ref = useRef<HTMLDivElement | null>(null);
   const [display, setDisplay] = useState(0);
 
@@ -34,6 +40,7 @@ function Contador({ valor, sufijo = "", etiqueta }: Stat) {
 
     const prefiereMenos = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefiereMenos) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setDisplay(valor);
       return;
     }
@@ -74,6 +81,7 @@ function Contador({ valor, sufijo = "", etiqueta }: Stat) {
   return (
     <div ref={ref} className="text-center">
       <p className="display text-[clamp(2.5rem,7vw,5rem)] text-ink">
+        {prefijo}
         {display.toLocaleString("es-CO")}
         {sufijo}
       </p>

@@ -24,6 +24,7 @@ export function Preloader() {
       return; // no mostrar
     }
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMostrar(true);
     sessionStorage.setItem("preloader-visto", "1");
 

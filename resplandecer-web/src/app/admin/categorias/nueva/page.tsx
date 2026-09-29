@@ -6,7 +6,7 @@ export default async function NuevaCategoriaPage() {
   await requireAdmin();
   return (
     <div>
-      <PageHeader titulo="Nueva categoria" descripcion="Crea una categoria para el catalogo." />
+      <PageHeader titulo="Nueva categoría" descripcion="Crea una categoría para el catálogo." />
       <CategoriaForm />
     </div>
   );

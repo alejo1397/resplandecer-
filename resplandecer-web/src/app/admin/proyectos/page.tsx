@@ -11,14 +11,14 @@ export default async function ProyectosPage() {
     <div>
       <PageHeader
         titulo="Proyectos"
-        descripcion="Gestiona la galeria de proyectos realizados."
+        descripcion="Gestiona la galería de proyectos realizados."
         accion={<LinkButton href="/admin/proyectos/nuevo">Nuevo proyecto</LinkButton>}
       />
 
       {proyectos.length === 0 ? (
-        <EmptyState mensaje="Aun no hay proyectos." />
+        <EmptyState mensaje="Aún no hay proyectos." />
       ) : (
-        <TableShell headers={["Titulo", "Ubicacion", "Imgs", "Estado", "Acciones"]}>
+        <TableShell headers={["Título", "Ubicación", "Imgs", "Estado", "Acciones"]}>
           {proyectos.map((p) => (
             <tr key={p.id}>
               <td className="px-4 py-3 font-medium">

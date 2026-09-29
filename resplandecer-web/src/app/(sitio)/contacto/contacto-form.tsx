@@ -32,7 +32,7 @@ export function ContactoForm() {
           <input name="email" type="email" className={inputClass} />
         </label>
         <label className="flex flex-col gap-1">
-          <span className="text-sm font-medium text-gray-700">Telefono</span>
+          <span className="text-sm font-medium text-gray-700">Teléfono</span>
           <input name="telefono" className={inputClass} />
         </label>
       </div>
@@ -47,7 +47,7 @@ export function ContactoForm() {
         <textarea name="mensaje" className={`${inputClass} min-h-28`} />
       </label>
 
-      <p className="text-xs text-gray-400">Indica al menos un correo o un telefono de contacto.</p>
+      <p className="text-xs text-gray-400">Indica al menos un correo o un teléfono de contacto.</p>
 
       {state.error ? <p className="text-sm text-red-600">{state.error}</p> : null}
 

@@ -24,9 +24,9 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Resplandecer | Diseno & Produccion de Mobiliario",
+  title: "Resplandecer | Diseño & Producción de Mobiliario",
   description:
-    "Diseno y produccion de mobiliario a la medida. Convertimos tus espacios en lo que suenas.",
+    "Diseño y producción de mobiliario a la medida. Convertimos tus espacios en lo que sueñas.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

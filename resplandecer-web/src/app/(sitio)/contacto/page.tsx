@@ -16,7 +16,7 @@ export default async function ContactoPage() {
 
       <div className="mt-6 flex flex-col gap-1 text-sm text-ink/70">
         {config["email_contacto"] ? <p>Correo: {config["email_contacto"]}</p> : null}
-        {config["telefono_contacto"] ? <p>Telefono: {config["telefono_contacto"]}</p> : null}
+        {config["telefono_contacto"] ? <p>Teléfono: {config["telefono_contacto"]}</p> : null}
       </div>
 
       <div className="mt-10">

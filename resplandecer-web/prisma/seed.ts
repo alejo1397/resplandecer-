@@ -64,8 +64,8 @@ async function main() {
 
   await prisma.testimonio.create({
     data: {
-      nombreCliente: "Maria Gomez",
-      cargoOCiudad: "Bogota",
+      nombreCliente: "María Gómez",
+      cargoOCiudad: "Bogotá",
       mensaje: "Los muebles superaron mis expectativas. Excelente acabado.",
       calificacion: 5,
       imagenId: imagenTestimonio.id,
@@ -89,15 +89,15 @@ async function main() {
   // Configuracion del sitio (parametros clave-valor)
   // -------------------------------------------------------------------------
   const parametros = [
-    { clave: "titulo_hero", valor: "Diseno & Produccion de Mobiliario", tipo: TipoParametro.texto, descripcion: "Titulo principal del hero" },
-    { clave: "subtitulo_hero", valor: "Convertimos tus espacios en lo que suenas.", tipo: TipoParametro.texto, descripcion: "Subtitulo del hero" },
+    { clave: "titulo_hero", valor: "Diseño & Producción de Mobiliario", tipo: TipoParametro.texto, descripcion: "Titulo principal del hero" },
+    { clave: "subtitulo_hero", valor: "Convertimos tus espacios en lo que sueñas.", tipo: TipoParametro.texto, descripcion: "Subtitulo del hero" },
     { clave: "telefono_contacto", valor: "+57 300 000 0000", tipo: TipoParametro.texto, descripcion: "Telefono de contacto" },
     { clave: "whatsapp_numero", valor: "573000000000", tipo: TipoParametro.texto, descripcion: "Numero de WhatsApp (formato internacional sin +)" },
     { clave: "email_contacto", valor: "contacto@resplandecer.co", tipo: TipoParametro.texto, descripcion: "Correo de contacto" },
     { clave: "hero_imagen", valor: "https://placehold.co/1600x900?text=Resplandecer", tipo: TipoParametro.imagen, descripcion: "Imagen de fondo del hero" },
     // Pagina "Disena tu espacio"
-    { clave: "diseno_titulo", valor: "Disena tu espacio", tipo: TipoParametro.texto, descripcion: "Titulo de la pagina de diseno personalizado" },
-    { clave: "diseno_descripcion", valor: "Creamos mobiliario a la medida de tus espacios y tu estilo. Cuentanos tu idea y la hacemos realidad.", tipo: TipoParametro.texto, descripcion: "Descripcion del servicio de diseno personalizado" },
+    { clave: "diseno_titulo", valor: "Diseña tu espacio", tipo: TipoParametro.texto, descripcion: "Titulo de la pagina de diseno personalizado" },
+    { clave: "diseno_descripcion", valor: "Creamos mobiliario a la medida de tus espacios y tu estilo. Cuéntanos tu idea y la hacemos realidad.", tipo: TipoParametro.texto, descripcion: "Descripcion del servicio de diseno personalizado" },
     { clave: "diseno_imagen", valor: "https://placehold.co/1200x800?text=Disena+tu+espacio", tipo: TipoParametro.imagen, descripcion: "Imagen de la pagina de diseno personalizado" },
   ];
   for (const param of parametros) {

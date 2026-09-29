@@ -38,7 +38,7 @@ export function TestimonioForm({ testimonio }: { testimonio?: Testimonio }) {
         <TextArea name="mensaje" defaultValue={testimonio?.mensaje} required />
       </Field>
 
-      <Field label="Calificacion" hint="Numero entre 1 y 5 (opcional).">
+      <Field label="Calificación" hint="Número entre 1 y 5 (opcional).">
         <TextInput name="calificacion" type="number" min={1} max={5} defaultValue={testimonio?.calificacion ?? ""} />
       </Field>
 

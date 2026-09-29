@@ -16,19 +16,20 @@ export default async function CategoriasPage() {
   return (
     <div>
       <PageHeader
-        titulo="Categorias"
-        descripcion="Gestiona las categorias del catalogo."
-        accion={<LinkButton href="/admin/categorias/nueva">Nueva categoria</LinkButton>}
+        titulo="Categorías"
+        descripcion="Gestiona las categorías del catálogo."
+        accion={<LinkButton href="/admin/categorias/nueva">Nueva categoría</LinkButton>}
       />
 
       {categorias.length === 0 ? (
-        <EmptyState mensaje="Aun no hay categorias. Crea la primera." />
+        <EmptyState mensaje="Aún no hay categorías. Crea la primera." />
       ) : (
-        <TableShell headers={["Nombre", "Slug", "Orden", "Estado", "Acciones"]}>
+        <TableShell headers={["Nombre", "Slug", "Productos", "Orden", "Estado", "Acciones"]}>
           {categorias.map((c) => (
             <tr key={c.id}>
               <td className="px-4 py-3 font-medium">{c.nombre}</td>
               <td className="px-4 py-3 text-gray-500">{c.slug}</td>
+              <td className="px-4 py-3 text-gray-500">{c._count.productos}</td>
               <td className="px-4 py-3 text-gray-500">{c.orden}</td>
               <td className="px-4 py-3">
                 <EstadoBadge activo={c.estado} />
@@ -47,6 +48,11 @@ export default async function CategoriasPage() {
                     <button
                       type="submit"
                       className="text-sm text-gray-500 hover:underline"
+                      title={
+                        c.estado && c._count.productos > 0
+                          ? `Esta categoría tiene ${c._count.productos} producto(s). Al inactivarla se ocultará junto con su listado; los productos no se eliminan.`
+                          : undefined
+                      }
                     >
                       {c.estado ? "Inactivar" : "Activar"}
                     </button>

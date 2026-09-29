@@ -42,7 +42,7 @@ export function ProductoForm({
         <TextInput name="slug" defaultValue={producto?.slug} />
       </Field>
 
-      <Field label="Descripcion">
+      <Field label="Descripción">
         <TextArea name="descripcion" defaultValue={producto?.descripcion ?? ""} />
       </Field>
 
@@ -55,9 +55,9 @@ export function ProductoForm({
         </Field>
       </div>
 
-      <Field label="Categoria">
+      <Field label="Categoría">
         <Select name="categoriaId" defaultValue={producto?.categoriaId ?? ""}>
-          <option value="">Sin categoria</option>
+          <option value="">Sin categoría</option>
           {categorias.map((c) => (
             <option key={c.id} value={c.id}>
               {c.nombre}

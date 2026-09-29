@@ -76,18 +76,40 @@ model Cliente {
 
 /// Categorias del catalogo (ej. Comedores, Sillas, Barras).
 model Categoria {
-  id            BigInt   @id @default(autoincrement())
-  nombre        String
-  slug          String   @unique
-  descripcion   String?
-  orden         Int      @default(0)
-  estado        Boolean  @default(true)
-  creadoEn      DateTime @default(now()) @map("creado_en") @db.Timestamptz(6)
-  actualizadoEn DateTime @updatedAt @map("actualizado_en") @db.Timestamptz(6)
+  id                 BigInt   @id @default(autoincrement())
+  nombre             String
+  slug               String   @unique
+  descripcion        String?
+  imagenUrl          String?  @map("imagen_url")
+  // Detalle de coleccion: mensaje/boton de WhatsApp administrables por coleccion.
+  whatsappTexto      String?  @map("whatsapp_texto")
+  whatsappMensaje    String?  @map("whatsapp_mensaje")
+  orden              Int      @default(0)
+  estado             Boolean  @default(true)
+  creadoEn           DateTime @default(now()) @map("creado_en") @db.Timestamptz(6)
+  actualizadoEn      DateTime @updatedAt @map("actualizado_en") @db.Timestamptz(6)
 
   productos Catalogo[]
+  imagenes  ImagenCategoria[]
 
   @@map("categorias")
+}
+
+/// Imagenes de la galeria de una categoria/coleccion (para el detalle).
+model ImagenCategoria {
+  id               BigInt   @id @default(autoincrement())
+  categoriaId      BigInt   @map("categoria_id")
+  url              String
+  textoAlternativo String?  @map("texto_alternativo")
+  orden            Int      @default(0)
+  estado           Boolean  @default(true)
+  creadoEn         DateTime @default(now()) @map("creado_en") @db.Timestamptz(6)
+  actualizadoEn    DateTime @updatedAt @map("actualizado_en") @db.Timestamptz(6)
+
+  categoria Categoria @relation(fields: [categoriaId], references: [id], onDelete: Cascade)
+
+  @@index([categoriaId])
+  @@map("imagenes_categoria")
 }
 
 /// Productos / muebles del catalogo.
@@ -190,6 +212,125 @@ model ConfiguracionSitio {
   actualizadoEn DateTime      @updatedAt @map("actualizado_en") @db.Timestamptz(6)
 
   @@map("configuracion_sitio")
+}
+
+/// Paginas de contenido administrable (terminos y condiciones, nuestra historia).
+model PaginaContenido {
+  id            BigInt   @id @default(autoincrement())
+  slug          String   @unique
+  titulo        String
+  subtitulo     String?
+  estado        Boolean  @default(true)
+  creadoEn      DateTime @default(now()) @map("creado_en") @db.Timestamptz(6)
+  actualizadoEn DateTime @updatedAt @map("actualizado_en") @db.Timestamptz(6)
+
+  bloques BloqueContenido[]
+
+  @@map("paginas_contenido")
+}
+
+/// Bloques (subtitulo + texto + imagen) de una pagina de contenido.
+model BloqueContenido {
+  id            BigInt   @id @default(autoincrement())
+  paginaId      BigInt   @map("pagina_id")
+  subtitulo     String?
+  contenido     String
+  imagenUrl     String?  @map("imagen_url")
+  orden         Int      @default(0)
+  estado        Boolean  @default(true)
+  creadoEn      DateTime @default(now()) @map("creado_en") @db.Timestamptz(6)
+  actualizadoEn DateTime @updatedAt @map("actualizado_en") @db.Timestamptz(6)
+
+  pagina PaginaContenido @relation(fields: [paginaId], references: [id], onDelete: Cascade)
+
+  @@index([paginaId])
+  @@map("bloques_contenido")
+}
+
+/// Banners administrables del home: secciones "Mobiliario" y "Colecciones".
+model HomeBanner {
+  id            BigInt   @id @default(autoincrement())
+  seccion       String   // "mobiliario" | "colecciones"
+  titulo        String?
+  subtitulo     String?
+  etiqueta      String?  // texto sobre la imagen (ej. "Comedor Zafiro - Comedores")
+  imagenUrl     String   @map("imagen_url")
+  enlaceUrl     String?  @map("enlace_url")
+  orden         Int      @default(0)
+  estado        Boolean  @default(true)
+  creadoEn      DateTime @default(now()) @map("creado_en") @db.Timestamptz(6)
+  actualizadoEn DateTime @updatedAt @map("actualizado_en") @db.Timestamptz(6)
+
+  @@index([seccion])
+  @@map("home_banners")
+}
+
+/// Textos del marquee (cinta animada) de la pagina principal.
+model MarqueeItem {
+  id            BigInt   @id @default(autoincrement())
+  texto         String
+  orden         Int      @default(0)
+  estado        Boolean  @default(true)
+  creadoEn      DateTime @default(now()) @map("creado_en") @db.Timestamptz(6)
+  actualizadoEn DateTime @updatedAt @map("actualizado_en") @db.Timestamptz(6)
+
+  @@map("marquee_items")
+}
+
+/// Pasos del proceso "Diseña tu espacio" (administrables).
+model PasoDiseno {
+  id            BigInt   @id @default(autoincrement())
+  titulo        String
+  descripcion   String?
+  imagenUrl     String?  @map("imagen_url")
+  orden         Int      @default(0)
+  estado        Boolean  @default(true)
+  creadoEn      DateTime @default(now()) @map("creado_en") @db.Timestamptz(6)
+  actualizadoEn DateTime @updatedAt @map("actualizado_en") @db.Timestamptz(6)
+
+  @@map("pasos_diseno")
+}
+
+/// Preguntas frecuentes (FAQ) de la pagina principal.
+model Faq {
+  id            BigInt   @id @default(autoincrement())
+  pregunta      String
+  respuesta     String
+  orden         Int      @default(0)
+  estado        Boolean  @default(true)
+  creadoEn      DateTime @default(now()) @map("creado_en") @db.Timestamptz(6)
+  actualizadoEn DateTime @updatedAt @map("actualizado_en") @db.Timestamptz(6)
+
+  @@map("faqs")
+}
+
+/// Servicios que se muestran en la seccion "Que hacemos".
+model Servicio {
+  id            BigInt   @id @default(autoincrement())
+  titulo        String
+  descripcion   String?
+  imagenUrl     String?  @map("imagen_url")
+  orden         Int      @default(0)
+  estado        Boolean  @default(true)
+  creadoEn      DateTime @default(now()) @map("creado_en") @db.Timestamptz(6)
+  actualizadoEn DateTime @updatedAt @map("actualizado_en") @db.Timestamptz(6)
+
+  @@map("servicios")
+}
+
+/// Metricas de la seccion de estadisticas (años de experiencia, artesanos, etc.).
+model Metrica {
+  id            BigInt   @id @default(autoincrement())
+  valor         Int
+  prefijo       String?
+  sufijo        String?
+  etiqueta      String
+  orden         Int      @default(0)
+  estado        Boolean  @default(true)
+  creadoEn      DateTime @default(now()) @map("creado_en") @db.Timestamptz(6)
+  actualizadoEn DateTime @updatedAt @map("actualizado_en") @db.Timestamptz(6)
+
+  @@map("metricas")
 }
 
 /// Proyectos realizados (galeria de trabajos). Contenido administrable.
