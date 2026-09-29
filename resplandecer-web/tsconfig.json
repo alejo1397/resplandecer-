@@ -30,5 +30,13 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+    "prisma/seed.ts",
+    "prisma/seed-categorias-mobiliario.ts",
+    "prisma/seed-demo-contenido.ts",
+    "prisma/fix-textos-latam.ts",
+    "prisma/setup-categorias.ts",
+    "prisma/setup-storage.ts"
+  ]
 }
