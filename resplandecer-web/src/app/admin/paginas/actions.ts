@@ -53,10 +53,11 @@ export async function actualizarBloqueAction(formData: FormData): Promise<void> 
   const paginaId = Number(formData.get("paginaId"));
   const subtitulo = String(formData.get("subtitulo") ?? "").trim() || null;
   const contenido = String(formData.get("contenido") ?? "").trim();
+  const imagenUrl = String(formData.get("imagenUrl") ?? "").trim() || null;
   const orden = Number(formData.get("orden") ?? 0);
   const estado = formData.get("estado") === "on";
   if (!contenido) return;
-  await actualizarBloque(id, { subtitulo, contenido, orden, estado });
+  await actualizarBloque(id, { subtitulo, contenido, imagenUrl, orden, estado });
   revalidatePath(`/admin/paginas/${paginaId}`);
 }
 

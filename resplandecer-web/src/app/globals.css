@@ -49,6 +49,7 @@
   --font-sans: var(--font-body);
   --font-headings: var(--font-headings);
   --font-mono: var(--font-mono);
+  --font-serif: var(--font-serif);
 }
 
 body {

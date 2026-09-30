@@ -36,6 +36,7 @@
     "prisma/seed-categorias-mobiliario.ts",
     "prisma/seed-demo-contenido.ts",
     "prisma/seed-colecciones.ts",
+    "prisma/seed-nosotros.ts",
     "prisma/fix-textos-latam.ts",
     "prisma/setup-categorias.ts",
     "prisma/setup-storage.ts"

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Archivo, Inter, IBM_Plex_Mono } from "next/font/google";
+import { Archivo, Inter, IBM_Plex_Mono, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 
 // Tipografia protagonista (titulos): grotesk, pesos fuertes.
@@ -7,6 +7,13 @@ const archivo = Archivo({
   variable: "--font-headings",
   subsets: ["latin"],
   weight: ["400", "600", "700", "800"],
+});
+
+// Serif editorial (usada en la pagina Nosotros para el look tipo revista).
+const cormorant = Cormorant_Garamond({
+  variable: "--font-serif",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
 });
 
 // Cuerpo de texto.
@@ -37,7 +44,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="es"
-      className={`${archivo.variable} ${inter.variable} ${plexMono.variable} h-full antialiased`}
+      className={`${archivo.variable} ${inter.variable} ${plexMono.variable} ${cormorant.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

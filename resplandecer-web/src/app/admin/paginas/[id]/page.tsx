@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { requireAdmin } from "@/lib/auth/guard";
 import { obtenerPagina } from "@/lib/queries/admin/paginas";
 import { PageHeader, Field, TextInput, TextArea, Checkbox, SubmitButton } from "../../_components/ui";
+import { ImageUploader } from "../../_components/image-uploader";
 import { PaginaForm } from "../pagina-form";
 import { agregarBloqueAction, actualizarBloqueAction, eliminarBloqueAction } from "../actions";
 
@@ -47,6 +48,12 @@ export default async function EditarPaginaPage({
                   <Field label="Contenido">
                     <TextArea name="contenido" defaultValue={b.contenido} required />
                   </Field>
+                  <ImageUploader
+                    fieldName="imagenUrl"
+                    carpeta="paginas"
+                    defaultUrl={b.imagenUrl ?? ""}
+                    label="Imagen de la sección (opcional)"
+                  />
                   <div className="flex items-center gap-4">
                     <Field label="Orden">
                       <TextInput name="orden" type="number" defaultValue={b.orden} />
@@ -86,6 +93,7 @@ export default async function EditarPaginaPage({
             <Field label="Contenido">
               <TextArea name="contenido" required />
             </Field>
+            <ImageUploader fieldName="imagenUrl" carpeta="paginas" label="Imagen de la sección (opcional)" />
             <Field label="Orden">
               <TextInput name="orden" type="number" defaultValue={pagina.bloques.length} />
             </Field>
