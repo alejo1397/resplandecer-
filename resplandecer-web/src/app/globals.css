@@ -108,9 +108,14 @@ body {
   z-index: -1;
 }
 .pill:hover::after { transform: translateY(0); }
+/* pill-dark: texto oscuro que, al hover, el relleno se vuelve oscuro,
+   por lo que el texto debe pasar a claro para seguir siendo legible. */
 .pill-dark:hover { color: var(--paper); }
-.pill-dark:hover .pill-text { color: var(--ink); }
+.pill-dark:hover .pill-text { color: var(--paper); }
+/* pill-light: texto claro que, al hover, el relleno se vuelve claro,
+   por lo que el texto debe pasar a oscuro para seguir siendo legible. */
 .pill-light:hover { color: var(--ink); }
+.pill-light:hover .pill-text { color: var(--ink); }
 
 /* Reveal de entrada (se activa al anadir .is-visible).
    Salvaguarda CSS: aunque el JS no corra, un fallback lo revela a los 1.5s
