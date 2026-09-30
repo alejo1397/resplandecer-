@@ -107,13 +107,13 @@ export default async function NosotrosPage() {
         aria-labelledby="creamos-diseno-title"
         className="grid grid-cols-1 bg-white md:grid-cols-2"
       >
-        <div className="relative min-h-[clamp(340px,56vw,620px)] md:min-h-[560px]">
+        <div className="relative min-h-[clamp(340px,56vw,620px)] bg-[#f3f0eb] md:min-h-[560px]">
           <Image
             src={diseno.imagen}
             alt="Detalle de mobiliario artesanal de Resplandecer"
             fill
             sizes="(max-width: 768px) 100vw, 50vw"
-            className="object-cover"
+            className="object-contain"
           />
         </div>
         <div className="flex flex-col justify-center px-[clamp(1.5rem,7vw,7rem)] py-[clamp(3rem,6vw,5rem)]">
@@ -145,13 +145,13 @@ export default async function NosotrosPage() {
             {fundador.texto}
           </p>
         </div>
-        <div className="relative min-h-[clamp(340px,56vw,620px)] md:order-2 md:min-h-[560px]">
+        <div className="relative min-h-[clamp(340px,56vw,620px)] bg-[#f3f0eb] md:order-2 md:min-h-[560px]">
           <Image
             src={fundador.imagen}
             alt="Sebastián Arismendy, diseñador de Resplandecer"
             fill
             sizes="(max-width: 768px) 100vw, 50vw"
-            className="object-cover"
+            className="object-contain"
           />
         </div>
       </section>
