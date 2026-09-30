@@ -112,6 +112,46 @@ model ImagenCategoria {
   @@map("imagenes_categoria")
 }
 
+/// Colecciones (concepto editorial). Entidad INDEPENDIENTE de categorias y
+/// productos. Se listan en /colecciones y en el banner de colecciones del home.
+model Coleccion {
+  id              BigInt   @id @default(autoincrement())
+  titulo          String
+  slug            String   @unique
+  resumen         String?
+  descripcion     String?
+  imagenUrl       String?  @map("imagen_url")
+  imagenAlt       String?  @map("imagen_alt")
+  whatsappTexto   String?  @map("whatsapp_texto")
+  whatsappMensaje String?  @map("whatsapp_mensaje")
+  orden           Int      @default(0)
+  estado          Boolean  @default(true)
+  creadoEn        DateTime @default(now()) @map("creado_en") @db.Timestamptz(6)
+  actualizadoEn   DateTime @updatedAt @map("actualizado_en") @db.Timestamptz(6)
+
+  imagenes ImagenColeccion[]
+
+  @@map("colecciones")
+}
+
+/// Imagenes de la galeria de una coleccion.
+model ImagenColeccion {
+  id               BigInt   @id @default(autoincrement())
+  coleccionId      BigInt   @map("coleccion_id")
+  url              String
+  textoAlternativo String?  @map("texto_alternativo")
+  esPrincipal      Boolean  @default(false) @map("es_principal")
+  orden            Int      @default(0)
+  estado           Boolean  @default(true)
+  creadoEn         DateTime @default(now()) @map("creado_en") @db.Timestamptz(6)
+  actualizadoEn    DateTime @updatedAt @map("actualizado_en") @db.Timestamptz(6)
+
+  coleccion Coleccion @relation(fields: [coleccionId], references: [id], onDelete: Cascade)
+
+  @@index([coleccionId])
+  @@map("imagenes_coleccion")
+}
+
 /// Productos / muebles del catalogo.
 model Catalogo {
   id            BigInt   @id @default(autoincrement())

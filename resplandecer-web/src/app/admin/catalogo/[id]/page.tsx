@@ -1,12 +1,13 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { requireAdmin } from "@/lib/auth/guard";
-import { obtenerProducto } from "@/lib/queries/admin/catalogo";
+import { obtenerProducto, listarProductos } from "@/lib/queries/admin/catalogo";
 import { listarCategorias } from "@/lib/queries/admin/categorias";
 import { PageHeader, Checkbox, SubmitButton } from "../../_components/ui";
+import { ListaCompacta } from "../../_components/lista-compacta";
 import { ProductoForm } from "../producto-form";
 import { ImageUploader } from "../../_components/image-uploader";
-import { agregarImagenAction, eliminarImagenAction } from "../actions";
+import { agregarImagenAction, eliminarImagenAction, marcarPrincipalProductoAction } from "../actions";
 
 export default async function EditarProductoPage({
   params,
@@ -16,19 +17,33 @@ export default async function EditarProductoPage({
   await requireAdmin();
   const { id } = await params;
   const productoId = Number(id);
-  const [producto, categorias] = await Promise.all([
+  const [producto, categorias, productos] = await Promise.all([
     obtenerProducto(productoId),
     listarCategorias(),
+    listarProductos(),
   ]);
   if (!producto) notFound();
 
   return (
-    <div className="flex max-w-4xl flex-col gap-10">
-      <div>
-        <PageHeader titulo="Editar producto" descripcion={producto.nombre} />
-        <ProductoForm
-          producto={producto}
-          categorias={categorias.map((c) => ({ id: c.id, nombre: c.nombre }))}
+    <div className="flex flex-col gap-10">
+      <div className="flex flex-col gap-8 lg:flex-row">
+        <div className="flex-1">
+          <PageHeader titulo="Editar producto" descripcion={producto.nombre} />
+          <ProductoForm
+            producto={producto}
+            categorias={categorias.map((c) => ({ id: c.id, nombre: c.nombre }))}
+          />
+        </div>
+        <ListaCompacta
+          base="/admin/catalogo"
+          actualId={producto.id}
+          titulo="Ir a otro producto"
+          items={productos.map((p) => ({
+            id: p.id,
+            titulo: p.nombre,
+            activo: p.estado,
+            imagenUrl: p.imagenes[0]?.url ?? null,
+          }))}
         />
       </div>
 
@@ -48,9 +63,17 @@ export default async function EditarProductoPage({
                   <Image src={img.url} alt={img.textoAlternativo ?? ""} fill className="object-cover" unoptimized />
                 </div>
                 {img.esPrincipal ? (
-                  <span className="mt-1 inline-block text-xs text-gray-500">Principal</span>
-                ) : null}
-                <form action={eliminarImagenAction} className="mt-2">
+                  <span className="mt-1 inline-block text-xs font-medium text-green-700">Principal</span>
+                ) : (
+                  <form action={marcarPrincipalProductoAction} className="mt-1">
+                    <input type="hidden" name="id" value={img.id} />
+                    <input type="hidden" name="catalogoId" value={producto.id} />
+                    <button type="submit" className="text-xs text-gray-600 hover:underline">
+                      Marcar principal
+                    </button>
+                  </form>
+                )}
+                <form action={eliminarImagenAction} className="mt-1">
                   <input type="hidden" name="id" value={img.id} />
                   <input type="hidden" name="catalogoId" value={producto.id} />
                   <button type="submit" className="text-xs text-red-600 hover:underline">

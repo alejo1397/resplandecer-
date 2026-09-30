@@ -10,6 +10,7 @@ import {
   cambiarEstadoProyecto,
   agregarImagenProyecto,
   eliminarImagenProyecto,
+  marcarImagenPrincipalProyecto,
 } from "@/lib/queries/admin/proyectos";
 
 function toSlug(texto: string): string {
@@ -55,7 +56,7 @@ export async function guardarProyectoAction(
 
   revalidatePath("/admin/proyectos");
   updateTag(CACHE_TAGS.proyectos);
-  redirect("/admin/proyectos");
+  redirect(idRaw ? "/admin/proyectos?ok=actualizado" : "/admin/proyectos?ok=creado");
 }
 
 export async function alternarEstadoProyectoAction(formData: FormData): Promise<void> {
@@ -83,6 +84,15 @@ export async function eliminarImagenProyectoAction(formData: FormData): Promise<
   const id = Number(formData.get("id"));
   const proyectoId = Number(formData.get("proyectoId"));
   await eliminarImagenProyecto(id);
+  revalidatePath(`/admin/proyectos/${proyectoId}`);
+  updateTag(CACHE_TAGS.proyectos);
+}
+
+export async function marcarPrincipalProyectoAction(formData: FormData): Promise<void> {
+  await requireAdmin();
+  const id = Number(formData.get("id"));
+  const proyectoId = Number(formData.get("proyectoId"));
+  await marcarImagenPrincipalProyecto(id, proyectoId);
   revalidatePath(`/admin/proyectos/${proyectoId}`);
   updateTag(CACHE_TAGS.proyectos);
 }

@@ -75,7 +75,7 @@ export function Header({ nombreSitio }: { nombreSitio: string }) {
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
           <Link href="/" aria-label={nombreSitio} className="flex items-center leading-none">
-            <Logo alto={26} oscuro={oscuro} />
+            <Logo alto={40} oscuro={oscuro} />
           </Link>
 
           {/* Navegacion escritorio */}
@@ -120,7 +120,7 @@ export function Header({ nombreSitio }: { nombreSitio: string }) {
         >
           {/* Barra superior del overlay con boton cerrar */}
           <div className="flex items-center justify-between border-b hairline-dark px-5 py-4">
-            <Logo alto={26} oscuro />
+            <Logo alto={34} oscuro />
             <span className="sr-only">{nombreSitio}</span>
             <button
               type="button"

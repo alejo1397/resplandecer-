@@ -2,14 +2,22 @@ import { requireAdmin } from "@/lib/auth/guard";
 import { listarProductos } from "@/lib/queries/admin/catalogo";
 import { formatCOP } from "@/lib/serializers";
 import { PageHeader, LinkButton, TableShell, EstadoBadge, EmptyState } from "../_components/ui";
+import { AccionConfirmable } from "../_components/accion-confirmable";
+import { Flash } from "../_components/flash";
 import { alternarEstadoProductoAction } from "./actions";
 
-export default async function CatalogoPage() {
+export default async function CatalogoPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ ok?: string }>;
+}) {
   await requireAdmin();
+  const { ok } = await searchParams;
   const productos = await listarProductos();
 
   return (
     <div>
+      <Flash ok={ok} />
       <PageHeader
         titulo="Catálogo"
         descripcion="Gestiona los productos y sus imágenes."
@@ -41,13 +49,18 @@ export default async function CatalogoPage() {
                   <a href={`/admin/catalogo/${p.id}`} className="text-sm font-medium text-gray-900 hover:underline">
                     Editar
                   </a>
-                  <form action={alternarEstadoProductoAction}>
-                    <input type="hidden" name="id" value={p.id} />
-                    <input type="hidden" name="estado" value={String(p.estado)} />
-                    <button type="submit" className="text-sm text-gray-500 hover:underline">
-                      {p.estado ? "Inactivar" : "Activar"}
-                    </button>
-                  </form>
+                  <AccionConfirmable
+                    action={alternarEstadoProductoAction}
+                    campos={{ id: p.id, estado: String(p.estado) }}
+                    etiqueta={p.estado ? "Inactivar" : "Activar"}
+                    variante="neutro"
+                    confirmacion={
+                      p.estado
+                        ? "¿Seguro que deseas inactivar este elemento? Dejará de mostrarse en el sitio público."
+                        : "¿Seguro que deseas cambiar el estado de este elemento?"
+                    }
+                    textoCargando="Actualizando..."
+                  />
                 </div>
               </td>
             </tr>

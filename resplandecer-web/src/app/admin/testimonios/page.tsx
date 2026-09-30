@@ -1,6 +1,7 @@
 import { requireAdmin } from "@/lib/auth/guard";
 import { listarTestimonios } from "@/lib/queries/admin/contenido";
 import { PageHeader, LinkButton, TableShell, EstadoBadge, EmptyState } from "../_components/ui";
+import { AccionConfirmable } from "../_components/accion-confirmable";
 import { alternarEstadoTestimonioAction } from "./actions";
 
 export default async function TestimoniosPage() {
@@ -33,13 +34,18 @@ export default async function TestimoniosPage() {
                   <a href={`/admin/testimonios/${t.id}`} className="text-sm font-medium text-gray-900 hover:underline">
                     Editar
                   </a>
-                  <form action={alternarEstadoTestimonioAction}>
-                    <input type="hidden" name="id" value={t.id} />
-                    <input type="hidden" name="estado" value={String(t.estado)} />
-                    <button type="submit" className="text-sm text-gray-500 hover:underline">
-                      {t.estado ? "Inactivar" : "Activar"}
-                    </button>
-                  </form>
+                  <AccionConfirmable
+                    action={alternarEstadoTestimonioAction}
+                    campos={{ id: t.id, estado: String(t.estado) }}
+                    etiqueta={t.estado ? "Inactivar" : "Activar"}
+                    variante="neutro"
+                    confirmacion={
+                      t.estado
+                        ? "¿Seguro que deseas inactivar este elemento? Dejará de mostrarse en el sitio público."
+                        : "¿Seguro que deseas cambiar el estado de este elemento?"
+                    }
+                    textoCargando="Actualizando..."
+                  />
                 </div>
               </td>
             </tr>

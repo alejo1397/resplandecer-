@@ -74,6 +74,12 @@ export async function agregarImagenProyecto(
   proyectoId: number,
   input: { url: string; textoAlternativo?: string | null; esPrincipal?: boolean; orden?: number },
 ) {
+  if (input.esPrincipal) {
+    await prisma.imagenProyecto.updateMany({
+      where: { proyectoId },
+      data: { esPrincipal: false },
+    });
+  }
   const imagen = await prisma.imagenProyecto.create({
     data: {
       proyectoId,
@@ -84,6 +90,15 @@ export async function agregarImagenProyecto(
     },
   });
   return serialize(imagen);
+}
+
+/** Marca una imagen como principal (y desmarca las demás del proyecto). */
+export async function marcarImagenPrincipalProyecto(id: number, proyectoId: number) {
+  await prisma.imagenProyecto.updateMany({
+    where: { proyectoId },
+    data: { esPrincipal: false },
+  });
+  await prisma.imagenProyecto.update({ where: { id }, data: { esPrincipal: true } });
 }
 
 export async function eliminarImagenProyecto(id: number) {

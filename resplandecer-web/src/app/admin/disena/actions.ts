@@ -40,7 +40,7 @@ export async function guardarPasoAction(
 
   revalidatePath("/admin/disena");
   updateTag(CACHE_TAGS.pasosDiseno);
-  redirect("/admin/disena");
+  redirect(idRaw ? "/admin/disena?ok=actualizado" : "/admin/disena?ok=creado");
 }
 
 export async function alternarEstadoPasoAction(formData: FormData): Promise<void> {

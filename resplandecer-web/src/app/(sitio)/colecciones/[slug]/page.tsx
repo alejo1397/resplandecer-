@@ -1,37 +1,34 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getCategoriaPorSlug, getProductosPorCategoria } from "@/lib/queries";
+import { getColeccionPorSlug } from "@/lib/queries";
 import { getConfiguracionSitioCached } from "@/lib/cache";
-import { ProductoCard } from "../../_components/producto-card";
 import { GaleriaColeccion } from "./galeria";
 
-export default async function CategoriaPage({
+export default async function ColeccionDetallePage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const [categoria, config] = await Promise.all([
-    getCategoriaPorSlug(slug),
+  const [coleccion, config] = await Promise.all([
+    getColeccionPorSlug(slug),
     getConfiguracionSitioCached(),
   ]);
-  if (!categoria) notFound();
-
-  const productos = await getProductosPorCategoria(slug);
+  if (!coleccion) notFound();
 
   const whatsapp = config["whatsapp_numero"];
-  const botonTexto = categoria.whatsappTexto || "Pregunta por la colección";
+  const botonTexto = coleccion.whatsappTexto || "Pregunta por la colección";
   const mensaje = encodeURIComponent(
-    categoria.whatsappMensaje || `Hola, quiero información sobre la colección ${categoria.nombre}.`,
+    coleccion.whatsappMensaje || `Hola, quiero información sobre la colección ${coleccion.titulo}.`,
   );
   const whatsappHref = whatsapp ? `https://wa.me/${whatsapp}?text=${mensaje}` : null;
 
-  // Galería: usa las imágenes de la colección; si no hay, cae a la portada.
+  // Galería: imágenes de la colección; si no hay, cae a la portada.
   const galeria =
-    categoria.imagenes.length > 0
-      ? categoria.imagenes.map((img) => ({ url: img.url, textoAlternativo: img.textoAlternativo }))
-      : categoria.imagenUrl
-        ? [{ url: categoria.imagenUrl, textoAlternativo: categoria.nombre }]
+    coleccion.imagenes.length > 0
+      ? coleccion.imagenes.map((img) => ({ url: img.url, textoAlternativo: img.textoAlternativo }))
+      : coleccion.imagenUrl
+        ? [{ url: coleccion.imagenUrl, textoAlternativo: coleccion.imagenAlt ?? coleccion.titulo }]
         : [];
 
   return (
@@ -42,14 +39,17 @@ export default async function CategoriaPage({
 
       <div className="mt-6 grid items-start gap-10 lg:grid-cols-2">
         {/* Galería a la izquierda */}
-        <GaleriaColeccion imagenes={galeria} titulo={categoria.nombre} />
+        <GaleriaColeccion imagenes={galeria} titulo={coleccion.titulo} />
 
         {/* Texto a la derecha */}
         <div className="lg:pt-4">
-          <h1 className="display text-[clamp(2.2rem,6vw,4rem)] text-ink">{categoria.nombre}</h1>
-          {categoria.descripcion ? (
+          <h1 className="display text-[clamp(2.2rem,6vw,4rem)] text-ink">{coleccion.titulo}</h1>
+          {coleccion.resumen ? (
+            <p className="mt-3 text-lg text-ink/70">{coleccion.resumen}</p>
+          ) : null}
+          {coleccion.descripcion ? (
             <p className="mt-5 whitespace-pre-line text-base leading-relaxed text-ink/70">
-              {categoria.descripcion}
+              {coleccion.descripcion}
             </p>
           ) : null}
 
@@ -65,22 +65,6 @@ export default async function CategoriaPage({
           ) : null}
         </div>
       </div>
-
-      {/* Productos de la colección */}
-      {productos.length > 0 ? (
-        <div className="mt-20">
-          <h2 className="display text-[clamp(1.4rem,3vw,2rem)] text-ink">Productos de la colección</h2>
-          <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-4">
-            {productos.map((p) => (
-              <div key={p.id} className="reveal">
-                <ProductoCard producto={p} />
-              </div>
-            ))}
-          </div>
-        </div>
-      ) : (
-        <p className="mt-16 text-sm text-ink/50">Aún no hay productos en esta colección.</p>
-      )}
     </div>
   );
 }

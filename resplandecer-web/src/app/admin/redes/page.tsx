@@ -1,6 +1,7 @@
 import { requireAdmin } from "@/lib/auth/guard";
 import { listarRedesSociales } from "@/lib/queries/admin/contenido";
 import { PageHeader, LinkButton, TableShell, EstadoBadge, EmptyState } from "../_components/ui";
+import { AccionConfirmable } from "../_components/accion-confirmable";
 import { alternarEstadoRedAction } from "./actions";
 
 export default async function RedesPage() {
@@ -36,13 +37,18 @@ export default async function RedesPage() {
                   <a href={`/admin/redes/${r.id}`} className="text-sm font-medium text-gray-900 hover:underline">
                     Editar
                   </a>
-                  <form action={alternarEstadoRedAction}>
-                    <input type="hidden" name="id" value={r.id} />
-                    <input type="hidden" name="estado" value={String(r.estado)} />
-                    <button type="submit" className="text-sm text-gray-500 hover:underline">
-                      {r.estado ? "Inactivar" : "Activar"}
-                    </button>
-                  </form>
+                  <AccionConfirmable
+                    action={alternarEstadoRedAction}
+                    campos={{ id: r.id, estado: String(r.estado) }}
+                    etiqueta={r.estado ? "Inactivar" : "Activar"}
+                    variante="neutro"
+                    confirmacion={
+                      r.estado
+                        ? "¿Seguro que deseas inactivar este elemento? Dejará de mostrarse en el sitio público."
+                        : "¿Seguro que deseas cambiar el estado de este elemento?"
+                    }
+                    textoCargando="Actualizando..."
+                  />
                 </div>
               </td>
             </tr>

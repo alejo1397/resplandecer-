@@ -40,7 +40,7 @@ export async function guardarServicioAction(
 
   revalidatePath("/admin/servicios");
   updateTag(CACHE_TAGS.servicios);
-  redirect("/admin/servicios");
+  redirect(idRaw ? "/admin/servicios?ok=actualizado" : "/admin/servicios?ok=creado");
 }
 
 export async function alternarEstadoServicioAction(formData: FormData): Promise<void> {

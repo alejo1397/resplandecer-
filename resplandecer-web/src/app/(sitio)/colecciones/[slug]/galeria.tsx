@@ -13,11 +13,28 @@ type Imagen = { url: string; textoAlternativo: string | null };
 export function GaleriaColeccion({ imagenes, titulo }: { imagenes: Imagen[]; titulo: string }) {
   const [activa, setActiva] = useState(0);
   const [lightbox, setLightbox] = useState(false);
+  const [zoom, setZoom] = useState(1);
 
   const total = imagenes.length;
 
-  const siguiente = useCallback(() => setActiva((i) => (i + 1) % total), [total]);
-  const anterior = useCallback(() => setActiva((i) => (i - 1 + total) % total), [total]);
+  const siguiente = useCallback(() => {
+    setActiva((i) => (i + 1) % total);
+    setZoom(1);
+  }, [total]);
+  const anterior = useCallback(() => {
+    setActiva((i) => (i - 1 + total) % total);
+    setZoom(1);
+  }, [total]);
+
+  function cerrarLightbox() {
+    setLightbox(false);
+    setZoom(1);
+  }
+
+  function onWheel(e: React.WheelEvent) {
+    e.preventDefault();
+    setZoom((z) => Math.min(4, Math.max(1, z - e.deltaY * 0.0015)));
+  }
 
   useEffect(() => {
     if (total <= 1) return;
@@ -30,7 +47,7 @@ export function GaleriaColeccion({ imagenes, titulo }: { imagenes: Imagen[]; tit
   useEffect(() => {
     if (!lightbox) return;
     function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") setLightbox(false);
+      if (e.key === "Escape") cerrarLightbox();
       if (e.key === "ArrowRight") siguiente();
       if (e.key === "ArrowLeft") anterior();
     }
@@ -56,7 +73,7 @@ export function GaleriaColeccion({ imagenes, titulo }: { imagenes: Imagen[]; tit
     <div>
       <button
         type="button"
-        onClick={() => setLightbox(true)}
+        onClick={() => { setZoom(1); setLightbox(true); }}
         className="relative block aspect-[4/3] w-full overflow-hidden rounded-2xl bg-ink/5"
         aria-label="Ampliar imagen"
       >
@@ -95,11 +112,11 @@ export function GaleriaColeccion({ imagenes, titulo }: { imagenes: Imagen[]; tit
           role="dialog"
           aria-modal="true"
           aria-label={`Imagen de ${titulo}`}
-          onClick={() => setLightbox(false)}
+          onClick={cerrarLightbox}
         >
           <button
             type="button"
-            onClick={() => setLightbox(false)}
+            onClick={cerrarLightbox}
             aria-label="Cerrar"
             className="absolute right-4 top-4 text-3xl text-white/80 hover:text-white"
           >
@@ -120,14 +137,22 @@ export function GaleriaColeccion({ imagenes, titulo }: { imagenes: Imagen[]; tit
             </button>
           ) : null}
 
-          <div className="relative h-[80vh] w-[90vw] max-w-4xl" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="relative h-[80vh] w-[90vw] max-w-4xl overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+            onWheel={onWheel}
+          >
             <Image
               src={actual.url}
               alt={actual.textoAlternativo ?? titulo}
               fill
               sizes="90vw"
-              className="object-contain"
+              className="object-contain transition-transform duration-100"
+              style={{ transform: `scale(${zoom})` }}
             />
+            <span className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-black/50 px-3 py-1 text-xs text-white/80">
+              Usa la rueda del mouse para acercar
+            </span>
           </div>
 
           {total > 1 ? (

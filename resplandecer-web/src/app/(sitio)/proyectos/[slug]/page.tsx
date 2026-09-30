@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProyectoPorSlug } from "@/lib/queries";
+import { Lightbox } from "../../_components/lightbox";
 
 export default async function ProyectoPage({
   params,
@@ -31,19 +31,14 @@ export default async function ProyectoPage({
       ) : null}
 
       {proyecto.imagenes.length > 0 ? (
-        <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {proyecto.imagenes.map((img) => (
-            <div key={img.id} className="reveal relative aspect-[4/3] overflow-hidden rounded-2xl bg-ink/5">
-              <Image
-                src={img.url}
-                alt={img.textoAlternativo ?? proyecto.titulo}
-                fill
-                sizes="(max-width: 640px) 100vw, 50vw"
-                className="object-cover"
-              />
-            </div>
-          ))}
-        </div>
+        <Lightbox
+          className="mt-10"
+          titulo={proyecto.titulo}
+          imagenes={proyecto.imagenes.map((img) => ({
+            url: img.url,
+            alt: img.textoAlternativo ?? proyecto.titulo,
+          }))}
+        />
       ) : null}
     </div>
   );

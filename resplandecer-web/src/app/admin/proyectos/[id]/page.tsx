@@ -1,11 +1,16 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { requireAdmin } from "@/lib/auth/guard";
-import { obtenerProyecto } from "@/lib/queries/admin/proyectos";
+import { obtenerProyecto, listarProyectos } from "@/lib/queries/admin/proyectos";
 import { PageHeader, Checkbox, SubmitButton } from "../../_components/ui";
+import { ListaCompacta } from "../../_components/lista-compacta";
 import { ProyectoForm } from "../proyecto-form";
 import { ImageUploader } from "../../_components/image-uploader";
-import { agregarImagenProyectoAction, eliminarImagenProyectoAction } from "../actions";
+import {
+  agregarImagenProyectoAction,
+  eliminarImagenProyectoAction,
+  marcarPrincipalProyectoAction,
+} from "../actions";
 
 export default async function EditarProyectoPage({
   params,
@@ -14,14 +19,30 @@ export default async function EditarProyectoPage({
 }) {
   await requireAdmin();
   const { id } = await params;
-  const proyecto = await obtenerProyecto(Number(id));
+  const [proyecto, proyectos] = await Promise.all([
+    obtenerProyecto(Number(id)),
+    listarProyectos(),
+  ]);
   if (!proyecto) notFound();
 
   return (
-    <div className="flex max-w-4xl flex-col gap-10">
-      <div>
-        <PageHeader titulo="Editar proyecto" descripcion={proyecto.titulo} />
-        <ProyectoForm proyecto={proyecto} />
+    <div className="flex flex-col gap-10">
+      <div className="flex flex-col gap-8 lg:flex-row">
+        <div className="flex-1">
+          <PageHeader titulo="Editar proyecto" descripcion={proyecto.titulo} />
+          <ProyectoForm proyecto={proyecto} />
+        </div>
+        <ListaCompacta
+          base="/admin/proyectos"
+          actualId={proyecto.id}
+          titulo="Ir a otro proyecto"
+          items={proyectos.map((p) => ({
+            id: p.id,
+            titulo: p.titulo,
+            activo: p.estado,
+            imagenUrl: p.imagenes[0]?.url ?? null,
+          }))}
+        />
       </div>
 
       <section>
@@ -40,9 +61,17 @@ export default async function EditarProyectoPage({
                   <Image src={img.url} alt={img.textoAlternativo ?? ""} fill className="object-cover" unoptimized />
                 </div>
                 {img.esPrincipal ? (
-                  <span className="mt-1 inline-block text-xs text-gray-500">Principal</span>
-                ) : null}
-                <form action={eliminarImagenProyectoAction} className="mt-2">
+                  <span className="mt-1 inline-block text-xs font-medium text-green-700">Principal</span>
+                ) : (
+                  <form action={marcarPrincipalProyectoAction} className="mt-1">
+                    <input type="hidden" name="id" value={img.id} />
+                    <input type="hidden" name="proyectoId" value={proyecto.id} />
+                    <button type="submit" className="text-xs text-gray-600 hover:underline">
+                      Marcar principal
+                    </button>
+                  </form>
+                )}
+                <form action={eliminarImagenProyectoAction} className="mt-1">
                   <input type="hidden" name="id" value={img.id} />
                   <input type="hidden" name="proyectoId" value={proyecto.id} />
                   <button type="submit" className="text-xs text-red-600 hover:underline">

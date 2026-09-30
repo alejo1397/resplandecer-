@@ -1,6 +1,8 @@
 import { requireAdmin } from "@/lib/auth/guard";
 import { listarHomeBanners } from "@/lib/queries/admin/home";
 import { PageHeader, LinkButton, TableShell, EstadoBadge, EmptyState } from "../_components/ui";
+import { AccionConfirmable } from "../_components/accion-confirmable";
+import { Flash } from "../_components/flash";
 import { alternarEstadoBannerAction, eliminarBannerAction } from "./actions";
 
 const SECCION_LABEL: Record<string, string> = {
@@ -8,12 +10,18 @@ const SECCION_LABEL: Record<string, string> = {
   colecciones: "Colecciones",
 };
 
-export default async function BannersPage() {
+export default async function BannersPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ ok?: string }>;
+}) {
   await requireAdmin();
+  const { ok } = await searchParams;
   const banners = await listarHomeBanners();
 
   return (
     <div>
+      <Flash ok={ok} />
       <PageHeader
         titulo="Banners del inicio"
         descripcion="Gestiona los banners de Mobiliario y Colecciones (debajo del marquee)."
@@ -37,19 +45,25 @@ export default async function BannersPage() {
                   <a href={`/admin/banners/${b.id}`} className="text-sm font-medium text-gray-900 hover:underline">
                     Editar
                   </a>
-                  <form action={alternarEstadoBannerAction}>
-                    <input type="hidden" name="id" value={b.id} />
-                    <input type="hidden" name="estado" value={String(b.estado)} />
-                    <button type="submit" className="text-sm text-gray-500 hover:underline">
-                      {b.estado ? "Inactivar" : "Activar"}
-                    </button>
-                  </form>
-                  <form action={eliminarBannerAction}>
-                    <input type="hidden" name="id" value={b.id} />
-                    <button type="submit" className="text-sm text-red-600 hover:underline">
-                      Eliminar
-                    </button>
-                  </form>
+                  <AccionConfirmable
+                    action={alternarEstadoBannerAction}
+                    campos={{ id: b.id, estado: String(b.estado) }}
+                    etiqueta={b.estado ? "Inactivar" : "Activar"}
+                    variante="neutro"
+                    confirmacion={
+                      b.estado
+                        ? "¿Seguro que deseas inactivar este elemento? Dejará de mostrarse en el sitio público."
+                        : "¿Seguro que deseas cambiar el estado de este elemento?"
+                    }
+                    textoCargando="Actualizando..."
+                  />
+                  <AccionConfirmable
+                    action={eliminarBannerAction}
+                    campos={{ id: b.id }}
+                    etiqueta="Eliminar"
+                    confirmacion="¿Seguro que deseas eliminar este elemento? Esta acción no se puede deshacer."
+                    textoCargando="Eliminando..."
+                  />
                 </div>
               </td>
             </tr>

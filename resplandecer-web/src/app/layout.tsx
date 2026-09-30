@@ -27,6 +27,10 @@ export const metadata: Metadata = {
   title: "Resplandecer | Diseño & Producción de Mobiliario",
   description:
     "Diseño y producción de mobiliario a la medida. Convertimos tus espacios en lo que sueñas.",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

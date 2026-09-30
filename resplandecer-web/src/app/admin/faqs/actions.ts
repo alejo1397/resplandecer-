@@ -40,7 +40,7 @@ export async function guardarFaqAction(
 
   revalidatePath("/admin/faqs");
   updateTag(CACHE_TAGS.faqs);
-  redirect("/admin/faqs");
+  redirect(idRaw ? "/admin/faqs?ok=actualizado" : "/admin/faqs?ok=creado");
 }
 
 export async function alternarEstadoFaqAction(formData: FormData): Promise<void> {

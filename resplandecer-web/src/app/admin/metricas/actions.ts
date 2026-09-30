@@ -42,7 +42,7 @@ export async function guardarMetricaAction(
 
   revalidatePath("/admin/metricas");
   updateTag(CACHE_TAGS.metricas);
-  redirect("/admin/metricas");
+  redirect(idRaw ? "/admin/metricas?ok=actualizado" : "/admin/metricas?ok=creado");
 }
 
 export async function alternarEstadoMetricaAction(formData: FormData): Promise<void> {

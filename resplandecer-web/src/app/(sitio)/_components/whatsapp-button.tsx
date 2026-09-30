@@ -2,15 +2,15 @@
 export function WhatsAppButton({ numero, mensaje }: { numero?: string; mensaje?: string }) {
   if (!numero) return null;
 
-  const texto = encodeURIComponent(mensaje ?? "Hola, quiero mas informacion.");
+  const texto = encodeURIComponent(mensaje ?? "Hola, quiero más información.");
   const href = `https://wa.me/${numero}?text=${texto}`;
 
   return (
     <a
       href={href}
       target="_blank"
-      rel="noreferrer"
-      aria-label="Escribenos por WhatsApp"
+      rel="noopener noreferrer"
+      aria-label="Escríbenos por WhatsApp"
       className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-green-500 text-white shadow-lg transition hover:bg-green-600"
     >
       <svg viewBox="0 0 24 24" className="h-7 w-7 fill-current" aria-hidden="true">

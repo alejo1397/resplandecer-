@@ -8,7 +8,7 @@ import {
   getMetricasCached,
   getMarqueeItemsCached,
   getBannersMobiliarioCached,
-  getBannersColeccionesCached,
+  getColeccionesCached,
 } from "@/lib/cache";
 import { ProductoCard } from "./_components/producto-card";
 import { HeroMedia } from "./_components/hero-media";
@@ -36,7 +36,7 @@ export default async function InicioPage() {
     metricas,
     marqueeItems,
     bannersMobiliario,
-    bannersColecciones,
+    colecciones,
   ] = await Promise.all([
     getConfiguracionSitioCached(),
     getProductosDestacadosCached(),
@@ -46,8 +46,20 @@ export default async function InicioPage() {
     getMetricasCached(),
     getMarqueeItemsCached(),
     getBannersMobiliarioCached(),
-    getBannersColeccionesCached(),
+    getColeccionesCached(),
   ]);
+
+  // Banner de colecciones: usa la MISMA fuente que /colecciones (tabla colecciones).
+  const bannersColecciones = colecciones
+    .filter((c) => Boolean(c.imagenUrl))
+    .map((c) => ({
+      id: c.id,
+      titulo: c.titulo,
+      subtitulo: null,
+      etiqueta: c.titulo,
+      imagenUrl: c.imagenUrl as string,
+      enlaceUrl: `/colecciones/${c.slug}`,
+    }));
 
   // Marquee: fallback a textos base si el panel no tiene ninguno.
   const marquee =

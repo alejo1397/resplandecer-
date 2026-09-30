@@ -1,14 +1,22 @@
 import { requireAdmin } from "@/lib/auth/guard";
 import { listarPasosDiseno } from "@/lib/queries/admin/home";
 import { PageHeader, LinkButton, TableShell, EstadoBadge, EmptyState } from "../_components/ui";
+import { AccionConfirmable } from "../_components/accion-confirmable";
+import { Flash } from "../_components/flash";
 import { alternarEstadoPasoAction, eliminarPasoAction } from "./actions";
 
-export default async function DisenaPage() {
+export default async function DisenaPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ ok?: string }>;
+}) {
   await requireAdmin();
+  const { ok } = await searchParams;
   const pasos = await listarPasosDiseno();
 
   return (
     <div>
+      <Flash ok={ok} />
       <PageHeader
         titulo="Diseña tu espacio"
         descripcion="Gestiona los pasos del proceso de diseño personalizado."
@@ -31,19 +39,25 @@ export default async function DisenaPage() {
                   <a href={`/admin/disena/${p.id}`} className="text-sm font-medium text-gray-900 hover:underline">
                     Editar
                   </a>
-                  <form action={alternarEstadoPasoAction}>
-                    <input type="hidden" name="id" value={p.id} />
-                    <input type="hidden" name="estado" value={String(p.estado)} />
-                    <button type="submit" className="text-sm text-gray-500 hover:underline">
-                      {p.estado ? "Inactivar" : "Activar"}
-                    </button>
-                  </form>
-                  <form action={eliminarPasoAction}>
-                    <input type="hidden" name="id" value={p.id} />
-                    <button type="submit" className="text-sm text-red-600 hover:underline">
-                      Eliminar
-                    </button>
-                  </form>
+                  <AccionConfirmable
+                    action={alternarEstadoPasoAction}
+                    campos={{ id: p.id, estado: String(p.estado) }}
+                    etiqueta={p.estado ? "Inactivar" : "Activar"}
+                    variante="neutro"
+                    confirmacion={
+                      p.estado
+                        ? "¿Seguro que deseas inactivar este elemento? Dejará de mostrarse en el sitio público."
+                        : "¿Seguro que deseas cambiar el estado de este elemento?"
+                    }
+                    textoCargando="Actualizando..."
+                  />
+                  <AccionConfirmable
+                    action={eliminarPasoAction}
+                    campos={{ id: p.id }}
+                    etiqueta="Eliminar"
+                    confirmacion="¿Seguro que deseas eliminar este elemento? Esta acción no se puede deshacer."
+                    textoCargando="Eliminando..."
+                  />
                 </div>
               </td>
             </tr>

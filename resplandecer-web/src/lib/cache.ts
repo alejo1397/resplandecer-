@@ -13,6 +13,7 @@ import {
   getPasosDisenoActivos,
   getMarqueeItemsActivos,
   getHomeBannersActivos,
+  getColeccionesActivas,
 } from "@/lib/queries";
 
 /**
@@ -44,6 +45,7 @@ export const CACHE_TAGS = {
   metricas: "metricas",
   pasosDiseno: "pasos-diseno",
   marquee: "marquee",
+  colecciones: "colecciones",
   banners: "banners",
 } as const;
 
@@ -132,4 +134,10 @@ export const getBannersColeccionesCached = unstable_cache(
   () => getHomeBannersActivos("colecciones"),
   ["home-banners-colecciones"],
   { tags: [CACHE_TAGS.banners], revalidate: REVALIDATE_SECONDS },
+);
+
+export const getColeccionesCached = unstable_cache(
+  () => getColeccionesActivas(),
+  ["colecciones-activas"],
+  { tags: [CACHE_TAGS.colecciones], revalidate: REVALIDATE_SECONDS },
 );

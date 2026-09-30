@@ -46,7 +46,7 @@ export async function guardarBannerAction(
 
   revalidatePath("/admin/banners");
   updateTag(CACHE_TAGS.banners);
-  redirect("/admin/banners");
+  redirect(idRaw ? "/admin/banners?ok=actualizado" : "/admin/banners?ok=creado");
 }
 
 export async function alternarEstadoBannerAction(formData: FormData): Promise<void> {

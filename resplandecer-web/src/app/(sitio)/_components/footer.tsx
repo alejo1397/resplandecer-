@@ -82,12 +82,6 @@ export function Footer({
             HER Labs
           </a>
         </p>
-        <Link
-          href="/admin"
-          className="label-mono mt-1 inline-block text-paper/25 hover:text-paper/50"
-        >
-          Administración
-        </Link>
       </div>
     </footer>
   );

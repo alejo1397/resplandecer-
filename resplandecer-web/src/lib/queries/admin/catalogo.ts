@@ -91,6 +91,13 @@ export async function cambiarEstadoProducto(id: number, estado: boolean) {
 
 /** Agrega una imagen a un producto. */
 export async function agregarImagenProducto(catalogoId: number, input: ImagenInput) {
+  // Si esta imagen es principal, quitar la marca de las demás del producto.
+  if (input.esPrincipal) {
+    await prisma.imagenCatalogo.updateMany({
+      where: { catalogoId },
+      data: { esPrincipal: false },
+    });
+  }
   const imagen = await prisma.imagenCatalogo.create({
     data: {
       catalogoId,
@@ -102,6 +109,15 @@ export async function agregarImagenProducto(catalogoId: number, input: ImagenInp
     },
   });
   return serialize(imagen);
+}
+
+/** Marca una imagen como principal (y desmarca las demás del producto). */
+export async function marcarImagenPrincipalProducto(id: number, catalogoId: number) {
+  await prisma.imagenCatalogo.updateMany({
+    where: { catalogoId },
+    data: { esPrincipal: false },
+  });
+  await prisma.imagenCatalogo.update({ where: { id }, data: { esPrincipal: true } });
 }
 
 /** Elimina una imagen de un producto. */

@@ -7,5 +7,6 @@ export * from "./clientes";
 export * from "./proyectos";
 export * from "./home";
 export * from "./paginas";
+export * from "./colecciones";
 
 // Queries ADMINISTRATIVAS (panel admin): CRUD completo, ver src/lib/queries/admin/

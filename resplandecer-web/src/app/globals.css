@@ -181,6 +181,32 @@ body {
   .marquee__track { animation: none; }
 }
 
+/* Banners con movimiento horizontal automatico (sin barra de scroll) */
+.banner-carril {
+  overflow: hidden;
+}
+.banner-pista {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: banner-scroll calc(40s / var(--motion)) linear infinite;
+}
+.banner-carril:hover .banner-pista {
+  animation-play-state: paused;
+}
+@keyframes banner-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .banner-pista {
+    animation: none;
+    /* permitir ver los banners sin movimiento */
+    flex-wrap: wrap;
+    width: 100%;
+  }
+}
+
 /* Accesibilidad: si el usuario prefiere menos movimiento, todo aparece fijo */
 @media (prefers-reduced-motion: reduce) {
   .reveal {

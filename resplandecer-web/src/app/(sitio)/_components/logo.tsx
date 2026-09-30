@@ -3,12 +3,18 @@ import Image from "next/image";
 /**
  * Logo de Resplandecer.
  *
- * Usa el archivo `public/logo_r.png`. El logo es apaisado (proporción ~3.18:1),
- * por eso se dimensiona por alto y el ancho se ajusta de forma automática.
- * Si el tema es oscuro se aplica un filtro para que el logo se vea claro.
+ * Usa dos variantes reales (fondo transparente):
+ *  - `logo_r.png`        -> letras blancas, para fondos oscuros.
+ *  - `logo_r_black.png`  -> letras negras, para fondos claros.
+ *
+ * El logo es apaisado (proporción ~3.18:1), por eso se dimensiona por alto y el
+ * ancho se ajusta de forma automática para no deformarlo.
+ *
+ * @param alto    Alto en px del logo.
+ * @param oscuro  true si el fondo detrás es oscuro (usa la variante blanca).
  */
 export function Logo({
-  alto = 28,
+  alto = 36,
   oscuro = false,
   className = "",
 }: {
@@ -17,16 +23,15 @@ export function Logo({
   className?: string;
 }) {
   const ancho = Math.round((alto * 1113) / 350);
+  const src = oscuro ? "/logo_r.png" : "/logo_r_black.png";
   return (
     <Image
-      src="/logo_r.png"
+      src={src}
       alt="Logo de Resplandecer"
       width={ancho}
       height={alto}
       priority
-      className={`object-contain transition-[filter] duration-300 ${
-        oscuro ? "brightness-0 invert" : ""
-      } ${className}`}
+      className={`object-contain transition-opacity duration-300 ${className}`}
       style={{ height: `${alto}px`, width: "auto" }}
     />
   );

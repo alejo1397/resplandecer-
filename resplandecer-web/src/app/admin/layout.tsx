@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { getSession } from "@/lib/auth/session";
 import { LogoutButton } from "./logout-button";
 
@@ -12,6 +13,7 @@ const navItems = [
   { href: "/admin/banners", label: "Banners (inicio)" },
   { href: "/admin/categorias", label: "Categorías" },
   { href: "/admin/catalogo", label: "Catálogo" },
+  { href: "/admin/colecciones", label: "Colecciones" },
   { href: "/admin/proyectos", label: "Proyectos" },
   { href: "/admin/servicios", label: "Servicios" },
   { href: "/admin/marquee", label: "Marquee" },
@@ -42,8 +44,15 @@ export default async function AdminLayout({
     <div className="flex min-h-screen bg-gray-50 text-gray-900">
       <aside className="flex w-60 flex-col border-r border-gray-200 bg-white">
         <div className="border-b border-gray-200 px-5 py-4">
-          <p className="text-base font-semibold">Resplandecer</p>
-          <p className="text-xs text-gray-500">Panel de administración</p>
+          <Image
+            src="/logo_r_black.png"
+            alt="Logo de Resplandecer"
+            width={140}
+            height={44}
+            priority
+            style={{ height: "32px", width: "auto" }}
+          />
+          <p className="mt-2 text-xs text-gray-500">Panel de administración</p>
         </div>
         <nav className="flex-1 px-2 py-3">
           <ul className="flex flex-col gap-0.5">

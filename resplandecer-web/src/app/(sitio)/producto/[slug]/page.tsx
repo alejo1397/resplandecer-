@@ -1,8 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProductoPorSlug, getConfiguracionSitio } from "@/lib/queries";
 import { formatCOP } from "@/lib/serializers";
+import { Lightbox } from "../../_components/lightbox";
 
 export default async function ProductoPage({
   params,
@@ -30,31 +30,20 @@ export default async function ProductoPage({
       </Link>
 
       <div className="mt-6 grid gap-12 lg:grid-cols-2">
-        {/* Galeria */}
-        <div className="grid grid-cols-2 gap-3">
-          {producto.imagenes.length === 0 ? (
-            <div className="col-span-2 flex aspect-square items-center justify-center rounded-xl bg-ink/5 text-sm text-ink/40">
-              Sin imagen
-            </div>
-          ) : (
-            producto.imagenes.map((img, i) => (
-              <div
-                key={img.id}
-                className={`relative aspect-square overflow-hidden rounded-xl bg-ink/5 ${
-                  i === 0 ? "col-span-2" : ""
-                }`}
-              >
-                <Image
-                  src={img.url}
-                  alt={img.textoAlternativo ?? producto.nombre}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover"
-                />
-              </div>
-            ))
-          )}
-        </div>
+        {/* Galería con lightbox y zoom */}
+        {producto.imagenes.length === 0 ? (
+          <div className="flex aspect-square items-center justify-center rounded-xl bg-ink/5 text-sm text-ink/40">
+            Sin imagen
+          </div>
+        ) : (
+          <Lightbox
+            titulo={producto.nombre}
+            imagenes={producto.imagenes.map((img) => ({
+              url: img.url,
+              alt: img.textoAlternativo ?? producto.nombre,
+            }))}
+          />
+        )}
 
         {/* Info */}
         <div className="lg:pt-6">
@@ -82,7 +71,7 @@ export default async function ProductoPage({
             <a
               href={whatsappHref}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="pill pill-dark mt-10 text-ink"
             >
               <span className="pill-text">Consultar por WhatsApp</span>

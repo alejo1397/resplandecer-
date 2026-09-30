@@ -1,14 +1,22 @@
 import { requireAdmin } from "@/lib/auth/guard";
 import { listarFaqs } from "@/lib/queries/admin/home";
 import { PageHeader, LinkButton, TableShell, EstadoBadge, EmptyState } from "../_components/ui";
+import { AccionConfirmable } from "../_components/accion-confirmable";
+import { Flash } from "../_components/flash";
 import { alternarEstadoFaqAction, eliminarFaqAction } from "./actions";
 
-export default async function FaqsPage() {
+export default async function FaqsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ ok?: string }>;
+}) {
   await requireAdmin();
+  const { ok } = await searchParams;
   const faqs = await listarFaqs();
 
   return (
     <div>
+      <Flash ok={ok} />
       <PageHeader
         titulo="Preguntas frecuentes"
         descripcion="Gestiona las preguntas frecuentes de la página principal."
@@ -31,19 +39,26 @@ export default async function FaqsPage() {
                   <a href={`/admin/faqs/${f.id}`} className="text-sm font-medium text-gray-900 hover:underline">
                     Editar
                   </a>
-                  <form action={alternarEstadoFaqAction}>
-                    <input type="hidden" name="id" value={f.id} />
-                    <input type="hidden" name="estado" value={String(f.estado)} />
-                    <button type="submit" className="text-sm text-gray-500 hover:underline">
-                      {f.estado ? "Inactivar" : "Activar"}
-                    </button>
-                  </form>
-                  <form action={eliminarFaqAction}>
-                    <input type="hidden" name="id" value={f.id} />
-                    <button type="submit" className="text-sm text-red-600 hover:underline">
-                      Eliminar
-                    </button>
-                  </form>
+                  <AccionConfirmable
+                    action={alternarEstadoFaqAction}
+                    campos={{ id: f.id, estado: String(f.estado) }}
+                    etiqueta={f.estado ? "Inactivar" : "Activar"}
+                    variante="neutro"
+                    confirmacion={
+                      f.estado
+                        ? "¿Seguro que deseas inactivar este elemento? Dejará de mostrarse en el sitio público."
+                        : "¿Seguro que deseas cambiar el estado de este elemento?"
+                    }
+                    textoCargando="Actualizando..."
+                  />
+                  <AccionConfirmable
+                    action={eliminarFaqAction}
+                    campos={{ id: f.id }}
+                    etiqueta="Eliminar"
+                    variante="peligro"
+                    confirmacion="¿Seguro que deseas eliminar este elemento? Esta acción no se puede deshacer."
+                    textoCargando="Eliminando..."
+                  />
                 </div>
               </td>
             </tr>

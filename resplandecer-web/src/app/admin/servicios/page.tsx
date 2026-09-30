@@ -1,14 +1,22 @@
 import { requireAdmin } from "@/lib/auth/guard";
 import { listarServicios } from "@/lib/queries/admin/home";
 import { PageHeader, LinkButton, TableShell, EstadoBadge, EmptyState } from "../_components/ui";
+import { AccionConfirmable } from "../_components/accion-confirmable";
+import { Flash } from "../_components/flash";
 import { alternarEstadoServicioAction, eliminarServicioAction } from "./actions";
 
-export default async function ServiciosPage() {
+export default async function ServiciosPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ ok?: string }>;
+}) {
   await requireAdmin();
+  const { ok } = await searchParams;
   const servicios = await listarServicios();
 
   return (
     <div>
+      <Flash ok={ok} />
       <PageHeader
         titulo="Servicios"
         descripcion="Gestiona los servicios de la sección «Qué hacemos»."
@@ -31,19 +39,25 @@ export default async function ServiciosPage() {
                   <a href={`/admin/servicios/${s.id}`} className="text-sm font-medium text-gray-900 hover:underline">
                     Editar
                   </a>
-                  <form action={alternarEstadoServicioAction}>
-                    <input type="hidden" name="id" value={s.id} />
-                    <input type="hidden" name="estado" value={String(s.estado)} />
-                    <button type="submit" className="text-sm text-gray-500 hover:underline">
-                      {s.estado ? "Inactivar" : "Activar"}
-                    </button>
-                  </form>
-                  <form action={eliminarServicioAction}>
-                    <input type="hidden" name="id" value={s.id} />
-                    <button type="submit" className="text-sm text-red-600 hover:underline">
-                      Eliminar
-                    </button>
-                  </form>
+                  <AccionConfirmable
+                    action={alternarEstadoServicioAction}
+                    campos={{ id: s.id, estado: String(s.estado) }}
+                    etiqueta={s.estado ? "Inactivar" : "Activar"}
+                    variante="neutro"
+                    confirmacion={
+                      s.estado
+                        ? "¿Seguro que deseas inactivar este elemento? Dejará de mostrarse en el sitio público."
+                        : "¿Seguro que deseas cambiar el estado de este elemento?"
+                    }
+                    textoCargando="Actualizando..."
+                  />
+                  <AccionConfirmable
+                    action={eliminarServicioAction}
+                    campos={{ id: s.id }}
+                    etiqueta="Eliminar"
+                    confirmacion="¿Seguro que deseas eliminar este elemento? Esta acción no se puede deshacer."
+                    textoCargando="Eliminando..."
+                  />
                 </div>
               </td>
             </tr>

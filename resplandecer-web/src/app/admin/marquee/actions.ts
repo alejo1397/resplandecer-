@@ -38,7 +38,7 @@ export async function guardarMarqueeAction(
 
   revalidatePath("/admin/marquee");
   updateTag(CACHE_TAGS.marquee);
-  redirect("/admin/marquee");
+  redirect(idRaw ? "/admin/marquee?ok=actualizado" : "/admin/marquee?ok=creado");
 }
 
 export async function alternarEstadoMarqueeAction(formData: FormData): Promise<void> {

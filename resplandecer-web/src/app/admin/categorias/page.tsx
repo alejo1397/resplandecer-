@@ -7,14 +7,22 @@ import {
   EstadoBadge,
   EmptyState,
 } from "../_components/ui";
+import { AccionConfirmable } from "../_components/accion-confirmable";
+import { Flash } from "../_components/flash";
 import { alternarEstadoCategoriaAction } from "./actions";
 
-export default async function CategoriasPage() {
+export default async function CategoriasPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ ok?: string }>;
+}) {
   await requireAdmin();
+  const { ok } = await searchParams;
   const categorias = await listarCategorias();
 
   return (
     <div>
+      <Flash ok={ok} />
       <PageHeader
         titulo="Categorías"
         descripcion="Gestiona las categorías del catálogo."
@@ -42,21 +50,20 @@ export default async function CategoriasPage() {
                   >
                     Editar
                   </a>
-                  <form action={alternarEstadoCategoriaAction}>
-                    <input type="hidden" name="id" value={c.id} />
-                    <input type="hidden" name="estado" value={String(c.estado)} />
-                    <button
-                      type="submit"
-                      className="text-sm text-gray-500 hover:underline"
-                      title={
-                        c.estado && c._count.productos > 0
-                          ? `Esta categoría tiene ${c._count.productos} producto(s). Al inactivarla se ocultará junto con su listado; los productos no se eliminan.`
-                          : undefined
-                      }
-                    >
-                      {c.estado ? "Inactivar" : "Activar"}
-                    </button>
-                  </form>
+                  <AccionConfirmable
+                    action={alternarEstadoCategoriaAction}
+                    campos={{ id: c.id, estado: String(c.estado) }}
+                    etiqueta={c.estado ? "Inactivar" : "Activar"}
+                    variante="neutro"
+                    confirmacion={
+                      c.estado
+                        ? c._count.productos > 0
+                          ? `Esta categoría tiene ${c._count.productos} producto(s). ¿Seguro que deseas inactivarla? Dejará de mostrarse en el sitio público; los productos no se eliminan.`
+                          : "¿Seguro que deseas inactivar este elemento? Dejará de mostrarse en el sitio público."
+                        : "¿Seguro que deseas cambiar el estado de este elemento?"
+                    }
+                    textoCargando="Actualizando..."
+                  />
                 </div>
               </td>
             </tr>

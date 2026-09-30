@@ -2,7 +2,8 @@
 
 import { useActionState } from "react";
 import { guardarCategoriaAction, type FormState } from "./actions";
-import { Field, TextInput, TextArea, Checkbox, SubmitButton, LinkButton } from "../_components/ui";
+import { Field, TextInput, TextArea, Checkbox, LinkButton } from "../_components/ui";
+import { SubmitConLogo } from "../_components/submit-con-logo";
 import { ImageUploader } from "../_components/image-uploader";
 
 type Categoria = {
@@ -11,16 +12,18 @@ type Categoria = {
   slug: string;
   descripcion: string | null;
   imagenUrl: string | null;
-  whatsappTexto: string | null;
-  whatsappMensaje: string | null;
   orden: number;
   estado: boolean;
 };
 
 const initialState: FormState = {};
 
+/**
+ * Las categorías funcionan como AGRUPADORES/FILTROS de productos (mobiliario).
+ * No son colecciones: las colecciones tienen su propio módulo (/admin/colecciones).
+ */
 export function CategoriaForm({ categoria }: { categoria?: Categoria }) {
-  const [state, action, pending] = useActionState(guardarCategoriaAction, initialState);
+  const [state, action] = useActionState(guardarCategoriaAction, initialState);
 
   return (
     <form action={action} className="flex max-w-lg flex-col gap-4">
@@ -42,35 +45,21 @@ export function CategoriaForm({ categoria }: { categoria?: Categoria }) {
         fieldName="imagenUrl"
         carpeta="categorias"
         defaultUrl={categoria?.imagenUrl ?? ""}
-        label="Imagen de portada (se usa como fondo en Colecciones)"
+        label="Imagen de la categoría (opcional)"
       />
-
-      <Field label="Texto del botón de WhatsApp" hint="Ej. Pregunta por la colección.">
-        <TextInput
-          name="whatsappTexto"
-          defaultValue={categoria?.whatsappTexto ?? ""}
-          placeholder="Pregunta por la colección"
-        />
-      </Field>
-
-      <Field label="Mensaje de WhatsApp" hint="Texto con el que se abre el chat.">
-        <TextArea
-          name="whatsappMensaje"
-          defaultValue={categoria?.whatsappMensaje ?? ""}
-          placeholder="Hola, quiero información sobre la colección..."
-        />
-      </Field>
 
       <Field label="Orden" hint="Menor número aparece primero.">
         <TextInput name="orden" type="number" defaultValue={categoria?.orden ?? 0} />
       </Field>
 
-      <Checkbox name="estado" label="Activo (visible en la web)" defaultChecked={categoria?.estado ?? true} />
+      <Checkbox name="estado" label="Activa (visible como filtro)" defaultChecked={categoria?.estado ?? true} />
 
       {state.error ? <p className="text-sm text-red-600">{state.error}</p> : null}
 
       <div className="mt-2 flex items-center gap-3">
-        <SubmitButton>{pending ? "Guardando..." : "Guardar"}</SubmitButton>
+        <SubmitConLogo textoCargando={categoria ? "Actualizando..." : "Creando..."}>
+          {categoria ? "Guardar" : "Crear"}
+        </SubmitConLogo>
         <LinkButton href="/admin/categorias" variant="secondary">
           Cancelar
         </LinkButton>

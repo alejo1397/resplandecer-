@@ -10,6 +10,7 @@ import {
   cambiarEstadoProducto,
   agregarImagenProducto,
   eliminarImagenProducto,
+  marcarImagenPrincipalProducto,
 } from "@/lib/queries/admin/catalogo";
 
 function toSlug(texto: string): string {
@@ -63,7 +64,7 @@ export async function guardarProductoAction(
 
   revalidatePath("/admin/catalogo");
   updateTag(CACHE_TAGS.catalogo);
-  redirect("/admin/catalogo");
+  redirect(idRaw ? "/admin/catalogo?ok=actualizado" : "/admin/catalogo?ok=creado");
 }
 
 export async function alternarEstadoProductoAction(formData: FormData): Promise<void> {
@@ -91,6 +92,15 @@ export async function eliminarImagenAction(formData: FormData): Promise<void> {
   const id = Number(formData.get("id"));
   const catalogoId = Number(formData.get("catalogoId"));
   await eliminarImagenProducto(id);
+  revalidatePath(`/admin/catalogo/${catalogoId}`);
+  updateTag(CACHE_TAGS.catalogo);
+}
+
+export async function marcarPrincipalProductoAction(formData: FormData): Promise<void> {
+  await requireAdmin();
+  const id = Number(formData.get("id"));
+  const catalogoId = Number(formData.get("catalogoId"));
+  await marcarImagenPrincipalProducto(id, catalogoId);
   revalidatePath(`/admin/catalogo/${catalogoId}`);
   updateTag(CACHE_TAGS.catalogo);
 }
