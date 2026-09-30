@@ -102,20 +102,37 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: currentColor;
+  /* Color de relleno explicito por variante (ver abajo). Por defecto,
+     el color del texto actual, como respaldo. */
+  background: var(--pill-fill, currentColor);
   transform: translateY(101%);
   transition: transform 0.45s cubic-bezier(0.7, 0, 0.2, 1);
   z-index: -1;
 }
 .pill:hover::after { transform: translateY(0); }
-/* pill-dark: texto oscuro que, al hover, el relleno se vuelve oscuro,
-   por lo que el texto debe pasar a claro para seguir siendo legible. */
-.pill-dark:hover { color: var(--paper); }
-.pill-dark:hover .pill-text { color: var(--paper); }
-/* pill-light: texto claro que, al hover, el relleno se vuelve claro,
-   por lo que el texto debe pasar a oscuro para seguir siendo legible. */
-.pill-light:hover { color: var(--ink); }
-.pill-light:hover .pill-text { color: var(--ink); }
+
+/* El relleno y el texto deben tener colores INDEPENDIENTES: si ambos usaran
+   currentColor, al cambiar el texto cambiaria tambien el relleno y el texto
+   quedaria invisible. Por eso el relleno se fija con --pill-fill y el texto
+   se fuerza en hover (!important vence las utilidades text-* de Tailwind). */
+
+/* pill-light: fondos oscuros. Texto claro; en hover relleno claro + texto oscuro. */
+.pill-light {
+  --pill-fill: var(--paper);
+}
+.pill-light:hover,
+.pill-light:hover .pill-text {
+  color: var(--ink) !important;
+}
+
+/* pill-dark: fondos claros. Texto oscuro; en hover relleno oscuro + texto claro. */
+.pill-dark {
+  --pill-fill: var(--ink);
+}
+.pill-dark:hover,
+.pill-dark:hover .pill-text {
+  color: var(--paper) !important;
+}
 
 /* Reveal de entrada (se activa al anadir .is-visible).
    Salvaguarda CSS: aunque el JS no corra, un fallback lo revela a los 1.5s
