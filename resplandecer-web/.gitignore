@@ -1,43 +1,141 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Stack: Next.js + React + TypeScript + Prisma + Supabase + Vercel (npm)
 
-# dependencies
+# ==============================
+# Dependencias
+# ==============================
 /node_modules
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+.pnp/
+.pnp.js
+.yarn/install-state.gz
 
-# testing
-/coverage
-
-# next.js
+# ==============================
+# Build / salida de frameworks
+# ==============================
 /.next/
 /out/
+/dist/
+/build/
+.output/
+.vercel/output/
 
-# production
-/build
+# ==============================
+# Cachés
+# ==============================
+.cache/
+.turbo/
+.parcel-cache/
+.vite/
+.eslintcache
+.stylelintcache
+.swc/
 
-# misc
-.DS_Store
-*.pem
-
-# debug
+# ==============================
+# Logs
+# ==============================
+logs/
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
-# ...pero SI versionar la plantilla de ejemplo (sin secretos)
+# ==============================
+# Variables de entorno y secretos
+# (SÍ versionar la plantilla de ejemplo)
+# ==============================
+.env
+.env.*
 !.env.example
+!.env.sample
 
-# vercel
+# ==============================
+# Vercel / despliegue local
+# ==============================
 .vercel
 
-# typescript
+# ==============================
+# Supabase local (NO ignorar supabase/migrations/ ni prisma/migrations/)
+# ==============================
+supabase/.branches/
+supabase/.temp/
+supabase/.env
+supabase/.env.*
+
+# ==============================
+# Prisma / bases de datos locales
+# Mantener schema.prisma y prisma/migrations/
+# ==============================
+prisma/dev.db
+prisma/dev.db-journal
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# ==============================
+# Testing / coverage
+# ==============================
+/coverage
+.nyc_output/
+playwright-report/
+test-results/
+blob-report/
+
+# ==============================
+# TypeScript
+# ==============================
 *.tsbuildinfo
 next-env.d.ts
+
+# ==============================
+# Sistema operativo
+# ==============================
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+Desktop.ini
+
+# ==============================
+# Editores / IDE
+# ==============================
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.example.json
+.idea/
+*.suo
+*.sw?
+
+# ==============================
+# Paquetes / temporales
+# ==============================
+*.tgz
+*.tmp
+*.temp
+.tmp/
+temp/
+
+# ==============================
+# Certificados y credenciales locales
+# ==============================
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+
+# ==============================
+# Dumps / backups de base de datos
+# ==============================
+*.dump
+*.backup
+*.bak
+
+# ==============================
+# Kiro (mantener .kiro/steering/ versionado)
+# ==============================
+.kiro/local/
+.kiro/cache/
+.kiro/logs/

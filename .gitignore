@@ -1,39 +1,148 @@
+# ==============================
+# .gitignore — Proyecto Resplandecer
+# Stack: Next.js + React + TypeScript + Prisma + Supabase + Vercel (npm)
+# El proyecto vive en la subcarpeta resplandecer-web/
+# ==============================
+
+# ==============================
 # Dependencias
+# ==============================
 node_modules/
-resplandecer-web/node_modules/
+.pnp/
+.pnp.js
+.yarn/install-state.gz
 
-# Builds de Next.js
-resplandecer-web/.next/
-resplandecer-web/out/
-resplandecer-web/build/
+# ==============================
+# Build / salida de frameworks
+# ==============================
+.next/
+out/
+dist/
+build/
+.output/
+.vercel/output/
 
-# Variables de entorno (nunca subir credenciales)
-.env
-.env*.local
-resplandecer-web/.env
-resplandecer-web/.env*.local
-# ...pero SI versionar las plantillas de ejemplo (sin secretos)
-!.env.example
-!resplandecer-web/.env.example
+# ==============================
+# Cachés
+# ==============================
+.cache/
+.turbo/
+.parcel-cache/
+.vite/
+.eslintcache
+.stylelintcache
+.swc/
 
+# ==============================
 # Logs
+# ==============================
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# Sistema operativo
-.DS_Store
-Thumbs.db
+# ==============================
+# Variables de entorno y secretos
+# (SÍ versionar las plantillas de ejemplo)
+# ==============================
+.env
+.env.*
+!.env.example
+!.env.sample
 
-# Editor
-.vscode/*
-!.vscode/extensions.json
-.idea/
+# ==============================
+# Vercel / despliegue local
+# ==============================
+.vercel/
 
-# Vercel
-.vercel
+# ==============================
+# Supabase local
+# Importante: NO ignorar supabase/migrations/ ni prisma/migrations/
+# ==============================
+supabase/.branches/
+supabase/.temp/
+supabase/.env
+supabase/.env.*
 
+# ==============================
+# Prisma / bases de datos locales
+# Mantener schema.prisma y prisma/migrations/
+# ==============================
+prisma/dev.db
+prisma/dev.db-journal
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# ==============================
+# Testing / coverage
+# ==============================
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+blob-report/
+
+# ==============================
 # TypeScript
+# ==============================
 *.tsbuildinfo
 next-env.d.ts
+
+# ==============================
+# Archivos del sistema operativo
+# ==============================
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+Desktop.ini
+
+# ==============================
+# Editores / IDE
+# ==============================
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.example.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ==============================
+# Paquetes temporales
+# ==============================
+*.tgz
+*.tmp
+*.temp
+.tmp/
+temp/
+
+# ==============================
+# Certificados y credenciales locales
+# ==============================
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+
+# ==============================
+# Dumps / backups de base de datos
+# ==============================
+*.dump
+*.backup
+*.bak
+
+# ==============================
+# Kiro (mantener .kiro/steering/ versionado)
+# ==============================
+.kiro/local/
+.kiro/cache/
+.kiro/logs/
